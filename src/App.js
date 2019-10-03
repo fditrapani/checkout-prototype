@@ -1,10 +1,16 @@
+//External
 import React from 'react';
 import styled from 'styled-components';
+
+//Componenets
+import Step from './components/Step';
+import Button from './components/Button';
+
 
 //CSS
 import { colours } from './config/colours.js';
 import { breakpoints } from './config/breakpoints.js';
-import Step from './components/Step';
+
 
 //Images
 import logoURL from './images/wp-logo.svg';
@@ -87,6 +93,12 @@ const RightColumn = styled(Column)`
   }
 `;
 
+const InstructionalCopy = styled.p`
+  font-size: 14px;
+  color: ${ colours.gray80 };
+  margin: 8px 0 0;
+`
+
 function App() {
   return (
     <div>
@@ -120,7 +132,10 @@ function App() {
 
         </LeftColumn>
         <RightColumn>
-          Right column
+          <Button 
+            label="Pay $60"
+            state="disabled" />
+          <InstructionalCopy>Confirm your payment method to continue</InstructionalCopy>
         </RightColumn>
       </Container>
     </div>
