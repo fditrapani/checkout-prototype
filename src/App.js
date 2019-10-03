@@ -32,7 +32,7 @@ const TransparentButton = styled.button`
 
 const Logo = styled.img`
   display: block;
-  width: 150px;
+  width: 146px;
 `
 
 const SecureCheckout = styled.span`
