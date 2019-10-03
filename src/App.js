@@ -44,6 +44,7 @@ const SecureCheckout = styled.span`
 const Container = styled.div`
   @media( ${ breakpoints.tabletUp } ) {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
     max-width: 910px;
     margin: 0 auto;
@@ -82,6 +83,7 @@ const DomainUrl = styled.p`
 const RightColumn = styled(Column)`
   @media( ${ breakpoints.tabletUp } ) {
     width: 354px;
+
   }
 `;
 
