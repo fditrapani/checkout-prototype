@@ -97,49 +97,49 @@ const InstructionalCopy = styled.p`
   font-size: 14px;
   color: ${ colours.gray80 };
   margin: 8px 0 0;
-`
+`;
 
-function App() {
-  return (
-    <div>
-      <Header>
-        <TransparentButton>
-          <img src={ closeURL } alt="Close" />
-        </TransparentButton>
-        <Logo src={ logoURL } alt="WordPress.com" /> 
-        <SecureCheckout>Secure checkout</SecureCheckout>
-      </Header>
+export default class App extends React.Component {
+  render() { 
+    return (
+      <div>
+        <Header>
+          <TransparentButton>
+            <img src={ closeURL } alt="Close" />
+          </TransparentButton>
+          <Logo src={ logoURL } alt="WordPress.com" /> 
+          <SecureCheckout>Secure checkout</SecureCheckout>
+        </Header>
 
-      <Container>
-        <LeftColumn>
-          <PageTitle>Complete your purchase</PageTitle>
-          <DomainUrl>yourdomain.tld</DomainUrl>
+        <Container>
+          <LeftColumn>
+            <PageTitle>Complete your purchase</PageTitle>
+            <DomainUrl>yourdomain.tld</DomainUrl>
 
-          <Step
-            number="1"
-            title="Pick a payment method"
-            display="content" />
+            <Step
+              number="1"
+              title="Pick a payment method"
+              state="content" />
 
-          <Step
-            number="2"
-            title="Enter your billing details"
-            display="none" />
+            <Step
+              number="2"
+              title="Enter your billing details"
+              state="none" />
 
-          <Step
-            number="3"
-            title="Review your order"
-            display="summary" />
+            <Step
+              number="3"
+              title="Review your order"
+              state="summary" />
 
-        </LeftColumn>
-        <RightColumn>
-          <Button 
-            label="Pay $60"
-            state="disabled" />
-          <InstructionalCopy>Confirm your payment method to continue</InstructionalCopy>
-        </RightColumn>
-      </Container>
-    </div>
-  );
+          </LeftColumn>
+          <RightColumn>
+            <Button 
+              label="Pay $60"
+              state="disabled" />
+            <InstructionalCopy>Confirm your payment method to continue</InstructionalCopy>
+          </RightColumn>
+        </Container>
+      </div>
+    );
+  }
 }
-
-export default App;

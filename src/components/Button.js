@@ -23,72 +23,72 @@ const CalltoAction = styled.button`
 	}
 `;
 
-function returnBackgroundColour( state ) {
-	switch (state) {
-		case "primary":
-			return colours.primary;
-		case "disabled":
-			return colours.gray0;
-		default:
-			return "none"
+export default class Button extends React.Component {
+	returnBackgroundColour = ( state ) => {
+		switch ( state ) {
+			case "primary":
+				return colours.primary;
+			case "disabled":
+				return colours.gray0;
+			default:
+				return "none"
+		}
+	}
+
+	returnRollOverColour = ( state ) => {
+		switch ( state ) {
+			case "primary":
+				return colours.highlight;
+			case "disabled":
+				return colours.gray0;
+			default:
+				return "none"
+		}
+	}
+
+	returnBorderColour = ( state ) => {
+		switch ( state ) {
+			case "primary":
+				return colours.pink70;
+			case "disabled":
+				return colours.gray20;
+			default:
+				return colours.highlight;
+		}
+	}
+
+	returnRollOverBorderColour = ( state ) => {
+		switch ( state ) {
+			case "primary":
+				return colours.blue80;
+			case "disabled":
+				return colours.gray20;
+			default:
+				return colours.blue80;
+		}
+	}
+
+	returnTextColour = ( state ) => {
+		switch ( state ) {
+			case "primary":
+				return colours.white;
+			case "disabled":
+				return colours.gray20;
+			default:
+				return colours.highlight;
+		}
+	}
+
+	render() {
+		return(
+			<CalltoAction 
+				background={ this.returnBackgroundColour( this.props.state ) }
+				borderColour={ this.returnBorderColour( this.props.state ) } 
+				textColour={ this.returnTextColour( this.props.state ) } 
+				rollOverColour= { this.returnRollOverColour( this.props.state ) }
+				rollOverBorderColour= { this.returnRollOverBorderColour( this.props.state ) }>
+				{ this.props.label }
+			</CalltoAction>
+		)
 	}
 }
-
-function returnRollOverColour( state ) {
-	switch (state) {
-		case "primary":
-			return colours.highlight;
-		case "disabled":
-			return colours.gray0;
-		default:
-			return "none"
-	}
-}
-
-function returnBorderColour( state ) {
-	switch (state) {
-		case "primary":
-			return colours.pink70;
-		case "disabled":
-			return colours.gray20;
-		default:
-			return colours.highlight;
-	}
-}
-
-function returnRollOverBorderColour( state ) {
-	switch (state) {
-		case "primary":
-			return colours.blue80;
-		case "disabled":
-			return colours.gray20;
-		default:
-			return colours.blue80;
-	}
-}
-
-function returnTextColour( state ) {
-	switch (state) {
-		case "primary":
-			return colours.white;
-		case "disabled":
-			return colours.gray20;
-		default:
-			return colours.highlight;
-	}
-}
-
-function Button(props) {
-	return(
-		<CalltoAction 
-			background={ returnBackgroundColour( props.state ) }
-			borderColour={ returnBorderColour( props.state ) } 
-			textColour={ returnTextColour( props.state ) } 
-			rollOverColour= { returnRollOverColour( props.state ) }
-			rollOverBorderColour= { returnRollOverBorderColour( props.state ) }>
-			{ props.label }
-		</CalltoAction>
-	)
-}
-
-export default Button;
