@@ -5,6 +5,7 @@ import styled from 'styled-components';
 //Componenets
 import Step from './components/Step';
 import Button from './components/Button';
+import RadioButton from './components/RadioButton';
 
 
 //CSS
@@ -64,6 +65,7 @@ const Container = styled.div`
 const Column = styled.div`
   background: ${ colours.white };
   padding: 24px;
+  width: 100%;
 
   @media( ${ breakpoints.tabletUp } ) {
     border: 1px solid ${ colours.gray5 };
@@ -74,7 +76,7 @@ const Column = styled.div`
 
 const LeftColumn = styled(Column)`
   @media( ${ breakpoints.tabletUp } ) {
-    width: 532px;
+    max-width: 532px;
   }
 `;
 
@@ -92,8 +94,7 @@ const DomainUrl = styled.p`
 
 const RightColumn = styled(Column)`
   @media( ${ breakpoints.tabletUp } ) {
-    width: 354px;
-
+    max-width: 354px;
   }
 `;
 
@@ -103,16 +104,60 @@ const InstructionalCopy = styled.p`
   margin: 8px 0 0;
 `;
 
+const RadioButtons = styled.div`
+  margin-bottom: 16px;
+`;
+
 export default class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      paymentMethod: "apple-pay",
+    };
+  }
+
+  changePaymentMethod = ( changeEvent ) => {
+    this.setState({ 
+      paymentMethod: changeEvent.target.value
+    });
+  }
+
   renderPaymentMethod = () => {
     return(
-      <span>PaymentMethod</span>
+      <div>
+        <RadioButtons>
+          <RadioButton 
+            label="Apple Pay" 
+            value="apple-pay"
+            checked={ this.state.paymentMethod === "apple-pay"  }
+            onChange={ this.changePaymentMethod } />
+
+          <RadioButton 
+            label="Credit or Debit card" 
+            value="credit-card"
+            checked={ this.state.paymentMethod === "credit-card"  }
+            onChange={ this.changePaymentMethod } />
+
+          <RadioButton 
+            label="Paypal" 
+            value="paypal"
+            checked={ this.state.paymentMethod === "paypal"  }
+            onChange={ this.changePaymentMethod } />
+          </RadioButtons>
+
+        <Button 
+          label="Continue"
+          state="primary" />
+        </div>
     );
   }
 
   renderPaymentMethodSummary = () => {
     return(
-      <span>PaymentMethodSummary</span>
+      <div>
+        PaymentMethodSummary        
+      </div>
     );
   }
 

@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-//Components
-import Button from '../components/Button';
-
 //CSS
 import { colours } from '../config/colours.js';
 
@@ -73,8 +70,6 @@ export default class Step extends React.Component {
   };
 
   determineVisibility = ( state, component ) => {
-    console.log(state);
-
     if ( state === component ) {
       return "block";
     }
@@ -99,10 +94,6 @@ export default class Step extends React.Component {
 
         <Content display={ this.determineVisibility( this.props.state, "content" ) }>
           <div>{ this.props.content }</div>
-
-          <Button 
-            label="Continue"
-            state="primary" />
         </Content>
 
         <Summary display={ this.determineVisibility( this.props.state, "summary" ) }>

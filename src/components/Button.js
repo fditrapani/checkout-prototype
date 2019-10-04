@@ -92,7 +92,7 @@ export default class Button extends React.Component {
 	}
 
 	returnFontWeight = ( state ) => {
-		if( state == "disabled" ) {
+		if( state === "disabled" ) {
 			return 300;
 		}
 
