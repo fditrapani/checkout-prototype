@@ -28,6 +28,11 @@ const CalltoAction = styled.button`
 		border: 1px solid ${ props => props.borderColour };
 		box-shadow: 0 1px 0 ${ props => props.borderColour };
 	}
+
+	img {
+		margin-bottom: -1px;
+		transform: translateY(2px);
+	}
 `;
 
 export default class Button extends React.Component {

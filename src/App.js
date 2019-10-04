@@ -15,6 +15,8 @@ import { breakpoints } from './config/breakpoints.js';
 //Images
 import logoURL from './images/wp-logo.svg';
 import closeURL from './images/close.svg';
+import applePayURL from './images/apple-pay.svg';
+import paypalURL from './images/paypal.svg';
 
 const Header = styled.header`
   background: ${ colours.highlight };
@@ -66,6 +68,7 @@ const Column = styled.div`
   background: ${ colours.white };
   padding: 24px;
   width: 100%;
+  box-sizing: border-box;
 
   @media( ${ breakpoints.tabletUp } ) {
     border: 1px solid ${ colours.gray5 };
@@ -161,6 +164,34 @@ export default class App extends React.Component {
     );
   }
 
+  renderPaymentButton = () => {
+    switch( this.state.paymentMethod ) {
+      case "apple-pay":
+        return (
+          <Button 
+            label={ (<img src={ applePayURL } alt="Close" />) }
+            state="disabled"
+            width="100%"
+            type="apple-pay" />
+        )
+      case "paypal":
+        return (
+          <Button 
+            label={ (<img src={ paypalURL } alt="Close" />) }
+            state="disabled"
+            width="100%"
+            type="paypal" />
+        )
+      default:
+        return (
+          <Button 
+            label="Pay $60"
+            state="disabled"
+            width="100%" />
+        )
+    }
+  }
+
   renderBilling = () => {
     return(
       <span>Billing</span>
@@ -225,10 +256,7 @@ export default class App extends React.Component {
 
           </LeftColumn>
           <RightColumn>
-            <Button 
-              label="Pay $60"
-              state="disabled"
-              width="100%" />
+            { this.renderPaymentButton() }
             <InstructionalCopy>Confirm your payment method to continue</InstructionalCopy>
           </RightColumn>
         </Container>
