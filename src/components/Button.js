@@ -6,7 +6,7 @@ import { colours } from '../config/colours.js';
 
 const CalltoAction = styled.button`
 	display: block;
-	width: 100%;
+	width: ${ props => props.width };
 	font-size: 1em;
 	border-radius: 3px;
 	padding: 10px;
@@ -14,6 +14,7 @@ const CalltoAction = styled.button`
 	border: 1px solid ${ props => props.borderColour };
 	color: ${ props => props.textColour };
 	box-shadow: 0 1px 0 ${ props => props.borderColour };
+	font-weight: ${ props => props.fontWeight };
 
 	:hover {
 		cursor: pointer;
@@ -21,9 +22,20 @@ const CalltoAction = styled.button`
 		border: 1px solid ${ props => props.rollOverBorderColour };
 		box-shadow: 0 1px 0 ${ props => props.rollOverBorderColour };
 	}
+
+	:active {
+		background: ${ props => props.background };
+		border: 1px solid ${ props => props.borderColour };
+		box-shadow: 0 1px 0 ${ props => props.borderColour };
+	}
 `;
 
 export default class Button extends React.Component {
+
+	static defaultProps = {
+	  width: "auto",
+	};
+
 	returnBackgroundColour = ( state ) => {
 		switch ( state ) {
 			case "primary":
@@ -79,15 +91,25 @@ export default class Button extends React.Component {
 		}
 	}
 
+	returnFontWeight = ( state ) => {
+		if( state == "disabled" ) {
+			return 300;
+		}
+
+		return 700;
+	}
+
 	render() {
 		return(
 			<CalltoAction 
-				background={ this.returnBackgroundColour( this.props.state ) }
-				borderColour={ this.returnBorderColour( this.props.state ) } 
-				textColour={ this.returnTextColour( this.props.state ) } 
-				rollOverColour= { this.returnRollOverColour( this.props.state ) }
-				rollOverBorderColour= { this.returnRollOverBorderColour( this.props.state ) }>
-				{ this.props.label }
+			  background={ this.returnBackgroundColour( this.props.state ) }
+			  borderColour={ this.returnBorderColour( this.props.state ) } 
+			  textColour={ this.returnTextColour( this.props.state ) } 
+			  rollOverColour= { this.returnRollOverColour( this.props.state ) }
+			  rollOverBorderColour= { this.returnRollOverBorderColour( this.props.state ) } 
+			  width={ this.props.width }
+			  fontWeight={ this.returnFontWeight( this.props.state ) } >
+			 	  { this.props.label }
 			</CalltoAction>
 		)
 	}

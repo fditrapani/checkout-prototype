@@ -11,7 +11,6 @@ import Button from './components/Button';
 import { colours } from './config/colours.js';
 import { breakpoints } from './config/breakpoints.js';
 
-
 //Images
 import logoURL from './images/wp-logo.svg';
 import closeURL from './images/close.svg';
@@ -33,6 +32,11 @@ const TransparentButton = styled.button`
     background: ${ colours.primary };
     border-right-color: ${ colours.primary };
     cursor: pointer;
+  }
+
+  :active {
+    background: none;
+    border-right: 1px solid ${ colours.blue40 };
   }
 `;
 
@@ -100,6 +104,42 @@ const InstructionalCopy = styled.p`
 `;
 
 export default class App extends React.Component {
+  renderPaymentMethod = () => {
+    return(
+      <span>PaymentMethod</span>
+    );
+  }
+
+  renderPaymentMethodSummary = () => {
+    return(
+      <span>PaymentMethodSummary</span>
+    );
+  }
+
+  renderBilling = () => {
+    return(
+      <span>Billing</span>
+    );
+  }
+
+  renderBillingSummary = () => {
+    return(
+      <span>BillingSummary</span>
+    );
+  }  
+
+  renderReview = () => {
+    return(
+      <span>Review</span>
+    );
+  }
+
+  renderReviewSummary = () => {
+    return(
+      <span>ReviewSummary</span>
+    );
+  }
+
   render() { 
     return (
       <div>
@@ -119,23 +159,31 @@ export default class App extends React.Component {
             <Step
               number="1"
               title="Pick a payment method"
-              state="content" />
+              state="content"
+              content={ this.renderPaymentMethod() }
+              summary={ this.renderPaymentMethodSummary() } />
 
             <Step
               number="2"
               title="Enter your billing details"
-              state="none" />
+              state="none"
+              content={ this.renderBilling() }
+              summary={ this.renderBillingSummary() } />
 
             <Step
               number="3"
               title="Review your order"
-              state="summary" />
+              state="summary"
+              borderWidth={ 0 } 
+              content={ this.renderReview() }
+              summary={ this.renderReviewSummary() } />
 
           </LeftColumn>
           <RightColumn>
             <Button 
               label="Pay $60"
-              state="disabled" />
+              state="disabled"
+              width="100%" />
             <InstructionalCopy>Confirm your payment method to continue</InstructionalCopy>
           </RightColumn>
         </Container>
