@@ -32,6 +32,8 @@ const CalltoAction = styled.button`
 	img {
 		margin-bottom: -1px;
 		transform: translateY(2px);
+		filter: grayscale(100%);
+		opacity: 0.5;
 	}
 `;
 

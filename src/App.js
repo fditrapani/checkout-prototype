@@ -117,12 +117,20 @@ export default class App extends React.Component {
 
     this.state = {
       paymentMethod: "apple-pay",
+      instructionalCopy: "Confirm your payment method to continue",
     };
   }
 
   changePaymentMethod = ( changeEvent ) => {
+    let instructionalCopy = "Continue to enter your billing information";
+    
+    if( changeEvent.target.value === "credit-card" ) {
+      instructionalCopy = "Enter your credit card details to continue";
+    }
+
     this.setState({ 
-      paymentMethod: changeEvent.target.value
+      paymentMethod: changeEvent.target.value,
+      instructionalCopy: instructionalCopy,
     });
   }
 
@@ -257,7 +265,7 @@ export default class App extends React.Component {
           </LeftColumn>
           <RightColumn>
             { this.renderPaymentButton() }
-            <InstructionalCopy>Confirm your payment method to continue</InstructionalCopy>
+            <InstructionalCopy>{ this.state.instructionalCopy }</InstructionalCopy>
           </RightColumn>
         </Container>
       </div>
