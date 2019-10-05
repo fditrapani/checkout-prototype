@@ -163,6 +163,14 @@ const CreditCardField = styled(Field)`
   }
 `
 
+const CreditCardFlexFieldArea = styled(FlexColumns)`
+  margin-top: 16px;
+
+  :first-child {
+    margin-top: 0;
+  }
+`
+
 export default class App extends React.Component {
   constructor() {
     super();
@@ -235,17 +243,16 @@ export default class App extends React.Component {
               label="Card number"
               placeholder="1234 1234 1234 1234" />
             
-            
-              <CreditCardField 
+            <CreditCardFlexFieldArea>
+              <Field 
                 type="Number"
                 label="Expiry Date" 
                 placeholder="MM / YY" />
-                
-              <CreditCardField 
+              <Field 
                 type="Number"
                 label="Security Code" 
                 placeholder="111" />
-            
+            </CreditCardFlexFieldArea>
 
             <CreditCardField 
               type="Text" 
