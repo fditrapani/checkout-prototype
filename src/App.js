@@ -69,7 +69,7 @@ const Container = styled.div`
 
 const Column = styled.div`
   background: ${ colours.white };
-  padding: 24px;
+  padding: 16px;
   width: 100%;
   box-sizing: border-box;
 
@@ -77,6 +77,7 @@ const Column = styled.div`
     border: 1px solid ${ colours.gray5 };
     margin-top: 32px;
     box-sizing: border-box;
+    padding: 24px;
   }
 `;
 
@@ -188,14 +189,14 @@ export default class App extends React.Component {
             label="Apple Pay" 
             value="apple-pay"
             checked={ this.state.paymentMethod === "apple-pay"  }
-            icon={ applePayURL }
+            imageURL={ applePayURL }
             onChange={ this.changePaymentMethod } />
 
           <RadioButton 
             label="Credit or debit card"
             value="credit-card"
             checked={ this.state.paymentMethod === "credit-card"  }
-            icon={ creditCardURL }
+            imageURL={ creditCardURL }
             onChange={ this.changePaymentMethod } />
             
           { this.renderCreditCardFields() }
@@ -204,7 +205,7 @@ export default class App extends React.Component {
             label="Paypal" 
             value="paypal"
             checked={ this.state.paymentMethod === "paypal"  }
-            icon={ paypalURL }
+            imageURL={ paypalURL }
             onChange={ this.changePaymentMethod } />
           </RadioButtons>
 

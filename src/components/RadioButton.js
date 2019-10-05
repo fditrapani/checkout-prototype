@@ -5,13 +5,15 @@ import styled from 'styled-components';
 import { colours } from '../config/colours.js';
 
 const Label = styled.label`
-	display: block;
 	position: relative;
 	padding: 16px 14px;
 	margin-top: 8px;
 	border-radius: 3px;
 	box-sizing: border-box;
 	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
 	:first-child {
 		margin: 0;
@@ -37,10 +39,18 @@ const Label = styled.label`
 	:hover:before{
 		border: 3px solid ${ colours.highlight };
 	}
+
+	img{
+		filter: grayscale( ${ props => props.grayscale });
+	}
+
+	:hover img {
+		filter: grayscale( 0 );
+	}
 `;
 
 const Radio = styled.input`
-	margin-right: 5px;
+	margin-right: 7px;
 	position: relative;
 	display: inline-block;
 	opacity: 0;	
@@ -58,13 +68,13 @@ const LabelText = styled.span`
 		border: ${ props => props.radioBorderWidth } solid ${ props => props.borderColour };
 		border-radius: 100%;
 		top: 01px;
-		left: -20px;
+		left: -23px;
 		position: absolute;
 		background: ${ colours.white };
 		box-sizing: border-box;
 		z-index: 2;
 	}	
-`
+`;
 
 export default class RadioButton extends React.Component {
 	getBorderColour = ( checked ) => {
@@ -79,11 +89,26 @@ export default class RadioButton extends React.Component {
 		return ( checked ) ? "5px" : "1px";
 	}
 
+	getgrayscaleValue = ( ) => {
+		return this.props.checked ? 0 : "100%";
+	};
+
+	renderSupportingImage = () => {
+		if( this.props.imageURL ){
+			return (
+				<img src={ this.props.imageURL } />
+			)
+		}
+
+		return null;
+	}
+
 	render() {
 		return(
 			<Label 
 				borderColour={ this.getBorderColour( this.props.checked ) }
-				borderWidth={ this.getBorderWith( this.props.checked ) }>
+				borderWidth={ this.getBorderWith( this.props.checked ) }
+				grayscale={ this.getgrayscaleValue() }>
 				<span>
 					<Radio 
 						type="radio" 
@@ -96,6 +121,7 @@ export default class RadioButton extends React.Component {
 							{ this.props.label }
 					</LabelText>
 				</span>
+					{ this.renderSupportingImage() }
 			</Label>
 		)
 	}
