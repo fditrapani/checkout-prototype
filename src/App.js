@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Step from './components/Step';
 import Button from './components/Button';
 import RadioButton from './components/RadioButton';
+import Field from './components/Field';
 
 
 //CSS
@@ -112,6 +113,45 @@ const RadioButtons = styled.div`
   margin-bottom: 16px;
 `;
 
+const CreditCardFields = styled.div`
+  margin-top: -3px;
+  padding: 16px 14px;
+  background: ${ colours.white };
+  position: relative;
+  z-index: 11;
+
+  :before {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    border: 3px solid ${ colours.highlight };
+    border-top: 0;
+    border-radius: 0 0 3px 3px
+    box-sizing: border-box;
+  }
+
+  :after {
+    display: block;
+    width: calc( 100% - 6px );
+    height: 1px;
+    content:"";
+    background: ${ colours.gray5 }
+    position: absolute;
+    top: 0;
+    left: 3px;
+    z-index: 12;
+  }
+`
+
+const CreditCardFieldsContent = styled.div`
+  position: relative;
+  z-index: 15;
+`
+
 export default class App extends React.Component {
   constructor() {
     super();
@@ -119,28 +159,24 @@ export default class App extends React.Component {
     this.state = {
       paymentMethod: "apple-pay",
       instructionalCopy: "Confirm your payment method to continue",
-      showCreditCardField: false,
+      showCreditCardFields: false,
     };
   }
 
   changePaymentMethod = ( changeEvent ) => {
     let instructionalCopy = "Continue to enter your billing information";
-    let showCreditCardField = false;
+    let showCreditCardFields = false;
     
     if( changeEvent.target.value === "credit-card" ) {
       instructionalCopy = "Enter your credit card details to continue";
-      showCreditCardField = true;
+      showCreditCardFields = true;
     }
 
     this.setState({ 
       paymentMethod: changeEvent.target.value,
       instructionalCopy: instructionalCopy,
-      showCreditCardField: showCreditCardField,
+      showCreditCardFields: showCreditCardFields,
     });
-  }
-
-  renderCreditCardFields = () => {
-    return null
   }
   
   renderPaymentMethod = () => {
@@ -160,6 +196,8 @@ export default class App extends React.Component {
             checked={ this.state.paymentMethod === "credit-card"  }
             icon={ creditCardURL }
             onChange={ this.changePaymentMethod } />
+            
+          { this.renderCreditCardFields() }
 
           <RadioButton 
             label="Paypal" 
@@ -174,6 +212,24 @@ export default class App extends React.Component {
           state="primary" />
         </div>
     );
+  }
+
+  renderCreditCardFields = () => {
+    if( this.state.showCreditCardFields ) {
+      return(
+        <CreditCardFields>
+          <CreditCardFieldsContent>
+            <Field type="Number" label="Card number" />
+
+            Expiry Date Security code
+
+            Cardholder name
+          </CreditCardFieldsContent>
+
+
+        </CreditCardFields>
+      );
+    }
   }
 
   renderPaymentMethodSummary = () => {

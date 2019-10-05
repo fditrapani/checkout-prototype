@@ -96,9 +96,6 @@ export default class RadioButton extends React.Component {
 							{ this.props.label }
 					</LabelText>
 				</span>
-				<span>
-					{ this.props.content }
-				</span>
 			</Label>
 		)
 	}

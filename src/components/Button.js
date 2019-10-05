@@ -142,6 +142,8 @@ export default class Button extends React.Component {
 			  fontWeight={ this.returnFontWeight( this.props.state ) }
 			  borderRadius={ this.returnBorderRadius( this.props.type )} >
 			 	  { this.props.label }
+
+			 	  { this.props.content }
 			</CalltoAction>
 		)
 	}
