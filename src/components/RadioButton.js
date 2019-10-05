@@ -96,7 +96,7 @@ export default class RadioButton extends React.Component {
 	renderSupportingImage = () => {
 		if( this.props.imageURL ){
 			return (
-				<img src={ this.props.imageURL } />
+				<img src={ this.props.imageURL } alt=" "/>
 			)
 		}
 

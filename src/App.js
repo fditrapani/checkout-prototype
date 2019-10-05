@@ -7,6 +7,7 @@ import Step from './components/Step';
 import Button from './components/Button';
 import RadioButton from './components/RadioButton';
 import Field from './components/Field';
+import FlexColumns from './components/FlexColumns';
 
 
 //CSS
@@ -117,7 +118,7 @@ const RadioButtons = styled.div`
 
 const CreditCardFields = styled.div`
   margin-top: -3px;
-  padding: 16px 14px;
+  padding: 16px 14px 20px;
   background: ${ colours.white };
   position: relative;
   z-index: 11;
@@ -152,6 +153,14 @@ const CreditCardFields = styled.div`
 const CreditCardFieldsContent = styled.div`
   position: relative;
   z-index: 15;
+`
+
+const CreditCardField = styled(Field)`
+  margin-top: 16px;
+
+  :first-child {
+    margin-top: 0;
+  }
 `
 
 export default class App extends React.Component {
@@ -221,19 +230,24 @@ export default class App extends React.Component {
       return(
         <CreditCardFields>
           <CreditCardFieldsContent>
-            <Field 
+            <CreditCardField 
               type="Number"
               label="Card number"
               placeholder="1234 1234 1234 1234" />
-            <Field 
-              type="Month"
-              label="Expiry Date" 
-              placeholder="MM/YY" />
-            <Field 
-              type="Number"
-              label="Security Code" 
-              placeholder="111" />
-            <Field 
+            
+            
+              <CreditCardField 
+                type="Number"
+                label="Expiry Date" 
+                placeholder="MM / YY" />
+                
+              <CreditCardField 
+                type="Number"
+                label="Security Code" 
+                placeholder="111" />
+            
+
+            <CreditCardField 
               type="Text" 
               label="Cardholder name" 
               description="Enter your name as it’s written on the card" />
