@@ -19,6 +19,17 @@ const Input = styled.input`
   font-size: 16px;
   border: 1px solid ${ colours.gray20 };
   padding: 12px 10px;
+
+  ::-webkit-inner-spin-button, 
+  ::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+  }
+
+  [type=number], 
+  [type=number] { 
+    -moz-appearance: none;
+    appearance: none; 
+  }
 `;
 
 export default class Field extends React.Component {
