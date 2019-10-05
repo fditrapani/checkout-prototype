@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 const Flex = styled.div`
   display: flex;
+  width: 100%;
+  justify-content: space-between;
 `
 
 export default class FlexColumn extends React.Component {
