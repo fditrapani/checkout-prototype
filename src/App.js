@@ -17,6 +17,7 @@ import logoURL from './images/wp-logo.svg';
 import closeURL from './images/close.svg';
 import applePayURL from './images/apple-pay.svg';
 import paypalURL from './images/paypal.svg';
+import creditCardURL from './images/credit-cards.svg';
 
 const Header = styled.header`
   background: ${ colours.highlight };
@@ -118,22 +119,30 @@ export default class App extends React.Component {
     this.state = {
       paymentMethod: "apple-pay",
       instructionalCopy: "Confirm your payment method to continue",
+      showCreditCardField: false,
     };
   }
 
   changePaymentMethod = ( changeEvent ) => {
     let instructionalCopy = "Continue to enter your billing information";
+    let showCreditCardField = false;
     
     if( changeEvent.target.value === "credit-card" ) {
       instructionalCopy = "Enter your credit card details to continue";
+      showCreditCardField = true;
     }
 
     this.setState({ 
       paymentMethod: changeEvent.target.value,
       instructionalCopy: instructionalCopy,
+      showCreditCardField: showCreditCardField,
     });
   }
 
+  renderCreditCardFields = () => {
+    return null
+  }
+  
   renderPaymentMethod = () => {
     return(
       <div>
@@ -142,18 +151,21 @@ export default class App extends React.Component {
             label="Apple Pay" 
             value="apple-pay"
             checked={ this.state.paymentMethod === "apple-pay"  }
+            icon={ applePayURL }
             onChange={ this.changePaymentMethod } />
 
           <RadioButton 
-            label="Credit or Debit card" 
+            label="Credit or debit card"
             value="credit-card"
             checked={ this.state.paymentMethod === "credit-card"  }
+            icon={ creditCardURL }
             onChange={ this.changePaymentMethod } />
 
           <RadioButton 
             label="Paypal" 
             value="paypal"
             checked={ this.state.paymentMethod === "paypal"  }
+            icon={ paypalURL }
             onChange={ this.changePaymentMethod } />
           </RadioButtons>
 
@@ -178,7 +190,7 @@ export default class App extends React.Component {
         return (
           <Button 
             label={ (<img src={ applePayURL } alt="Close" />) }
-            state="disabled"
+            state="apple-disabled"
             width="100%"
             type="apple-pay" />
         )
@@ -186,7 +198,7 @@ export default class App extends React.Component {
         return (
           <Button 
             label={ (<img src={ paypalURL } alt="Close" />) }
-            state="disabled"
+            state="paypal-disabled"
             width="100%"
             type="paypal" />
         )
@@ -195,7 +207,8 @@ export default class App extends React.Component {
           <Button 
             label="Pay $60"
             state="disabled"
-            width="100%" />
+            width="100%"
+            type="credit-card" />
         )
     }
   }

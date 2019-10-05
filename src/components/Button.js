@@ -8,7 +8,7 @@ const CalltoAction = styled.button`
 	display: block;
 	width: ${ props => props.width };
 	font-size: 1em;
-	border-radius: 3px;
+	border-radius: ${ props => props.borderRadius };
 	padding: 10px;
 	background: ${ props => props.background };
 	border: 1px solid ${ props => props.borderColour };
@@ -49,6 +49,10 @@ export default class Button extends React.Component {
 				return colours.primary;
 			case "disabled":
 				return colours.gray0;
+			case "paypal-disabled":
+				return colours.gray0;
+			case "apple-disabled":
+				return colours.gray0;
 			default:
 				return "none"
 		}
@@ -59,6 +63,10 @@ export default class Button extends React.Component {
 			case "primary":
 				return colours.highlight;
 			case "disabled":
+				return colours.gray0;
+			case "paypal-disabled":
+				return colours.gray0;
+			case "apple-disabled":
 				return colours.gray0;
 			default:
 				return "none"
@@ -71,6 +79,10 @@ export default class Button extends React.Component {
 				return colours.pink70;
 			case "disabled":
 				return colours.gray20;
+			case "paypal-disabled":
+				return colours.gray0;
+			case "apple-disabled":
+				return colours.gray0;
 			default:
 				return colours.highlight;
 		}
@@ -82,6 +94,10 @@ export default class Button extends React.Component {
 				return colours.blue80;
 			case "disabled":
 				return colours.gray20;
+			case "paypal-disabled":
+				return colours.gray0;
+			case "apple-disabled":
+				return colours.gray0;
 			default:
 				return colours.blue80;
 		}
@@ -106,6 +122,14 @@ export default class Button extends React.Component {
 		return 700;
 	}
 
+	returnBorderRadius = ( type ) => {
+		if( type === "paypal" ) {
+			return "50px";
+		}
+
+		return "3px";
+	}
+
 	render() {
 		return(
 			<CalltoAction 
@@ -115,7 +139,8 @@ export default class Button extends React.Component {
 			  rollOverColour= { this.returnRollOverColour( this.props.state ) }
 			  rollOverBorderColour= { this.returnRollOverBorderColour( this.props.state ) } 
 			  width={ this.props.width }
-			  fontWeight={ this.returnFontWeight( this.props.state ) } >
+			  fontWeight={ this.returnFontWeight( this.props.state ) }
+			  borderRadius={ this.returnBorderRadius( this.props.type )} >
 			 	  { this.props.label }
 			</CalltoAction>
 		)
