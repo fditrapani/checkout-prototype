@@ -220,10 +220,9 @@ export default class App extends React.Component {
         <CreditCardFields>
           <CreditCardFieldsContent>
             <Field type="Number" label="Card number" />
-
-            Expiry Date Security code
-
-            Cardholder name
+            <Field type="Date" label="Expiry Date" />
+            <Field type="Number" label="Security Code" />
+            <Field type="Text" label="Cardholder name" />
           </CreditCardFieldsContent>
 
 
