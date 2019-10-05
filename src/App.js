@@ -19,6 +19,7 @@ import closeURL from './images/close.svg';
 import applePayURL from './images/apple-pay.svg';
 import paypalURL from './images/paypal.svg';
 import creditCardURL from './images/credit-cards.svg';
+import cvvURL from './images/cvv.svg';
 
 const Header = styled.header`
   background: ${ colours.highlight };
@@ -219,10 +220,22 @@ export default class App extends React.Component {
       return(
         <CreditCardFields>
           <CreditCardFieldsContent>
-            <Field type="Number" label="Card number" />
-            <Field type="Month" label="Expiry Date" />
-            <Field type="Number" label="Security Code" />
-            <Field type="Text" label="Cardholder name" />
+            <Field 
+              type="Number"
+              label="Card number"
+              placeholder="1234 1234 1234 1234" />
+            <Field 
+              type="Month"
+              label="Expiry Date" 
+              placeholder="MM/YY" />
+            <Field 
+              type="Number"
+              label="Security Code" 
+              placeholder="111" />
+            <Field 
+              type="Text" 
+              label="Cardholder name" 
+              description="Enter your name as it’s written on the card" />
           </CreditCardFieldsContent>
 
 
