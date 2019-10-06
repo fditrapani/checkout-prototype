@@ -135,6 +135,10 @@ export default class Step extends React.Component {
     return ( this.props.status === "completed" ) ? this.props.completedTitle : this.props.title;
   }
 
+  renderEditButton = () => {
+    return ( this.props.status === "completed" ) ? "Edit" : null;
+  }
+
   render() {
     return (
       <StepWrapper borderWidth={ this.props.borderWidth }>
@@ -147,9 +151,10 @@ export default class Step extends React.Component {
           </StepNumber>
 
           <StepTitle 
-            weight={ this.props.status === "content" ? 700 : 400 }
+            weight={ this.props.status === "content" ? 600 : 400 }
             colour={ this.props.status === "content" ? colours.black : colours.gray80 }>
-            { this.renderTitle() }</StepTitle>
+            { this.renderTitle() }</StepTitle> 
+            { this.renderEditButton() }
         </Title>
 
         <Content display={ ( this.props.status === "content" ) ? "block" : "none" }>
