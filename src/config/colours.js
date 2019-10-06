@@ -8,6 +8,7 @@ export const colours = {
 	gray50: "#646970",
 	gray80: '#2C3338',
 	pink70: '#8C1749',
+	green50: '#008A20',
 	highlight: "#006088",
 	background: "#F6F7F7",
 	primary: "#C9356E",

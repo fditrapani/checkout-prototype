@@ -37,7 +37,7 @@ export default class Field extends React.Component {
     return (
       <div className={ this.props.className }>
         <Label htmlFor={ this.props.value }>{ this.props.label }</Label>
-        <Input 
+        <Input
           id={ this.props.value }
           type={ this.props.type } 
           onChange={ this.props.onChange } 

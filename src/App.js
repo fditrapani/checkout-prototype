@@ -175,6 +175,9 @@ const CVVImage = styled.img`
   margin-top: 36%;
 `
 
+// END CSS
+//////////////////////////////////////
+
 export default class App extends React.Component {
   constructor() {
     super();
@@ -183,6 +186,10 @@ export default class App extends React.Component {
       paymentMethod: "apple-pay",
       instructionalCopy: "Confirm your payment method to continue",
       showCreditCardFields: false,
+      currentSection: "payment",
+      paymentStatus: "content",
+      billingStatus: "none",
+      reviewStatus: "summary",
     };
   }
 
@@ -199,6 +206,13 @@ export default class App extends React.Component {
       paymentMethod: changeEvent.target.value,
       instructionalCopy: instructionalCopy,
       showCreditCardFields: showCreditCardFields,
+    });
+  }
+
+  submitPaymentDetails = () => {
+    this.setState({ 
+      paymentStatus: "completed",
+      billingStatus: "content",
     });
   }
   
@@ -232,7 +246,8 @@ export default class App extends React.Component {
 
         <Button 
           label="Continue"
-          state="primary" />
+          state="primary"
+          onClick={ this.submitPaymentDetails } />
         </div>
     );
   }
@@ -357,21 +372,23 @@ export default class App extends React.Component {
             <Step
               number="1"
               title="Pick a payment method"
-              state="content"
+              completedTitle="Payment method"
+              status={ this.state.paymentStatus }
               content={ this.renderPaymentMethod() }
               summary={ this.renderPaymentMethodSummary() } />
 
             <Step
               number="2"
               title="Enter your billing details"
-              state="none"
+              completedTitle="Billing details"
+              status={ this.state.billingStatus }
               content={ this.renderBilling() }
               summary={ this.renderBillingSummary() } />
 
             <Step
               number="3"
               title="Review your order"
-              state="summary"
+              status={ this.state.reviewStatus }
               borderWidth={ 0 } 
               content={ this.renderReview() }
               summary={ this.renderReviewSummary() } />

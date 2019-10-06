@@ -140,7 +140,8 @@ export default class Button extends React.Component {
 			  rollOverBorderColour= { this.returnRollOverBorderColour( this.props.state ) } 
 			  width={ this.props.width }
 			  fontWeight={ this.returnFontWeight( this.props.state ) }
-			  borderRadius={ this.returnBorderRadius( this.props.type )} >
+			  borderRadius={ this.returnBorderRadius( this.props.type )}
+			  onClick={ this.props.onClick } >
 			 	  { this.props.label }
 
 			 	  { this.props.content }

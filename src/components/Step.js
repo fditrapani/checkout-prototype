@@ -69,12 +69,42 @@ export default class Step extends React.Component {
     borderWidth: "1px",
   };
 
-  determineVisibility = ( state, component ) => {
-    if ( state === component ) {
+  determineVisibility = ( status, component ) => {
+    if ( status === component ) {
       return "block";
     }
     
     return "none"  
+  }
+
+  reterunStepNumberTextColour = () => {
+    switch( this.props.status ){
+      case "completed":
+        return colours.white;
+      case "content":
+        return colours.white;
+      default:
+        return colours.gray80;
+    }
+  }
+
+  reterunStepNumberColour = () => {
+    switch( this.props.status ){
+      case "completed":
+        return colours.green50;
+      case "content":
+        return colours.highlight;
+      default:
+        return colours.gray5;
+    }
+  }
+
+  renderStepNumberContent = () => {
+    return ( this.props.status === "completed" ) ? "C" : this.props.number;
+  }
+
+  renderTitle = () => {
+    return ( this.props.status === "completed" ) ? this.props.completedTitle : this.props.title;
   }
 
   render() {
@@ -82,21 +112,21 @@ export default class Step extends React.Component {
       <StepWrapper borderWidth={ this.props.borderWidth }>
         <Title>
           <StepNumber 
-            colour={ this.props.state === "content" ? colours.white : colours.gray80 } 
-            background={ this.props.state === "content" ? colours.highlight : colours.gray5 }>
-              { this.props.number }
+            colour={ this.reterunStepNumberTextColour() } 
+            background={ this.reterunStepNumberColour() }>
+              { this.renderStepNumberContent() }
           </StepNumber>
 
           <StepTitle 
-            weight={ this.props.state === "content" ? 700 : 300 }
-          >{ this.props.title }</StepTitle>
+            weight={ this.props.status === "content" ? 700 : 300 }
+          >{ this.renderTitle() }</StepTitle>
         </Title>
 
-        <Content display={ this.determineVisibility( this.props.state, "content" ) }>
+        <Content display={ ( this.props.status === "content" ) ? "block" : "none" }>
           <div>{ this.props.content }</div>
         </Content>
 
-        <Summary display={ this.determineVisibility( this.props.state, "summary" ) }>
+        <Summary display={ (this.props.status === "summary" || this.props.status === "completed" ) ? "block" : "none" }>
           { this.props.summary }
         </Summary>
       </StepWrapper>
