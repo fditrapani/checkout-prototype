@@ -7,7 +7,7 @@ import Step from './components/Step';
 import Button from './components/Button';
 import RadioButton from './components/RadioButton';
 import Field from './components/Field';
-import FlexColumns from './components/FlexColumns';
+import GridRow from './components/GridRow';
 
 
 //CSS
@@ -163,12 +163,16 @@ const CreditCardField = styled(Field)`
   }
 `
 
-const CreditCardFlexFieldArea = styled(FlexColumns)`
+const CreditCardFlexFieldArea = styled(GridRow)`
   margin-top: 16px;
 
   :first-child {
     margin-top: 0;
   }
+`
+
+const CVVImage = styled.img`
+  margin-top: 36%;
 `
 
 export default class App extends React.Component {
@@ -243,15 +247,22 @@ export default class App extends React.Component {
               label="Card number"
               placeholder="1234 1234 1234 1234" />
             
-            <CreditCardFlexFieldArea>
+            <CreditCardFlexFieldArea
+              gap="4%"
+              columnWidths="48% 48%">
               <Field 
                 type="Number"
                 label="Expiry Date" 
                 placeholder="MM / YY" />
-              <Field 
-                type="Number"
-                label="Security Code" 
-                placeholder="111" />
+              <GridRow
+                gap="4%"
+                columnWidths="67% 29%">
+                <Field 
+                  type="Number"
+                  label="Security Code" 
+                  placeholder="111" />
+                <CVVImage src={ cvvURL } alt="Back of the card where you find the Security Code" />
+              </GridRow>
             </CreditCardFlexFieldArea>
 
             <CreditCardField 
