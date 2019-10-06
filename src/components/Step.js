@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+//Images
+import completedURL from '../images/completed.svg';
+
 //CSS
 import { colours } from '../config/colours.js';
 
@@ -42,14 +45,28 @@ const StepNumber = styled.span`
   padding: 4px 0;
   text-align: center;
   display: block;
-  border-radius: 100%;
+  border-radius: 50%;
   margin-right: 8px;
-  vertical-align: middle;
   color: ${ props => props.colour };
+  position: relative;
+
+  :after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 2px solid ${ props => props.borderColour };
+    content: "";
+    display: block;
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;  
+    box-sizing: border-box;
+  }
 `;
 
 const StepTitle = styled.span`
   font-weight: ${ props => props.weight };
+  color: ${ props => props.colour };
 `;
 
 const Content = styled.div`
@@ -77,7 +94,7 @@ export default class Step extends React.Component {
     return "none"  
   }
 
-  reterunStepNumberTextColour = () => {
+  returnStepNumberTextColour = () => {
     switch( this.props.status ){
       case "completed":
         return colours.white;
@@ -88,7 +105,18 @@ export default class Step extends React.Component {
     }
   }
 
-  reterunStepNumberColour = () => {
+  returnStepNumberColour = () => {
+    switch( this.props.status ){
+      case "completed":
+        return colours.white;
+      case "content":
+        return colours.highlight;
+      default:
+        return colours.gray5;
+    }
+  }
+
+  returnStepNumberBorderColour = () => {
     switch( this.props.status ){
       case "completed":
         return colours.green50;
@@ -100,7 +128,7 @@ export default class Step extends React.Component {
   }
 
   renderStepNumberContent = () => {
-    return ( this.props.status === "completed" ) ? "C" : this.props.number;
+    return ( this.props.status === "completed" ) ? <img src={ completedURL } alt="" /> : this.props.number;
   }
 
   renderTitle = () => {
@@ -112,14 +140,16 @@ export default class Step extends React.Component {
       <StepWrapper borderWidth={ this.props.borderWidth }>
         <Title>
           <StepNumber 
-            colour={ this.reterunStepNumberTextColour() } 
-            background={ this.reterunStepNumberColour() }>
+            colour={ this.returnStepNumberTextColour() } 
+            background={ this.returnStepNumberColour() }
+            borderColour={ this.returnStepNumberBorderColour() } >
               { this.renderStepNumberContent() }
           </StepNumber>
 
           <StepTitle 
-            weight={ this.props.status === "content" ? 700 : 300 }
-          >{ this.renderTitle() }</StepTitle>
+            weight={ this.props.status === "content" ? 700 : 400 }
+            colour={ this.props.status === "content" ? colours.black : colours.gray80 }>
+            { this.renderTitle() }</StepTitle>
         </Title>
 
         <Content display={ ( this.props.status === "content" ) ? "block" : "none" }>

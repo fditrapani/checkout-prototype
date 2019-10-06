@@ -59,6 +59,8 @@ const Radio = styled.input`
 const LabelText = styled.span`
 	display: inline-block;
 	position: relative;
+	font-size: 14px;
+	transform: translateY(-1px);
 
 	:after {
 		display: block;
