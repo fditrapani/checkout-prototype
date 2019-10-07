@@ -63,6 +63,10 @@ const StepNumber = styled.span`
     border-radius: 50%;  
     box-sizing: border-box;
   }
+
+  svg {
+    margin-top: 4px;
+  }
 `;
 
 const StepTitle = styled.span`
