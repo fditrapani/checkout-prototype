@@ -8,6 +8,7 @@ import Button from './components/Button';
 import RadioButton from './components/RadioButton';
 import Field from './components/Field';
 import GridRow from './components/GridRow';
+import ErrorMessage from './components/ErrorMessage';
 
 //CSS
 import { colours } from './config/colours.js';
@@ -21,6 +22,7 @@ import paypalURL from './images/paypal.svg';
 import creditCardURL from './images/credit-cards.svg';
 import cvvURL from './images/cvv.svg';
 import lockIconURL from './images/lock-icon.svg';
+import visaURL from './images/visa.svg';
 
 const Header = styled.header`
   background: ${ colours.highlight };
@@ -175,6 +177,15 @@ const CVVImage = styled.img`
   margin-top: 36%;
 `
 
+const SummaryDetails = styled.span`
+  margin-right: 8px;
+`
+
+const SummaryImage = styled.img`
+  margin-right: 8px;
+  transform: translateY(1px);
+`
+
 // END CSS
 //////////////////////////////////////
 
@@ -186,33 +197,120 @@ export default class App extends React.Component {
       paymentMethod: "apple-pay",
       instructionalCopy: "Confirm your payment method to continue",
       showCreditCardFields: false,
+      previousSection: null,
       currentSection: "payment",
       paymentStatus: "content",
       billingStatus: "none",
       reviewStatus: "summary",
+      paymentSummary: "Apple Pay",
+      creditCardNumber: null,
+      expiryDate: null,
+      securityCode: null,
+      cardholderName: null,
+      creditCardNumberError: false,
+      expiryDateError: false,
+      securityCodeError: false,
+      cardholderNameError: false,
+      billingSummary: null,
+      paymentErrorVisibility: false,
+      payMentErrorMessage: "",
+      reviewSummary: "Review Summary",
     };
   }
 
   changePaymentMethod = ( changeEvent ) => {
     let instructionalCopy = "Continue to enter your billing information";
     let showCreditCardFields = false;
+    let paymentSummary = this.state.paymentSummary;
     
     if( changeEvent.target.value === "credit-card" ) {
       instructionalCopy = "Enter your credit card details to continue";
       showCreditCardFields = true;
+      paymentSummary = "Creidt Card";
+    }
+
+    if( changeEvent.target.value === "paypal" ) {
+      paymentSummary = "Paypal";
+    }
+
+    if( changeEvent.target.value === "apple-pay" ) {
+      paymentSummary = "Apple Pay";
     }
 
     this.setState({ 
       paymentMethod: changeEvent.target.value,
       instructionalCopy: instructionalCopy,
       showCreditCardFields: showCreditCardFields,
+      paymentSummary: paymentSummary,
     });
   }
 
   submitPaymentDetails = () => {
-    this.setState({ 
+    let paymentErrorVisibility = false;
+    let payMentErrorMessage = "";
+    let creditCardNumberError = false;
+    let expiryDateError = false;
+    let securityCodeError = false;
+    let cardholderNameError = false;
+    let paymentSummary = this.state.paymentSummary;
+
+    console.log( this.state.creditCardNumber );
+    //NOT FILLED OUT > THROW ERROR
+    if( this.state.paymentMethod === "credit-card" && ( ! this.state.creditCardNumber ||  ! this.state.expiryDate || ! this.state.securityCode || ! this.state.cardholderName ) ){
+      payMentErrorMessage = "We need all the fields to be completed. Please fill out the highlighted fields and continue.";
+      paymentErrorVisibility = true;
+      
+      if( ! this.state.creditCardNumber ) {
+        creditCardNumberError = true;
+      }
+
+      if( ! this.state.expiryDate ) {
+        expiryDateError = true;
+      }
+
+      if( ! this.state.securityCode ) {
+        securityCodeError = true;
+      }
+
+      if( ! this.state.cardholderName ) {
+        cardholderNameError = true;
+      }
+
+      this.setState({ 
+        creditCardNumberError: creditCardNumberError,
+        expiryDateError: expiryDateError,
+        securityCodeError: securityCodeError,
+        cardholderNameError: cardholderNameError,
+        paymentErrorVisibility: paymentErrorVisibility,
+        payMentErrorMessage: payMentErrorMessage,
+      });
+
+      return;
+    }
+
+    //UPDATE SUMMARY
+    if( this.state.paymentMethod === "credit-card"  ) {
+      paymentSummary = (
+        <div>
+          <div>{ this.state.cardholderName }</div>
+          <SummaryImage src={ visaURL } alt="VISA" /> 
+          <SummaryDetails>**** { this.state.creditCardNumber.slice( - 4) }</SummaryDetails>
+          <SummaryDetails>Exp: { this.state.expiryDate.slice(0,2) + "/" + this.state.expiryDate.slice(2) }</SummaryDetails>
+        </div>
+      );
+    }
+
+    //UPDATE STATE
+    this.setState({
+      paymentErrorVisibility: paymentErrorVisibility,
       paymentStatus: "completed",
       billingStatus: "content",
+      creditCardNumberError: false,
+      expiryDateError: false,
+      securityCodeError: false,
+      cardholderNameError: false,
+      instructionalCopy: "Enter your billing details to continue",
+      paymentSummary: paymentSummary,
     });
   }
 
@@ -220,6 +318,7 @@ export default class App extends React.Component {
     this.setState({ 
       paymentStatus: "content",
       billingStatus: "none",
+      instructionalCopy: "Edit your payment details",
     });
   }
   
@@ -264,48 +363,86 @@ export default class App extends React.Component {
       return(
         <CreditCardFields>
           <CreditCardFieldsContent>
+            { this.renderCreditCardErrorMessage() }
+
             <CreditCardField 
+              id="creditCardNumber"
               type="Number"
               label="Card number"
               placeholder="1234 1234 1234 1234"
-              iconURL={ lockIconURL } />
+              iconURL={ lockIconURL }
+              onChange={ this.updateCreditCardDetails }
+              error={ this.state.creditCardNumberError }
+              errorMessage="This is a required field" />
             
             <CreditCardFlexFieldArea
               gap="4%"
               columnWidths="48% 48%">
-              <Field 
+              <Field
+                id="expiryDate" 
                 type="Number"
                 label="Expiry Date" 
-                placeholder="MM / YY" />
+                placeholder="MM / YY"
+                onChange={ this.updateCreditCardDetails }
+                error={ this.state.expiryDateError }
+                errorMessage="This is a required field" />
               <GridRow
                 gap="4%"
                 columnWidths="67% 29%">
                 <Field 
+                  id="securityCode"
                   type="Number"
                   label="Security Code" 
-                  placeholder="111" />
+                  placeholder="111"
+                  onChange={ this.updateCreditCardDetails }
+                  error={ this.state.securityCodeError }
+                  errorMessage="This is a required field" />
                 <CVVImage src={ cvvURL } alt="Back of the card where you find the Security Code" />
               </GridRow>
             </CreditCardFlexFieldArea>
 
             <CreditCardField 
+              id="cardholderName"
               type="Text" 
               label="Cardholder name" 
-              description="Enter your name as it’s written on the card" />
+              description="Enter your name as it’s written on the card"
+              onChange={ this.updateCreditCardDetails }
+              error={ this.state.cardholderNameError }
+              errorMessage="This is a required field" />
           </CreditCardFieldsContent>
-
-
         </CreditCardFields>
       );
     }
   }
 
+  updateCreditCardDetails = ( e ) => {
+    let errorStatus = true;
+    console.log(e.value.length);
+
+    if( e.value.length > 0 ) {
+      errorStatus = false;
+    }
+
+    this.setState({ 
+      [e.id]: e.value,
+      [e.id + "Error"]: errorStatus,
+    });
+  }
+
+  renderCreditCardErrorMessage = () => {
+    return this.state.paymentErrorVisibility ? (<ErrorMessage message={ this.state.payMentErrorMessage } />) : null;
+  }
+
   renderPaymentMethodSummary = () => {
-    return(
-      <div>
-        PaymentMethodSummary        
-      </div>
-    );
+    if( this.state.paymentSummary) {
+      return(
+        <div>
+          { this.state.paymentSummary }        
+        </div>
+      )
+    }
+
+    return null;
   }
 
   renderPaymentButton = () => {
@@ -344,9 +481,15 @@ export default class App extends React.Component {
   }
 
   renderBillingSummary = () => {
-    return(
-      <span>BillingSummary</span>
-    );
+    if( this.state.billingSummary ) {
+      return(
+        <div>
+          { this.state.billingSummary }        
+        </div>
+      )
+    }
+
+    return null;
   }  
 
   renderReview = () => {
@@ -356,9 +499,15 @@ export default class App extends React.Component {
   }
 
   renderReviewSummary = () => {
-    return(
-      <span>ReviewSummary</span>
-    );
+    if( this.state.reviewSummary ) {
+      return(
+        <div>
+          { this.state.reviewSummary }        
+        </div>
+      )
+    }
+
+    return null;
   }
 
   render() { 

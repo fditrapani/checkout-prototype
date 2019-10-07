@@ -6,7 +6,7 @@ import { colours } from '../config/colours.js';
 
 const Label = styled.label`
   display: block;
-  color: ${ colours.gray80 };
+  color: ${ props => props.color };
   font-weight: 700;
   font-size: 14px;
   margin-bottom: 8px;
@@ -43,6 +43,13 @@ const FieldIcon = styled.img`
   right: 10px;
 `
 
+const Description = styled.p`
+  margin: 8px 0 0 0;
+  color: ${ props => props.color };
+  font-style: italic;
+  font-size: 14px;
+`
+
 export default class Field extends React.Component {
   renderIcon = () => {
     if ( this.props.iconURL ) {
@@ -52,9 +59,9 @@ export default class Field extends React.Component {
     return null;
   }
 
-  editField = () => {
+  fieldOnChange = ( e ) => {
     if( this.props.onChange ){
-      this.props.onChange()
+      this.props.onChange( e.target );
     }
 
     return null;
@@ -68,21 +75,33 @@ export default class Field extends React.Component {
     return this.props.iconURL ? "30px" : "10px"
   }
 
+  renderDescription = () => {
+    if( this.props.description || this.props.error ) {
+      return(
+        <Description color={ this.props.error ? colours.red50 : colours.gray50 }>
+          { this.props.error ? this.props.errorMessage : this.props.description }
+        </Description>
+      )
+    }
+
+    return null
+  }
+
   render() {
     return (
       <div className={ this.props.className }>
-        <Label htmlFor={ this.props.value }>{ this.props.label }</Label>
+        <Label htmlFor={ this.props.value } color={ this.props.error ? colours.red50 : colours.gray80 }>{ this.props.label }</Label>
         <InputWrapper>
           <Input
-            id={ this.props.value }
+            id={ this.props.id }
             type={ this.props.type } 
-            onChange={ this.editField } 
+            onChange={ this.fieldOnChange } 
             onBlur={ this.onBlurField }
             placeholder={ this.props.placeholder }
             rightPadding={ this.returnRightPadding() } />
           { this.renderIcon() }
         </InputWrapper>
-        { this.props.content }
+        { this.renderDescription() }
       </div>
     );
    }

@@ -86,6 +86,8 @@ const Summary = styled.div`
   color: ${ colours.gray50 };
   padding-left: 35px;
   display: ${ props => props.display };
+  line-height: 1.2em;
+  font-size: 14px;
 `;
 
 export default class Step extends React.Component {
