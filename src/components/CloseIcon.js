@@ -11,7 +11,6 @@ export default class CloseIcon extends React.Component {
         <rect width="24" height="24" fill="white"/>
         </g>
       </svg>
-
     );
    }
 }

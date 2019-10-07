@@ -36,7 +36,7 @@ const InputWrapper = styled.div`
   position: relative;
 `;
 
-const FieldIcon = styled.img`
+const FieldIcon = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -52,8 +52,8 @@ const Description = styled.p`
 
 export default class Field extends React.Component {
   renderIcon = () => {
-    if ( this.props.iconURL ) {
-      return <FieldIcon src={ this.props.iconURL } alt="" />
+    if ( this.props.icon ) {
+      return <FieldIcon>{ this.props.icon }</FieldIcon>
     }
 
     return null;

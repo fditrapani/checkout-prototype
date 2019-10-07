@@ -10,6 +10,7 @@ import Field from './components/Field';
 import GridRow from './components/GridRow';
 import ErrorMessage from './components/ErrorMessage';
 import CloseIcon from './components/CloseIcon';
+import LockIcon from './components/LockIcon';
 
 //CSS
 import { colours } from './config/colours.js';
@@ -17,12 +18,10 @@ import { breakpoints } from './config/breakpoints.js';
 
 //Images
 import logoURL from './images/wp-logo.svg';
-import closeURL from './images/close.svg';
 import applePayURL from './images/apple-pay.svg';
 import paypalURL from './images/paypal.svg';
 import creditCardURL from './images/credit-cards.svg';
 import cvvURL from './images/cvv.svg';
-import lockIconURL from './images/lock-icon.svg';
 import visaURL from './images/visa.svg';
 
 const Header = styled.header`
@@ -372,7 +371,7 @@ export default class App extends React.Component {
               label="Card number"
               placeholder="1234 1234 1234 1234"
               value={ this.state.creditCardNumber ? this.state.creditCardNumber : "" }
-              iconURL={ lockIconURL }
+              icon={ <LockIcon /> }
               onChange={ this.updateCreditCardDetails }
               error={ this.state.creditCardNumberError }
               errorMessage="This is a required field" />
