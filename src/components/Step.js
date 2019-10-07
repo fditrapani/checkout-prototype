@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 //Compontents
 import CheckIcon from './CheckIcon.js';
+import Button from './Button.js';
 
 //CSS
 import { colours } from '../config/colours.js';
@@ -72,6 +73,7 @@ const StepNumber = styled.span`
 const StepTitle = styled.span`
   font-weight: ${ props => props.weight };
   color: ${ props => props.colour };
+  margin-right: 5px;
 `;
 
 const Content = styled.div`
@@ -141,7 +143,15 @@ export default class Step extends React.Component {
   }
 
   renderEditButton = () => {
-    return ( this.props.status === "completed" ) ? "Edit" : null;
+    if ( this.props.status === "completed" ){ 
+      return (
+        <Button
+          status="text-button"
+          label="Edit"/>
+      );
+    }
+
+    return null;
   }
 
   render() {

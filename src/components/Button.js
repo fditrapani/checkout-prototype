@@ -9,24 +9,27 @@ const CalltoAction = styled.button`
 	width: ${ props => props.width };
 	font-size: 1em;
 	border-radius: ${ props => props.borderRadius };
-	padding: 10px;
+	padding: ${ props => props.padding };
 	background: ${ props => props.background };
-	border: 1px solid ${ props => props.borderColour };
+	border: ${ props => props.borderWeight } solid ${ props => props.borderColour };
 	color: ${ props => props.textColour };
-	box-shadow: 0 1px 0 ${ props => props.borderColour };
+	box-shadow: 0 ${ props => props.borderWeight } 0 ${ props => props.borderColour };
 	font-weight: ${ props => props.fontWeight };
+	text-decoration: ${ props => props.textDecoration };
 
 	:hover {
 		cursor: pointer;
 		background: ${ props => props.rollOverColour };
-		border: 1px solid ${ props => props.rollOverBorderColour };
-		box-shadow: 0 1px 0 ${ props => props.rollOverBorderColour };
+		border: ${ props => props.borderWeight } solid ${ props => props.rollOverBorderColour };
+		box-shadow: 0 ${ props => props.borderWeight } 0 ${ props => props.rollOverBorderColour };
+		text-decoration: none;
 	}
 
 	:active {
 		background: ${ props => props.background };
-		border: 1px solid ${ props => props.borderColour };
-		box-shadow: 0 1px 0 ${ props => props.borderColour };
+		border: ${ props => props.borderWeight } solid ${ props => props.borderColour };
+		box-shadow: 0 ${ props => props.borderWeight } 0 ${ props => props.borderColour };
+		text-decoration: ${ props => props.textDecoration };
 	}
 
 	img {
@@ -115,11 +118,11 @@ export default class Button extends React.Component {
 	}
 
 	returnFontWeight = ( state ) => {
-		if( state === "disabled" ) {
-			return 300;
+		if( state === "disabled" || state === "text-button" ) {
+			return 400;
 		}
 
-		return 700;
+		return 600;
 	}
 
 	returnBorderRadius = ( type ) => {
@@ -139,8 +142,11 @@ export default class Button extends React.Component {
 			  rollOverColour= { this.returnRollOverColour( this.props.state ) }
 			  rollOverBorderColour= { this.returnRollOverBorderColour( this.props.state ) } 
 			  width={ this.props.width }
-			  fontWeight={ this.returnFontWeight( this.props.state ) }
+			  fontWeight={ this.returnFontWeight( this.props.status ) }
 			  borderRadius={ this.returnBorderRadius( this.props.type )}
+			  borderWeight={ this.props.status === "text-button" ? "0" : "1px" }
+			  textDecoration={ this.props.status === "text-button" ? "underline" : "none" }
+			  padding={ this.props.status === "text-button" ? "0" : "10px 15px" } 
 			  onClick={ this.props.onClick } >
 			 	  { this.props.label }
 
