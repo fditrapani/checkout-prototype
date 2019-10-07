@@ -18,7 +18,7 @@ const Input = styled.input`
   box-sizing: border-box;
   font-size: 16px;
   border: 1px solid ${ colours.gray20 };
-  padding: 12px 10px;
+  padding: 12px ${ props => props.rightPadding } 12px 10px;
 
   ::-webkit-inner-spin-button, 
   ::-webkit-outer-spin-button { 
@@ -32,16 +32,56 @@ const Input = styled.input`
   }
 `;
 
+const InputWrapper = styled.div`
+  position: relative;
+`;
+
+const FieldIcon = styled.img`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+`
+
 export default class Field extends React.Component {
+  renderIcon = () => {
+    if ( this.props.iconURL ) {
+      return <FieldIcon src={ this.props.iconURL } alt="" />
+    }
+
+    return null;
+  }
+
+  editField = () => {
+    if( this.props.onChange ){
+      this.props.onChange()
+    }
+
+    return null;
+  }
+
+  onBlurField = () => {
+    return null;
+  }
+
+  returnRightPadding = () => {
+    return this.props.iconURL ? "30px" : "10px"
+  }
+
   render() {
     return (
       <div className={ this.props.className }>
         <Label htmlFor={ this.props.value }>{ this.props.label }</Label>
-        <Input
-          id={ this.props.value }
-          type={ this.props.type } 
-          onChange={ this.props.onChange } 
-          placeholder={ this.props.placeholder } />
+        <InputWrapper>
+          <Input
+            id={ this.props.value }
+            type={ this.props.type } 
+            onChange={ this.editField } 
+            onBlur={ this.onBlurField }
+            placeholder={ this.props.placeholder }
+            rightPadding={ this.returnRightPadding() } />
+          { this.renderIcon() }
+        </InputWrapper>
         { this.props.content }
       </div>
     );

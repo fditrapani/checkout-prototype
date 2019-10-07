@@ -20,6 +20,7 @@ import applePayURL from './images/apple-pay.svg';
 import paypalURL from './images/paypal.svg';
 import creditCardURL from './images/credit-cards.svg';
 import cvvURL from './images/cvv.svg';
+import lockIconURL from './images/lock-icon.svg';
 
 const Header = styled.header`
   background: ${ colours.highlight };
@@ -266,7 +267,8 @@ export default class App extends React.Component {
             <CreditCardField 
               type="Number"
               label="Card number"
-              placeholder="1234 1234 1234 1234" />
+              placeholder="1234 1234 1234 1234"
+              iconURL={ lockIconURL } />
             
             <CreditCardFlexFieldArea
               gap="4%"
