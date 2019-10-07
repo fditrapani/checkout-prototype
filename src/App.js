@@ -370,6 +370,7 @@ export default class App extends React.Component {
               type="Number"
               label="Card number"
               placeholder="1234 1234 1234 1234"
+              value={ this.state.creditCardNumber }
               iconURL={ lockIconURL }
               onChange={ this.updateCreditCardDetails }
               error={ this.state.creditCardNumberError }
@@ -383,6 +384,7 @@ export default class App extends React.Component {
                 type="Number"
                 label="Expiry Date" 
                 placeholder="MM / YY"
+                value={ this.state.expiryDate }
                 onChange={ this.updateCreditCardDetails }
                 error={ this.state.expiryDateError }
                 errorMessage="This is a required field" />
@@ -394,6 +396,7 @@ export default class App extends React.Component {
                   type="Number"
                   label="Security Code" 
                   placeholder="111"
+                  value={ this.state.securityCode }
                   onChange={ this.updateCreditCardDetails }
                   error={ this.state.securityCodeError }
                   errorMessage="This is a required field" />
@@ -408,6 +411,7 @@ export default class App extends React.Component {
               description="Enter your name as it’s written on the card"
               onChange={ this.updateCreditCardDetails }
               error={ this.state.cardholderNameError }
+              value={ this.state.cardholderName }
               errorMessage="This is a required field" />
           </CreditCardFieldsContent>
         </CreditCardFields>

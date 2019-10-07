@@ -94,6 +94,7 @@ export default class Field extends React.Component {
         <InputWrapper>
           <Input
             id={ this.props.id }
+            value={ this.props.value }
             type={ this.props.type } 
             onChange={ this.fieldOnChange } 
             onBlur={ this.onBlurField }
