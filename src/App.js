@@ -370,7 +370,7 @@ export default class App extends React.Component {
               type="Number"
               label="Card number"
               placeholder="1234 1234 1234 1234"
-              value={ this.state.creditCardNumber }
+              value={ this.state.creditCardNumber ? this.state.creditCardNumber : "" }
               iconURL={ lockIconURL }
               onChange={ this.updateCreditCardDetails }
               error={ this.state.creditCardNumberError }
@@ -384,7 +384,7 @@ export default class App extends React.Component {
                 type="Number"
                 label="Expiry Date" 
                 placeholder="MM / YY"
-                value={ this.state.expiryDate }
+                value={ this.state.expiryDate ? this.state.expiryDate : "" }
                 onChange={ this.updateCreditCardDetails }
                 error={ this.state.expiryDateError }
                 errorMessage="This is a required field" />
@@ -396,7 +396,7 @@ export default class App extends React.Component {
                   type="Number"
                   label="Security Code" 
                   placeholder="111"
-                  value={ this.state.securityCode }
+                  value={ this.state.securityCode ? this.state.securityCode : "" }
                   onChange={ this.updateCreditCardDetails }
                   error={ this.state.securityCodeError }
                   errorMessage="This is a required field" />
@@ -411,7 +411,7 @@ export default class App extends React.Component {
               description="Enter your name as it’s written on the card"
               onChange={ this.updateCreditCardDetails }
               error={ this.state.cardholderNameError }
-              value={ this.state.cardholderName }
+              value={ this.state.cardholderName ? this.state.cardholderName : "" }
               errorMessage="This is a required field" />
           </CreditCardFieldsContent>
         </CreditCardFields>
@@ -421,7 +421,6 @@ export default class App extends React.Component {
 
   updateCreditCardDetails = ( e ) => {
     let errorStatus = true;
-    console.log(e.value.length);
 
     if( e.value.length > 0 ) {
       errorStatus = false;
