@@ -214,6 +214,13 @@ export default class App extends React.Component {
       billingStatus: "content",
     });
   }
+
+  editPaymentDetails = () => {
+    this.setState({ 
+      paymentStatus: "content",
+      billingStatus: "none",
+    });
+  }
   
   renderPaymentMethod = () => {
     return(
@@ -374,7 +381,8 @@ export default class App extends React.Component {
               completedTitle="Payment method"
               status={ this.state.paymentStatus }
               content={ this.renderPaymentMethod() }
-              summary={ this.renderPaymentMethodSummary() } />
+              summary={ this.renderPaymentMethodSummary() }
+              onEditButtonPress={ this.editPaymentDetails } />
 
             <Step
               number="2"
