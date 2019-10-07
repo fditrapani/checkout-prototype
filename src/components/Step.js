@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-//Images
-import completedURL from '../images/completed.svg';
+//Compontents
+import CheckIcon from './CheckIcon.js';
 
 //CSS
 import { colours } from '../config/colours.js';
@@ -42,13 +42,14 @@ const StepNumber = styled.span`
   width: 27px;
   height: 27px;
   box-sizing: border-box;
-  padding: 4px 0;
+  padding: 0;
   text-align: center;
   display: block;
   border-radius: 50%;
   margin-right: 8px;
   color: ${ props => props.colour };
   position: relative;
+  line-height: 27px;
 
   :after {
     position: absolute;
@@ -128,7 +129,7 @@ export default class Step extends React.Component {
   }
 
   renderStepNumberContent = () => {
-    return ( this.props.status === "completed" ) ? <img src={ completedURL } alt="" /> : this.props.number;
+    return ( this.props.status === "completed" ) ? <CheckIcon /> : this.props.number;
   }
 
   renderTitle = () => {
