@@ -9,6 +9,7 @@ import RadioButton from './components/RadioButton';
 import Field from './components/Field';
 import GridRow from './components/GridRow';
 import ErrorMessage from './components/ErrorMessage';
+import CloseIcon from './components/CloseIcon';
 
 //CSS
 import { colours } from './config/colours.js';
@@ -518,7 +519,7 @@ export default class App extends React.Component {
       <div>
         <Header>
           <TransparentButton>
-            <img src={ closeURL } alt="Close" />
+            <CloseIcon />
           </TransparentButton>
           <Logo src={ logoURL } alt="WordPress.com" /> 
           <SecureCheckout>Secure checkout</SecureCheckout>
