@@ -74,6 +74,8 @@ export default class Button extends React.Component {
 				return colours.gray0;
 			case "apple-disabled":
 				return colours.gray0;
+			case "text-button":
+				return "none";
 			default:
 				return colours.highlight;
 		}
@@ -146,11 +148,11 @@ export default class Button extends React.Component {
 			  rollOverColour= { this.returnRollOverColour( this.props.state ) }
 			  rollOverBorderColour= { this.returnRollOverBorderColour( this.props.state ) } 
 			  width={ this.props.width }
-			  fontWeight={ this.returnFontWeight( this.props.status ) }
+			  fontWeight={ this.returnFontWeight( this.props.state ) }
 			  borderRadius={ this.returnBorderRadius( this.props.type )}
-			  borderWeight={ this.props.status === "text-button" ? "0" : "1px" }
-			  textDecoration={ this.props.status === "text-button" ? "underline" : "none" }
-			  padding={ this.props.status === "text-button" ? "0" : "10px 15px" } 
+			  borderWeight={ this.props.state === "text-button" ? "0" : "1px" }
+			  textDecoration={ this.props.state === "text-button" ? "underline" : "none" }
+			  padding={ this.props.state === "text-button" ? "0" : "10px 15px" } 
 			  onClick={ this.props.onClick } >
 			 	  { this.props.label }
 

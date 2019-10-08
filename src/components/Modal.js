@@ -17,18 +17,6 @@ const animateIn = keyframes`
   }
 `;
 
-const animateOut = keyframes`
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale(1.1);
-  }
-`;
-
 const ModalUi = styled.div`
   display: flex;
   width: 100%;

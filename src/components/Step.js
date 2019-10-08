@@ -148,7 +148,7 @@ export default class Step extends React.Component {
     if ( this.props.status === "completed" ){ 
       return (
         <Button
-          status="text-button"
+          state="text-button"
           label="Edit" 
           onClick={ this.props.onEditButtonPress }/>
       );
