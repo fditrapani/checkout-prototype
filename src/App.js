@@ -11,6 +11,7 @@ import GridRow from './components/GridRow';
 import ErrorMessage from './components/ErrorMessage';
 import CloseIcon from './components/CloseIcon';
 import LockIcon from './components/LockIcon';
+import LocationIcon from './components/LocationIcon';
 import Modal from './components/Modal';
 
 //CSS
@@ -158,7 +159,7 @@ const CreditCardFieldsContent = styled.div`
   z-index: 15;
 `
 
-const CreditCardField = styled(Field)`
+const FormField = styled(Field)`
   margin-top: 16px;
 
   :first-child {
@@ -186,6 +187,10 @@ const SummaryImage = styled.img`
   margin-right: 8px;
   transform: translateY(1px);
 `
+
+const BillingFormFields = styled.div`
+  margin-bottom: 16px;
+`;
 
 // END CSS
 //////////////////////////////////////
@@ -370,7 +375,7 @@ export default class App extends React.Component {
           <CreditCardFieldsContent>
             { this.renderCreditCardErrorMessage() }
 
-            <CreditCardField 
+            <FormField 
               id="creditCardNumber"
               type="Number"
               label="Card number"
@@ -409,7 +414,7 @@ export default class App extends React.Component {
               </GridRow>
             </CreditCardFlexFieldArea>
 
-            <CreditCardField 
+            <FormField 
               id="cardholderName"
               type="Text" 
               label="Cardholder name" 
@@ -484,7 +489,37 @@ export default class App extends React.Component {
 
   renderBilling = () => {
     return(
-      <span>Billing</span>
+      <div>
+        { /*<p>Name, Address, Phone number (optional), use billing for domain contact</p> */ }
+        <BillingFormFields>
+          <FormField 
+                id="billingName"
+                type="Text"
+                label="Name"
+                errorMessage="This is a required field" />
+          <FormField 
+                id="billingAddresss"
+                type="Text"
+                label="Address"
+                icon={ <LocationIcon /> }
+                //ICONCLICKABLE
+                //ICONACTION
+                errorMessage="This is a required field" />
+
+          { /*<p>Name, Address, Phone number (optional), use billing for domain contact</p> */ }
+          
+          <FormField 
+                id="billingPhoneNumber"
+                type="Number"
+                label="Phone number (Optional)" />
+
+        </BillingFormFields>
+
+        <Button 
+          state="primary"
+          label="Continue" />
+      </div>
+
     );
   }
 
