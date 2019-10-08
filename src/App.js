@@ -11,6 +11,7 @@ import GridRow from './components/GridRow';
 import ErrorMessage from './components/ErrorMessage';
 import CloseIcon from './components/CloseIcon';
 import LockIcon from './components/LockIcon';
+import Modal from './components/Modal';
 
 //CSS
 import { colours } from './config/colours.js';
@@ -215,6 +216,10 @@ export default class App extends React.Component {
       paymentErrorVisibility: false,
       payMentErrorMessage: "",
       reviewSummary: "Review Summary",
+      modalIsVisible: false,
+      modalTitle: "You are about to leave your checkout session",
+      modalCopy: "When you press Continue, we will take you back to your site and save your cart so you can complete your purchase later.",
+      modalprimaryAction: this.closeApp,
     };
   }
 
@@ -513,11 +518,37 @@ export default class App extends React.Component {
     return null;
   }
 
+  initiateCloseApp = () => {
+    this.setState({ 
+      modalTitle: "You are about to leave your checkout session",
+      modalCopy: "When you press Continue, we will take you back to your site and save your cart so you can complete your purchase later.",
+      modalprimaryAction: this.closeApp,
+      modalIsVisible: true,
+    });
+  }
+
+  closeApp = () => {
+    alert("Bye!")
+  }
+
+  closeModal = () => {
+    this.setState({ 
+      modalIsVisible: false
+    });
+  }
+
   render() { 
     return (
       <div>
+        <Modal 
+          isVisible={ this.state.modalIsVisible } 
+          closeModal={ this.closeModal }
+          title={ this.state.modalTitle }
+          copy={ this.state.modalCopy } 
+          primaryAction={ this.state.modalprimaryAction } />
+
         <Header>
-          <TransparentButton>
+          <TransparentButton onClick={ this.initiateCloseApp } >
             <CloseIcon />
           </TransparentButton>
           <Logo src={ logoURL } alt="WordPress.com" /> 

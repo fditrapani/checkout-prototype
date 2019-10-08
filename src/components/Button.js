@@ -23,6 +23,7 @@ const CalltoAction = styled.button`
 		border: ${ props => props.borderWeight } solid ${ props => props.rollOverBorderColour };
 		box-shadow: 0 ${ props => props.borderWeight } 0 ${ props => props.rollOverBorderColour };
 		text-decoration: none;
+		color: ${ props => props.textColourHover }
 	}
 
 	:active {
@@ -30,6 +31,7 @@ const CalltoAction = styled.button`
 		border: ${ props => props.borderWeight } solid ${ props => props.borderColour };
 		box-shadow: 0 ${ props => props.borderWeight } 0 ${ props => props.borderColour };
 		text-decoration: ${ props => props.textDecoration };
+		color: ${ props => props.textColour };
 	}
 
 	img {
@@ -44,6 +46,7 @@ export default class Button extends React.Component {
 
 	static defaultProps = {
 	  width: "auto",
+	  state: "default",
 	};
 
 	returnBackgroundColour = ( state ) => {
@@ -72,7 +75,7 @@ export default class Button extends React.Component {
 			case "apple-disabled":
 				return colours.gray0;
 			default:
-				return "none"
+				return colours.highlight;
 		}
 	}
 
@@ -139,6 +142,7 @@ export default class Button extends React.Component {
 			  background={ this.returnBackgroundColour( this.props.state ) }
 			  borderColour={ this.returnBorderColour( this.props.state ) } 
 			  textColour={ this.returnTextColour( this.props.state ) } 
+			  textColourHover={ this.props.state === "default" ? colours.white : this.returnTextColour( this.props.state ) }
 			  rollOverColour= { this.returnRollOverColour( this.props.state ) }
 			  rollOverBorderColour= { this.returnRollOverBorderColour( this.props.state ) } 
 			  width={ this.props.width }
