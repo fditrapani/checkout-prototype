@@ -28,8 +28,10 @@ const ModalUi = styled.div`
   top: 0;
   left: 0;
   z-index: 9999;
-  animation: ${ animateIn } 0.3s ease-out;
+  animation: ${ animateIn } 0.2s ease-out;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 `
 
 const ModalContentUI = styled.div`
@@ -59,12 +61,6 @@ const ActionButtonsUI = styled.div`
   button:first-child {
     margin-right: 8px;
   }
-`
-
-const HighlightUI = styled.span`
-  background: ${ colours.gray0 };
-  padding: 0 2px;
-  font-weight: 600;
 `
 
 export default class Modal extends React.Component {
