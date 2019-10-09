@@ -167,12 +167,8 @@ const FormField = styled(Field)`
   }
 `
 
-const CreditCardFlexFieldArea = styled(GridRow)`
+const FormFieldGrid = styled(GridRow)`
   margin-top: 16px;
-
-  :first-child {
-    margin-top: 0;
-  }
 `
 
 const CVVImage = styled.img`
@@ -191,6 +187,11 @@ const SummaryImage = styled.img`
 const BillingFormFields = styled.div`
   margin-bottom: 16px;
 `;
+
+const ExtendedBillingFieldsUI = styled.div`
+  overflow: ${ props => props.overflow };
+  height: ${ props => props.height };
+`
 
 // END CSS
 //////////////////////////////////////
@@ -225,9 +226,18 @@ export default class App extends React.Component {
       billingNameError: false,
       billingAddress: "",
       billingAddressError: false,
+      billingCity: "",
+      billingCityError: false,
+      billingState: "",
+      billingStateError: false,
+      billingZip: "",
+      billingZipError: false,
+      billingCountry: "",
+      billingCountryError: false,
       billingPhoneNumber: "",
       billingErrorVisibility: false,
       billingErrorMessage: "",
+      showExtendedBillingFields: false,
       reviewSummary: "Review Summary",
       modalIsVisible: false,
       modalTitle: "You are about to leave your checkout session",
@@ -435,7 +445,7 @@ export default class App extends React.Component {
               error={ this.state.creditCardNumberError }
               errorMessage="This is a required field" />
             
-            <CreditCardFlexFieldArea
+            <FormFieldGrid
               gap="4%"
               columnWidths="48% 48%">
               <Field
@@ -461,7 +471,7 @@ export default class App extends React.Component {
                   errorMessage="This is a required field" />
                 <CVVImage src={ cvvURL } alt="Back of the card where you find the Security Code" />
               </GridRow>
-            </CreditCardFlexFieldArea>
+            </FormFieldGrid>
 
             <FormField 
               id="cardholderName"
@@ -564,13 +574,16 @@ export default class App extends React.Component {
                 placeholder="Find your address"
                 value={ this.state.billingAddress }
                 onChange={ this.checkForFieldErrors } />
+
+          { this.renderBillingFields() }
+
           <FormField 
                 id="billingPhoneNumber"
                 type="Number"
                 label="Phone number (Optional)"
                 value={ this.state.billingPhoneNumber }
-                onChange={ this.checkForFieldErrors } />
-          
+                placeholder="(555) 555-5555"
+                onChange={ this.checkForFieldErrors } />          
         </BillingFormFields>       
 
         <Button 
@@ -582,8 +595,67 @@ export default class App extends React.Component {
     );
   }
 
+  renderBillingFields = () => {
+    return(
+      <ExtendedBillingFieldsUI height={ this.state.showExtendedBillingFields ? 1 : 0 } overflow={ this.state.showExtendedBillingFields ? "auto" : "hidden" }>
+        <FormFieldGrid gap="4%"
+                columnWidths="48% 48%">
+          <Field 
+                id="billingCity"
+                type="Text"
+                label="City"
+                error={ this.state.billingCityError }
+                errorMessage="This is a required field"
+                value={ this.state.billingCity }
+                onChange={ this.checkBillingFields } />
+          <Field 
+                id="billingState"
+                type="Text"
+                label="State"
+                error={ this.state.billingStateError }
+                errorMessage="This is a required field"
+                value={ this.state.billingState }
+                onChange={ this.checkBillingFields } />
+        </FormFieldGrid>
+        <FormFieldGrid gap="4%"
+                columnWidths="48% 48%">
+          <Field 
+                id="billingZip"
+                type="Text"
+                label="Zip Code"
+                error={ this.state.billingZipError }
+                errorMessage="This is a required field"
+                value={ this.state.billingZip }
+                onChange={ this.checkBillingFields } />
+          <Field 
+                id="billingCountry"
+                type="Text"
+                label="Country"
+                error={ this.state.billingCountryError }
+                errorMessage="This is a required field"
+                value={ this.state.billingCountry }
+                onChange={ this.checkBillingFields } />
+        </FormFieldGrid>
+      </ExtendedBillingFieldsUI>
+    )
+  };
+
+  checkBillingFields = ( e ) => {
+    if( e.value.length > 0 ) {
+      this.setState({
+        showExtendedBillingFields: true,
+      })
+    }
+
+    this.checkForFieldErrors( e );
+  }
+
   returnLocationAddress = () => {
-    alert("getting your location");
+    //alert("getting your location");
+
+    this.setState({
+      showExtendedBillingFields: true
+    })
 
     //display fields and populate them
   }
@@ -593,6 +665,10 @@ export default class App extends React.Component {
     let billingErrorMessage = "";
     let billingNameError = false;
     let billingAddressError = false;
+    let billingCityError = false;
+    let billingStateError = false;
+    let billingZipError = false;
+    let billingCountryError = false;
     let billingSummary = this.state.billingSummary;
 
     //NOT FILLED OUT > THROW ERROR
@@ -615,15 +691,55 @@ export default class App extends React.Component {
         billingErrorMessage: billingErrorMessage,
       });
 
-      return;
+      if( ! this.state.showExtendedBillingFields ) { 
+        return;
+      }
+    }
+
+    if( this.state.showExtendedBillingFields ) {
+      if ( ! this.state.billingCity ||  ! this.state.billingState ||  ! this.state.billingZip ||  ! this.state.billingCountry ) {
+        billingErrorMessage = "We need all the fields to be completed. Please fill out the highlighted fields and continue.";
+        billingErrorVisibility = true;
+        
+        if( ! this.state.billingCity ) {
+          billingCityError = true;
+        }
+
+        if( ! this.state.billingState ) {
+          billingStateError = true;
+        }
+
+        if( ! this.state.billingZip ) {
+          billingZipError = true;
+        }
+
+        if( ! this.state.billingCountry ) {
+          billingCountryError = true;
+        }
+
+        this.setState({ 
+          billingAddressError: billingAddressError,
+          billingNameError: billingNameError,
+          billingStateError: billingStateError,
+          billingCityError: billingCityError,
+          billingZipError: billingZipError,
+          billingCountryError: billingCountryError,
+          billingErrorVisibility: billingErrorVisibility,
+          billingErrorMessage: billingErrorMessage,
+        });
+
+        return;
+      }
     }
 
     //UPDATE SUMMARY
     billingSummary = (
       <div>
-        <div>
-          { this.state.billingName } <br/>
-          { this.state.billingAddress }
+        <div>          
+          { this.state.billingAddress } <br/>
+          { this.state.billingCity }, { this.state.billingState } <br/>
+          { this.state.billingZip } { this.state.billingCountry } <br/><br/>
+          { this.state.billingPhoneNumber }
         </div>
         
       </div>
