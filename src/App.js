@@ -238,6 +238,7 @@ export default class App extends React.Component {
       billingErrorVisibility: false,
       billingErrorMessage: "",
       showExtendedBillingFields: false,
+      billingLocatorVisibility: true,
       reviewSummary: "Review Summary",
       modalIsVisible: false,
       modalTitle: "You are about to leave your checkout session",
@@ -569,6 +570,7 @@ export default class App extends React.Component {
                 label="Address"
                 icon={ <LocationIcon /> }
                 iconAction={ this.returnLocationAddress }
+                isIconVisible={ this.state.billingLocatorVisibility }
                 error={ this.state.billingAddressError }
                 errorMessage="This is a required field"
                 placeholder="Find your address"
@@ -651,11 +653,19 @@ export default class App extends React.Component {
   }
 
   returnLocationAddress = () => {
+    let self = this; 
     //alert("getting your location");
-
-    this.setState({
-      showExtendedBillingFields: true
-    })
+    navigator.geolocation.getCurrentPosition(function(position) {
+      self.setState({
+        showExtendedBillingFields: true,
+        billingAddress: "906 Sandy Forest Place",
+        billingCity: "Beverly hills",
+        billingState: "CA",
+        billingZip: "90210",
+        billingCountry: "United States",
+        billingLocatorVisibility: false,
+      })
+    });
 
     //display fields and populate them
   }

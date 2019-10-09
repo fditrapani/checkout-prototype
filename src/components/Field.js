@@ -73,6 +73,10 @@ const Description = styled.p`
 
 export default class Field extends React.Component {
   renderIcon = () => {
+    if( ! this.props.isIconVisible ) {
+      return null;
+    }
+
     if( this.props.iconAction ) {
       return (
         <ButtonIconUI>
