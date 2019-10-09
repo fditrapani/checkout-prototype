@@ -17,4 +17,6 @@ export const colours = {
 	primary: "#C9356E",
 	white: "#FFF",
 	black: "#000",
+	paypalGold: "#F0C443",
+	paypalGoldHover: "#FFB900"
 }

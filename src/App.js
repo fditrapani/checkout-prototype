@@ -201,6 +201,7 @@ export default class App extends React.Component {
 
     this.state = {
       paymentMethod: "apple-pay",
+      paymentButtonStatus: "disabled",
       instructionalCopy: "Confirm your payment method to continue",
       showCreditCardFields: false,
       previousSection: null,
@@ -217,14 +218,16 @@ export default class App extends React.Component {
       expiryDateError: false,
       securityCodeError: false,
       cardholderNameError: false,
+      paymentErrorVisibility: false,
+      payMentErrorMessage: "",
       billingSummary: null,
       billingName: "",
       billingNameError: false,
       billingAddress: "",
       billingAddressError: false,
       billingPhoneNumber: "",
-      paymentErrorVisibility: false,
-      payMentErrorMessage: "",
+      billingErrorVisibility: false,
+      billingErrorMessage: "",
       reviewSummary: "Review Summary",
       modalIsVisible: false,
       modalTitle: "You are about to leave your checkout session",
@@ -242,6 +245,12 @@ export default class App extends React.Component {
       instructionalCopy = "Enter your credit card details to continue";
       showCreditCardFields = true;
       paymentSummary = "Creidt Card";
+
+      if(this.state.paymentButtonStatus === "primary" && this.state.creditCardNumber === "") {
+        this.setState({ 
+          paymentButtonStatus: "disabled",
+        });
+      }
     }
 
     if( changeEvent.target.value === "paypal" ) {
@@ -267,9 +276,11 @@ export default class App extends React.Component {
     let expiryDateError = false;
     let securityCodeError = false;
     let cardholderNameError = false;
+    let billingStatus = "content";
+    let reviewStatus = "summary";
+    let paymentButtonStatus = this.state.paymentButtonStatus;
     let paymentSummary = this.state.paymentSummary;
 
-    console.log( this.state.creditCardNumber );
     //NOT FILLED OUT > THROW ERROR
     if( this.state.paymentMethod === "credit-card" && ( ! this.state.creditCardNumber ||  ! this.state.expiryDate || ! this.state.securityCode || ! this.state.cardholderName ) ){
       payMentErrorMessage = "We need all the fields to be completed. Please fill out the highlighted fields and continue.";
@@ -315,30 +326,54 @@ export default class App extends React.Component {
       );
     }
 
+    if( this.state.billingStatus === "completed" ) {
+      billingStatus = "completed";
+      reviewStatus = "content";
+      paymentButtonStatus = "primary";
+    }
+
     //UPDATE STATE
     this.setState({
       paymentErrorVisibility: paymentErrorVisibility,
       paymentStatus: "completed",
-      billingStatus: "content",
+      billingStatus: billingStatus,
+      reviewStatus: reviewStatus,
       creditCardNumberError: false,
       expiryDateError: false,
       securityCodeError: false,
       cardholderNameError: false,
-      billingName: this.state.cardholderName,
+      billingName: this.state.billingName ? this.state.billingName : this.state.cardholderName,
       instructionalCopy: "Enter your billing details to continue",
       paymentSummary: paymentSummary,
+      paymentButtonStatus: paymentButtonStatus,
     });
   }
 
   editPaymentDetails = () => {
     this.setState({ 
       paymentStatus: "content",
-      billingStatus: "none",
+      billingStatus: ( this.state.billingStatus === "completed" || this.state.billingSummary ) ? "completed" : "none",
+      reviewStatus: "summary",
+      instructionalCopy: "Edit your payment details",
+    });
+  }
+
+  editBillingDetails = () => {
+    this.setState({ 
+      paymentStatus: "completed",
+      reviewStatus: "summary",
+      billingStatus: "content",
       instructionalCopy: "Edit your payment details",
     });
   }
   
   renderPaymentMethod = () => {
+    let buttonCopy = this.state.paymentSummary ? "Update" : "Continue";
+
+    if( this.state.billingSummary ) {
+      buttonCopy = "Update and review your order"
+    }
+
     return(
       <div>
         <RadioButtons>
@@ -367,8 +402,8 @@ export default class App extends React.Component {
           </RadioButtons>
 
         <Button 
-          label="Continue"
-          state="primary"
+          label={ buttonCopy }
+          state={ this.state.paymentButtonStatus == "disabled" ? "primary" : "secondary" }
           onClick={ this.submitPaymentDetails } />
         </div>
     );
@@ -452,6 +487,10 @@ export default class App extends React.Component {
     return this.state.paymentErrorVisibility ? (<ErrorMessage message={ this.state.payMentErrorMessage } />) : null;
   }
 
+  renderBillingErrorMessage = () => {
+    return this.state.billingErrorVisibility ? (<ErrorMessage message={ this.state.billingErrorMessage } />) : null;
+  }
+
   renderPaymentMethodSummary = () => {
     if( this.state.paymentSummary) {
       return(
@@ -470,7 +509,7 @@ export default class App extends React.Component {
         return (
           <Button 
             label={ (<img src={ applePayURL } alt="Close" />) }
-            state="apple-disabled"
+            state={ "apple-" + this.state.paymentButtonStatus }
             width="100%"
             type="apple-pay" />
         )
@@ -478,7 +517,7 @@ export default class App extends React.Component {
         return (
           <Button 
             label={ (<img src={ paypalURL } alt="Close" />) }
-            state="paypal-disabled"
+            state={ "paypal-" + this.state.paymentButtonStatus }
             width="100%"
             type="paypal" />
         )
@@ -486,7 +525,7 @@ export default class App extends React.Component {
         return (
           <Button 
             label="Pay $60"
-            state="disabled"
+            state={ this.state.paymentButtonStatus }
             width="100%"
             type="credit-card" />
         )
@@ -496,8 +535,8 @@ export default class App extends React.Component {
   renderBilling = () => {
     return(
       <div>
-        { /*<p>Name, Address, Phone number (optional), use billing for domain contact</p> */ }
         <BillingFormFields>
+          { this.renderBillingErrorMessage() }
           <FormField 
                 id="billingName"
                 type="Text"
@@ -524,15 +563,71 @@ export default class App extends React.Component {
                 label="Phone number (Optional)"
                 value={ this.state.billingPhoneNumber }
                 onChange={ this.checkForFieldErrors } />
-
-        </BillingFormFields>
+          
+        </BillingFormFields>       
 
         <Button 
-          state="primary"
-          label="Continue" />
+          state={ this.state.paymentButtonStatus == "disabled" ? "primary" : "secondary" }
+          label={ this.state.billingSummary ? "Update" : "Continue" } 
+          onClick={ this.submitBillingDetails } />
       </div>
 
     );
+  }
+
+  submitBillingDetails = () => {
+    let billingErrorVisibility = false;
+    let billingErrorMessage = "";
+    let billingNameError = false;
+    let billingAddressError = false;
+    let billingSummary = this.state.billingSummary;
+
+    //NOT FILLED OUT > THROW ERROR
+    if( ! this.state.billingAddress ||  ! this.state.billingName ){
+      billingErrorMessage = "We need all the fields to be completed. Please fill out the highlighted fields and continue.";
+      billingErrorVisibility = true;
+      
+      if( ! this.state.billingName) {
+        billingNameError = true;
+      }
+
+      if( ! this.state.billingAddress ) {
+        billingAddressError = true;
+      }
+
+      this.setState({ 
+        billingAddressError: billingAddressError,
+        billingNameError: billingNameError,
+        billingErrorVisibility: billingErrorVisibility,
+        billingErrorMessage: billingErrorMessage,
+      });
+
+      return;
+    }
+
+    //UPDATE SUMMARY
+    billingSummary = (
+      <div>
+        <div>
+          { this.state.billingName } <br/>
+          { this.state.billingAddress }
+        </div>
+        
+      </div>
+    );
+
+
+    //UPDATE STATE
+    this.setState({
+      billingErrorVisibility: billingErrorVisibility,
+      billingStatus: "completed",
+      reviewStatus: "content",
+      billingNameError: false,
+      billingAddressError: false,
+      instructionalCopy: "Review your order and pay",
+      paymentButtonStatus: "primary",
+      billingSummary: billingSummary,
+    });
   }
 
   renderBillingSummary = () => {
@@ -622,6 +717,7 @@ export default class App extends React.Component {
               completedTitle="Billing details"
               status={ this.state.billingStatus }
               content={ this.renderBilling() }
+              onEditButtonPress={ this.editBillingDetails }
               summary={ this.renderBillingSummary() } />
 
             <Step

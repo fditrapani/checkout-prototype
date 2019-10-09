@@ -37,8 +37,8 @@ const CalltoAction = styled.button`
 	img {
 		margin-bottom: -1px;
 		transform: translateY(2px);
-		filter: grayscale(100%);
-		opacity: 0.5;
+		filter: grayscale( ${ props => props.imageGrayScale } ) invert( ${ props => props.imageWhite } );
+		opacity: ${ props => props.imageOpacity };
 	}
 `;
 
@@ -55,10 +55,16 @@ export default class Button extends React.Component {
 				return colours.primary;
 			case "disabled":
 				return colours.gray0;
+			case "secondary":
+				return colours.highlight;
 			case "paypal-disabled":
 				return colours.gray0;
+			case "paypal-primary":
+				return colours.paypalGold;
 			case "apple-disabled":
 				return colours.gray0;
+			case "apple-primary":
+				return colours.black;
 			default:
 				return "none"
 		}
@@ -68,12 +74,18 @@ export default class Button extends React.Component {
 		switch ( state ) {
 			case "primary":
 				return colours.highlight;
+			case "secondary":
+				return colours.primary;
 			case "disabled":
-				return colours.gray0;
+				return colours.gray0;			
 			case "paypal-disabled":
 				return colours.gray0;
+			case "paypal-primary":
+				return colours.paypalGoldHover;
 			case "apple-disabled":
 				return colours.gray0;
+			case "apple-primary":
+				return colours.gray80;
 			case "text-button":
 				return "none";
 			default:
@@ -85,12 +97,18 @@ export default class Button extends React.Component {
 		switch ( state ) {
 			case "primary":
 				return colours.pink70;
+			case "secondary":
+				return colours.blue80;
 			case "disabled":
 				return colours.gray20;
 			case "paypal-disabled":
 				return colours.gray0;
+			case "paypal-primary":
+				return colours.paypalGold
 			case "apple-disabled":
 				return colours.gray0;
+			case "apple-primary":
+				return colours.black;
 			default:
 				return colours.highlight;
 		}
@@ -100,12 +118,18 @@ export default class Button extends React.Component {
 		switch ( state ) {
 			case "primary":
 				return colours.blue80;
+			case "secondary":
+				return colours.pink70;
 			case "disabled":
 				return colours.gray20;
 			case "paypal-disabled":
 				return colours.gray0;
+			case "paypal-primary":
+				return colours.paypalGoldHover;
 			case "apple-disabled":
 				return colours.gray0;
+			case "apple-primary":
+				return colours.gray80;
 			default:
 				return colours.blue80;
 		}
@@ -114,6 +138,8 @@ export default class Button extends React.Component {
 	returnTextColour = ( state ) => {
 		switch ( state ) {
 			case "primary":
+				return colours.white;
+			case "secondary":
 				return colours.white;
 			case "disabled":
 				return colours.gray20;
@@ -153,7 +179,10 @@ export default class Button extends React.Component {
 			  borderWeight={ this.props.state === "text-button" ? "0" : "1px" }
 			  textDecoration={ this.props.state === "text-button" ? "underline" : "none" }
 			  padding={ this.props.state === "text-button" ? "0" : "10px 15px" } 
-			  onClick={ this.props.onClick } >
+			  onClick={ this.props.onClick } 
+			  imageOpacity={ this.props.state.includes( "primary" ) ? 1 : "0.5" }
+			  imageGrayScale={ this.props.state.includes( "primary" ) ? 0 : 100 }
+			  imageWhite={ this.props.state == "apple-primary"  ? "100%" : 0 } >
 			 	  { this.props.label }
 
 			 	  { this.props.content }
