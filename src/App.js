@@ -209,15 +209,20 @@ export default class App extends React.Component {
       billingStatus: "none",
       reviewStatus: "summary",
       paymentSummary: "Apple Pay",
-      creditCardNumber: null,
-      expiryDate: null,
-      securityCode: null,
-      cardholderName: null,
+      creditCardNumber: "",
+      expiryDate: "",
+      securityCode: "",
+      cardholderName: "",
       creditCardNumberError: false,
       expiryDateError: false,
       securityCodeError: false,
       cardholderNameError: false,
       billingSummary: null,
+      billingName: "",
+      billingNameError: false,
+      billingAddress: "",
+      billingAddressError: false,
+      billingPhoneNumber: "",
       paymentErrorVisibility: false,
       payMentErrorMessage: "",
       reviewSummary: "Review Summary",
@@ -319,6 +324,7 @@ export default class App extends React.Component {
       expiryDateError: false,
       securityCodeError: false,
       cardholderNameError: false,
+      billingName: this.state.cardholderName,
       instructionalCopy: "Enter your billing details to continue",
       paymentSummary: paymentSummary,
     });
@@ -380,9 +386,9 @@ export default class App extends React.Component {
               type="Number"
               label="Card number"
               placeholder="1234 1234 1234 1234"
-              value={ this.state.creditCardNumber ? this.state.creditCardNumber : "" }
+              value={ this.state.creditCardNumber }
               icon={ <LockIcon /> }
-              onChange={ this.updateCreditCardDetails }
+              onChange={ this.checkForFieldErrors }
               error={ this.state.creditCardNumberError }
               errorMessage="This is a required field" />
             
@@ -394,8 +400,8 @@ export default class App extends React.Component {
                 type="Number"
                 label="Expiry Date" 
                 placeholder="MM / YY"
-                value={ this.state.expiryDate ? this.state.expiryDate : "" }
-                onChange={ this.updateCreditCardDetails }
+                value={ this.state.expiryDate }
+                onChange={ this.checkForFieldErrors }
                 error={ this.state.expiryDateError }
                 errorMessage="This is a required field" />
               <GridRow
@@ -406,8 +412,8 @@ export default class App extends React.Component {
                   type="Number"
                   label="Security Code" 
                   placeholder="111"
-                  value={ this.state.securityCode ? this.state.securityCode : "" }
-                  onChange={ this.updateCreditCardDetails }
+                  value={ this.state.securityCode }
+                  onChange={ this.checkForFieldErrors }
                   error={ this.state.securityCodeError }
                   errorMessage="This is a required field" />
                 <CVVImage src={ cvvURL } alt="Back of the card where you find the Security Code" />
@@ -419,9 +425,9 @@ export default class App extends React.Component {
               type="Text" 
               label="Cardholder name" 
               description="Enter your name as it’s written on the card"
-              onChange={ this.updateCreditCardDetails }
+              onChange={ this.checkForFieldErrors }
               error={ this.state.cardholderNameError }
-              value={ this.state.cardholderName ? this.state.cardholderName : "" }
+              value={ this.state.cardholderName }
               errorMessage="This is a required field" />
           </CreditCardFieldsContent>
         </CreditCardFields>
@@ -429,7 +435,7 @@ export default class App extends React.Component {
     }
   }
 
-  updateCreditCardDetails = ( e ) => {
+  checkForFieldErrors = ( e ) => {
     let errorStatus = true;
 
     if( e.value.length > 0 ) {
@@ -496,22 +502,28 @@ export default class App extends React.Component {
                 id="billingName"
                 type="Text"
                 label="Name"
-                errorMessage="This is a required field" />
+                error={ this.state.billingNameError }
+                errorMessage="This is a required field"
+                value={ this.state.billingName }
+                onChange={ this.checkForFieldErrors } />
           <FormField 
-                id="billingAddresss"
+                id="billingAddress"
                 type="Text"
                 label="Address"
                 icon={ <LocationIcon /> }
                 //ICONCLICKABLE
                 //ICONACTION
-                errorMessage="This is a required field" />
-
-          { /*<p>Name, Address, Phone number (optional), use billing for domain contact</p> */ }
-          
+                error={ this.state.billingAddressError }
+                errorMessage="This is a required field"
+                placeholder="Find your address"
+                value={ this.state.billingAddress }
+                onChange={ this.checkForFieldErrors } />
           <FormField 
                 id="billingPhoneNumber"
                 type="Number"
-                label="Phone number (Optional)" />
+                label="Phone number (Optional)"
+                value={ this.state.billingPhoneNumber }
+                onChange={ this.checkForFieldErrors } />
 
         </BillingFormFields>
 
