@@ -411,7 +411,7 @@ export default class App extends React.Component {
 
         <Button 
           label={ buttonCopy }
-          state={ this.state.paymentButtonStatus == "disabled" ? "primary" : "secondary" }
+          state={ this.state.paymentButtonStatus === "disabled" ? "primary" : "secondary" }
           onClick={ this.submitPaymentDetails } />
         </div>
     );
@@ -558,8 +558,7 @@ export default class App extends React.Component {
                 type="Text"
                 label="Address"
                 icon={ <LocationIcon /> }
-                //ICONCLICKABLE
-                //ICONACTION
+                iconAction={ this.returnLocationAddress }
                 error={ this.state.billingAddressError }
                 errorMessage="This is a required field"
                 placeholder="Find your address"
@@ -575,12 +574,18 @@ export default class App extends React.Component {
         </BillingFormFields>       
 
         <Button 
-          state={ this.state.paymentButtonStatus == "disabled" ? "primary" : "secondary" }
+          state={ this.state.paymentButtonStatus === "disabled" ? "primary" : "secondary" }
           label={ this.state.billingSummary ? "Update" : "Continue" } 
           onClick={ this.submitBillingDetails } />
       </div>
 
     );
+  }
+
+  returnLocationAddress = () => {
+    alert("getting your location");
+
+    //display fields and populate them
   }
 
   submitBillingDetails = () => {

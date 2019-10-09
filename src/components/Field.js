@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 //CSS
 import { colours } from '../config/colours.js';
+import Button from './Button';
 
 const Label = styled.label`
   display: block;
@@ -41,17 +42,45 @@ const FieldIcon = styled.div`
   top: 50%;
   transform: translateY(-50%);
   right: 10px;
-`
+`;
+
+const ButtonIconUI = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  
+  button {
+    border: 1px solid transparent;
+    box-shadow: none;
+  }
+
+  button:hover {
+    background: none;
+    border: 1px solid transparent;
+    box-shadow: none;
+
+    filter: brightness(0) saturate(100%) invert(35%) sepia(22%) saturate(3465%) hue-rotate(300deg) brightness(88%) contrast(98%);;
+  }
+
+`;
 
 const Description = styled.p`
   margin: 8px 0 0 0;
   color: ${ props => props.color };
   font-style: italic;
   font-size: 14px;
-`
+`;
 
 export default class Field extends React.Component {
   renderIcon = () => {
+    if( this.props.iconAction ) {
+      return (
+        <ButtonIconUI>
+          <Button onClick={ this.props.iconAction } label={ this.props.icon } />
+        </ButtonIconUI>
+      );
+    }
+
     if ( this.props.icon ) {
       return <FieldIcon>{ this.props.icon }</FieldIcon>
     }
@@ -72,7 +101,7 @@ export default class Field extends React.Component {
   }
 
   returnRightPadding = () => {
-    return this.props.iconURL ? "30px" : "10px"
+    return this.props.icon ? "40px" : "10px"
   }
 
   renderDescription = () => {

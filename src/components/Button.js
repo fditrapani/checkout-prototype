@@ -182,7 +182,7 @@ export default class Button extends React.Component {
 			  onClick={ this.props.onClick } 
 			  imageOpacity={ this.props.state.includes( "primary" ) ? 1 : "0.5" }
 			  imageGrayScale={ this.props.state.includes( "primary" ) ? 0 : 100 }
-			  imageWhite={ this.props.state == "apple-primary"  ? "100%" : 0 } >
+			  imageWhite={ this.props.state === "apple-primary"  ? "100%" : 0 } >
 			 	  { this.props.label }
 
 			 	  { this.props.content }
