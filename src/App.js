@@ -240,6 +240,7 @@ export default class App extends React.Component {
     let instructionalCopy = "Continue to enter your billing information";
     let showCreditCardFields = false;
     let paymentSummary = this.state.paymentSummary;
+    let paymentButtonStatus = this.state.paymentButtonStatus;
     
     if( changeEvent.target.value === "credit-card" ) {
       instructionalCopy = "Enter your credit card details to continue";
@@ -247,18 +248,24 @@ export default class App extends React.Component {
       paymentSummary = "Creidt Card";
 
       if(this.state.paymentButtonStatus === "primary" && this.state.creditCardNumber === "") {
-        this.setState({ 
-          paymentButtonStatus: "disabled",
-        });
+        paymentButtonStatus =  "disabled";
       }
     }
 
     if( changeEvent.target.value === "paypal" ) {
       paymentSummary = "Paypal";
+
+      if( this.state.billingSummary ) {
+        paymentButtonStatus =  "primary";
+      }
     }
 
     if( changeEvent.target.value === "apple-pay" ) {
       paymentSummary = "Apple Pay";
+
+      if( this.state.billingSummary ) {
+        paymentButtonStatus =  "primary";
+      }
     }
 
     this.setState({ 
@@ -266,6 +273,7 @@ export default class App extends React.Component {
       instructionalCopy: instructionalCopy,
       showCreditCardFields: showCreditCardFields,
       paymentSummary: paymentSummary,
+      paymentButtonStatus: paymentButtonStatus,
     });
   }
 
