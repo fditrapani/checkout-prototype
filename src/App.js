@@ -193,6 +193,61 @@ const ExtendedBillingFieldsUI = styled.div`
   height: ${ props => props.height };
 `
 
+const DomainRegistrationUI = styled.div`
+  margin: 16px 0 24px;
+  display: flex;
+  width: 100%;
+`
+
+const DomainRegistrationLabelUI = styled.label`
+  font-size: 14px;
+  color: ${ colours.gray80 };
+  display: block;
+  position: relative;
+  padding-left: 5px;
+
+  :hover {
+    cursor: pointer
+  }
+
+  :before {
+    display: block;
+    width: 16px;
+    height: 16px;
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 0;
+    border: 1px solid ${ colours.gray20 };
+    border-radius: 3px;
+  }
+`
+
+const DomainRegistrationCheckboxUI = styled.input`
+  margin-right: 5px;
+  opacity: 0;
+
+  
+  :checked + label:before {
+    background: ${ colours.highlight };
+  }
+
+  :checked + label:after {
+    display: block;
+    width: 4px;
+    height: 8px;
+    content: "";
+    position: absolute;
+    left: -14px;
+    top: 3px;
+    border-right: 2px solid ${ colours.white };
+    border-bottom: 2px solid ${ colours.white };
+    transform: rotate(45deg);
+
+  }
+`
+
+
 // END CSS
 //////////////////////////////////////
 
@@ -582,7 +637,14 @@ export default class App extends React.Component {
                 value={ this.state.billingPhoneNumber }
                 placeholder="(555) 555-5555"
                 onChange={ this.checkForFieldErrors } />          
-        </BillingFormFields>       
+        </BillingFormFields>   
+
+        <DomainRegistrationUI>
+          <DomainRegistrationCheckboxUI type="checkbox" id="domain-registration" name="domain-registration" defaultChecked={ true }/>
+          <DomainRegistrationLabelUI htmlFor="domain-registration">
+            Use your billing details for your domain registration contact information.
+          </DomainRegistrationLabelUI>   
+        </DomainRegistrationUI>
 
         <Button 
           state={ this.state.paymentButtonStatus === "disabled" ? "primary" : "secondary" }
@@ -742,14 +804,13 @@ export default class App extends React.Component {
     billingSummary = (
       <div>
         <div>          
-          { this.state.paymentMethod === "credit-card" ? "" : this.state.billingName } { this.state.paymentMethod != "credit-card" && <br/> }
+          { this.state.paymentMethod === "credit-card" ? "" : this.state.billingName } { this.state.paymentMethod !== "credit-card" && <br/> }
           { this.state.billingAddress } <br/>
           { this.state.billingCity }, { this.state.billingState } <br/>
           { this.state.billingZip } { this.state.billingCountry } 
           { this.state.billingPhoneNumber && <br/> } { this.state.billingPhoneNumber && <br/> }
           { this.state.billingPhoneNumber }
-        </div>
-        
+        </div>        
       </div>
     );
 
