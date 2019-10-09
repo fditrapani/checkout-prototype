@@ -389,10 +389,6 @@ export default class App extends React.Component {
   renderPaymentMethod = () => {
     let buttonCopy = this.state.paymentSummary ? "Update" : "Continue";
 
-    if( this.state.billingSummary ) {
-      buttonCopy = "Update and review your order"
-    }
-
     return(
       <div>
         <RadioButtons>
@@ -746,9 +742,11 @@ export default class App extends React.Component {
     billingSummary = (
       <div>
         <div>          
+          { this.state.paymentMethod === "credit-card" ? "" : this.state.billingName } { this.state.paymentMethod != "credit-card" && <br/> }
           { this.state.billingAddress } <br/>
           { this.state.billingCity }, { this.state.billingState } <br/>
-          { this.state.billingZip } { this.state.billingCountry } <br/><br/>
+          { this.state.billingZip } { this.state.billingCountry } 
+          { this.state.billingPhoneNumber && <br/> } { this.state.billingPhoneNumber && <br/> }
           { this.state.billingPhoneNumber }
         </div>
         
