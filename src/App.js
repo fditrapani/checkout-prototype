@@ -248,6 +248,21 @@ const DomainRegistrationCheckboxUI = styled.input`
   }
 `
 
+const ReviewSummaryProductsUI = styled.div`
+  margin-bottom: 8px;
+`
+
+const ReviewSummaryLineItemUI = styled(GridRow)`
+  margin-bottom: 4px;
+`
+
+const ReviewSummaryPriceUI = styled.span`
+  text-align: right;
+`
+
+const StrikeThrough = styled.span`
+  text-decoration: line-through;
+`
 
 // END CSS
 //////////////////////////////////////
@@ -296,6 +311,39 @@ export default class App extends React.Component {
       showExtendedBillingFields: false,
       billingLocatorVisibility: true,
       reviewSummary: "Review Summary",
+      productsInCart: [
+        {
+          name: "WordPress.com Personal Plan",
+          id: "plan-product",
+          price: "$60",
+          type: "plan",
+          duration: {
+            1: {
+              label: "One year",
+              price: "$60",
+            },
+            2: {
+              label: "Two year",
+              price: "$120",
+              discount: 10
+            }
+          }
+        },
+        {
+          name: "yourdomain.tld",
+          id: "domain-product",
+          price: "$17",
+          discount: "0",
+          qualifier: "Free for one year!",
+          type: "domain",
+        }
+      ],
+      cartSummary: {
+        total: {
+          label: "Total",
+          price: "$60"
+        }
+      },
       modalIsVisible: false,
       modalTitle: "You are about to leave your checkout session",
       modalCopy: "When you press Continue, we will take you back to your site and save your cart so you can complete your purchase later.",
@@ -850,15 +898,33 @@ export default class App extends React.Component {
   }
 
   renderReviewSummary = () => {
-    if( this.state.reviewSummary ) {
-      return(
-        <div>
-          { this.state.reviewSummary }        
-        </div>
-      )
-    }
+    const products = this.state.productsInCart;
 
-    return null;
+    return(
+      <div>
+        <ReviewSummaryProductsUI>
+          { Object.values( products ).map( ( key ) => (
+              <ReviewSummaryLineItemUI gap="4%" columnWidths="80% 16%" key={ key.id }>
+                <span>{ key.name }</span>
+                
+                { key.discount ? 
+                  ( <ReviewSummaryPriceUI>
+                      <StrikeThrough>{ key.price }</StrikeThrough> { key.discount } 
+                    </ReviewSummaryPriceUI>
+                  ) :
+                  ( 
+                    <ReviewSummaryPriceUI>
+                      { key.price }
+                    </ReviewSummaryPriceUI> 
+                  )
+                }
+              </ReviewSummaryLineItemUI>
+            ) ) }
+        </ReviewSummaryProductsUI>
+
+        { this.state.reviewSummary }        
+      </div>
+    )
   }
 
   initiateCloseApp = () => {
