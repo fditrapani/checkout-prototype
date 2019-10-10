@@ -249,11 +249,14 @@ const DomainRegistrationCheckboxUI = styled.input`
 `
 
 const ReviewSummaryProductsUI = styled.div`
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 `
 
 const ReviewSummaryLineItemUI = styled(GridRow)`
   margin-bottom: 4px;
+  font-weight: ${ props => props.fontWeight };
+  font-size: ${ props => props.fontSize };
+  color: ${ props => props.color };
 `
 
 const ReviewSummaryPriceUI = styled.span`
@@ -338,12 +341,14 @@ export default class App extends React.Component {
           type: "domain",
         }
       ],
-      cartSummary: {
-        total: {
-          label: "Total",
-          price: "$60"
+      cartSummary: [
+        {
+          name: "Total",
+          price: "$60",
+          isTotal: true,
+          id: "total",
         }
-      },
+      ],
       modalIsVisible: false,
       modalTitle: "You are about to leave your checkout session",
       modalCopy: "When you press Continue, we will take you back to your site and save your cart so you can complete your purchase later.",
@@ -899,6 +904,7 @@ export default class App extends React.Component {
 
   renderReviewSummary = () => {
     const products = this.state.productsInCart;
+    const cart = this.state.cartSummary;
 
     return(
       <div>
@@ -922,7 +928,20 @@ export default class App extends React.Component {
             ) ) }
         </ReviewSummaryProductsUI>
 
-        { this.state.reviewSummary }        
+        { Object.values( cart ).map( ( key ) => (
+            <ReviewSummaryLineItemUI 
+              gap="4%" columnWidths="80% 16%" key={ key.id }
+              fontWeight={ key.isTotal ? "600" : "400"  } 
+              fontSize={ key.isTotal ? "16px" : "14px" } 
+              color={ key.isTotal ? colours.black : colours.gray80 }>
+                <span>{ key.name }</span>             
+              
+                <ReviewSummaryPriceUI>
+                  { key.price }
+                </ReviewSummaryPriceUI> 
+
+            </ReviewSummaryLineItemUI>
+          ) ) }
       </div>
     )
   }
