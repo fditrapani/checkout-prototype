@@ -13,6 +13,7 @@ import CloseIcon from './components/CloseIcon';
 import LockIcon from './components/LockIcon';
 import LocationIcon from './components/LocationIcon';
 import Modal from './components/Modal';
+import VisaLogo from './components/VisaLogo';
 
 //CSS
 import { colours } from './config/colours.js';
@@ -24,7 +25,6 @@ import applePayURL from './images/apple-pay.svg';
 import paypalURL from './images/paypal.svg';
 import creditCardURL from './images/credit-cards.svg';
 import cvvURL from './images/cvv.svg';
-import visaURL from './images/visa.svg';
 
 const Header = styled.header`
   background: ${ colours.highlight };
@@ -179,9 +179,10 @@ const SummaryDetails = styled.span`
   margin-right: 8px;
 `
 
-const SummaryImage = styled.img`
+const SummaryImage = styled.span`
   margin-right: 8px;
-  transform: translateY(1px);
+  transform: translateY(2px);
+  display: inline-block;
 `
 
 const BillingFormFields = styled.div`
@@ -393,7 +394,9 @@ export default class App extends React.Component {
       paymentSummary = (
         <div>
           <div>{ this.state.cardholderName }</div>
-          <SummaryImage src={ visaURL } alt="VISA" /> 
+          <SummaryImage>
+            <VisaLogo />
+          </SummaryImage>  
           <SummaryDetails>**** { this.state.creditCardNumber.slice( - 4) }</SummaryDetails>
           <SummaryDetails>Exp: { this.state.expiryDate.slice(0,2) + "/" + this.state.expiryDate.slice(2) }</SummaryDetails>
         </div>
