@@ -357,7 +357,7 @@ export default class App extends React.Component {
   }
 
   showSectionBasedOnUrl = () => {
-    const section = window.location.hash;
+    const section = window.location.hash ? window.location.hash : "#paymentMethod";
     this.prevSection = section;
     switch (section) { // eslint-disable-line default-case
       case '#paymentMethod':
@@ -367,7 +367,7 @@ export default class App extends React.Component {
         this.editBillingDetails();
         break;
       case '#reviewOrder':
-        this.setState({ paymentStatus: 'summary', billingStatus: 'summary', reviewStatus: 'content' });
+        this.setState({ paymentStatus: 'completed', billingStatus: 'completed', reviewStatus: 'content' });
         break;
     }
   }
