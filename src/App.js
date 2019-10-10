@@ -303,6 +303,52 @@ export default class App extends React.Component {
     };
   }
 
+  showSectionBasedOnUrl = () => {
+    const section = window.location.hash;
+    this.prevSection = section;
+    switch (section) { // eslint-disable-line default-case
+      case '#paymentMethod':
+        this.editPaymentDetails();
+        break;
+      case '#billingDetails':
+        this.editBillingDetails();
+        break;
+      case '#reviewOrder':
+        this.setState({ paymentStatus: 'summary', billingStatus: 'summary', reviewStatus: 'content' });
+        break;
+    }
+  }
+
+  saveSectionInUrl = () => {
+    const getActiveSection = () => {
+      if (this.state.paymentStatus === 'content') {
+        return '#paymentMethod';
+      }
+      if (this.state.billingStatus === 'content') {
+        return '#billingDetails';
+      }
+      if (this.state.reviewStatus === 'content') {
+        return '#reviewOrder';
+      }
+    };
+    const section = getActiveSection();
+    if (section) {
+      window.history.pushState(undefined, undefined, section);
+    }
+  }
+
+  componentDidMount = () => {
+    window.addEventListener( 'hashchange', this.showSectionBasedOnUrl, false );
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener( 'hashchange', this.showSectionBasedOnUrl, false );
+  }
+
+  componentDidUpdate = () => {
+    this.saveSectionInUrl();
+  }
+
   changePaymentMethod = ( changeEvent ) => {
     let instructionalCopy = "Continue to enter your billing information";
     let showCreditCardFields = false;
