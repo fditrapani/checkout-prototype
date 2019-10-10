@@ -4,6 +4,7 @@ export const colours = {
 	blue80: "#002C40",
 	gray0: "#F6F7F7",
 	gray5: "#DCDCDE",
+	gray10: "#C3C4C7",
 	gray20: "#A7AAAD",
 	gray30: "#8E9196",
 	gray50: "#646970",

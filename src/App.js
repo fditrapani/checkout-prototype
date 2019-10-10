@@ -14,6 +14,7 @@ import LockIcon from './components/LockIcon';
 import LocationIcon from './components/LocationIcon';
 import Modal from './components/Modal';
 import VisaLogo from './components/VisaLogo';
+import Coupon from './components/Coupon';
 
 //CSS
 import { colours } from './config/colours.js';
@@ -192,13 +193,13 @@ const BillingFormFields = styled.div`
 const ExtendedBillingFieldsUI = styled.div`
   overflow: ${ props => props.overflow };
   height: ${ props => props.height };
-`
+`;
 
 const DomainRegistrationUI = styled.div`
   margin: 16px 0 24px;
   display: flex;
   width: 100%;
-`
+`;
 
 const DomainRegistrationLabelUI = styled.label`
   font-size: 14px;
@@ -222,7 +223,7 @@ const DomainRegistrationLabelUI = styled.label`
     border: 1px solid ${ colours.gray20 };
     border-radius: 3px;
   }
-`
+`;
 
 const DomainRegistrationCheckboxUI = styled.input`
   margin-right: 5px;
@@ -246,26 +247,32 @@ const DomainRegistrationCheckboxUI = styled.input`
     transform: rotate(45deg);
 
   }
-`
+`;
 
 const ReviewSummaryProductsUI = styled.div`
   margin-bottom: 16px;
-`
+`;
 
 const ReviewSummaryLineItemUI = styled(GridRow)`
   margin-bottom: 4px;
   font-weight: ${ props => props.fontWeight };
   font-size: ${ props => props.fontSize };
   color: ${ props => props.color };
-`
+`;
 
 const ReviewSummaryPriceUI = styled.span`
   text-align: right;
-`
+`;
 
 const StrikeThrough = styled.span`
   text-decoration: line-through;
-`
+`;
+
+const AddCouponButtonUI = styled(Button)`
+  display: inline-block;
+  margin-left: 5px;
+  opacity: ${ props => props.opacity };
+`;
 
 // END CSS
 //////////////////////////////////////
@@ -313,7 +320,6 @@ export default class App extends React.Component {
       billingErrorMessage: "",
       showExtendedBillingFields: false,
       billingLocatorVisibility: true,
-      reviewSummary: "Review Summary",
       productsInCart: [
         {
           name: "WordPress.com Personal Plan",
@@ -353,6 +359,7 @@ export default class App extends React.Component {
       modalTitle: "You are about to leave your checkout session",
       modalCopy: "When you press Continue, we will take you back to your site and save your cart so you can complete your purchase later.",
       modalprimaryAction: this.closeApp,
+      isCouponVisible: false,
     };
   }
 
@@ -980,7 +987,9 @@ export default class App extends React.Component {
               fontWeight={ key.isTotal ? "600" : "400"  } 
               fontSize={ key.isTotal ? "16px" : "14px" } 
               color={ key.isTotal ? colours.black : colours.gray80 }>
-                <span>{ key.name }</span>             
+                <span>
+                  { key.name } { key.isTotal && <AddCouponButtonUI label="Add coupon" state="text-button" opacity={ this.state.isCouponVisible ? 0 : 1 } onClick={ this.showSummaryCouponField } /> }
+                </span>             
               
                 <ReviewSummaryPriceUI>
                   { key.price }
@@ -988,8 +997,24 @@ export default class App extends React.Component {
 
             </ReviewSummaryLineItemUI>
           ) ) }
+
+          { this.renderCouponField() }
       </div>
     )
+  }
+
+  showSummaryCouponField = () => {
+    this.setState({
+      isCouponVisible: true
+    });
+  }
+
+  renderCouponField = () => {
+    if( this.state.isCouponVisible ){
+      return <Coupon />
+    }
+
+    return false;
   }
 
   initiateCloseApp = () => {
@@ -1002,7 +1027,7 @@ export default class App extends React.Component {
   }
 
   closeApp = () => {
-    alert("Bye!")
+    alert("Bye!");
   }
 
   closeModal = () => {
