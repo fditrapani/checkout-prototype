@@ -938,7 +938,8 @@ export default class App extends React.Component {
           { this.state.billingCity }, { this.state.billingState } <br/>
           { this.state.billingZip } { this.state.billingCountry } 
           { this.state.billingPhoneNumber && <br/> } { this.state.billingPhoneNumber && <br/> }
-          { this.state.billingPhoneNumber }
+          { this.state.billingPhoneNumber && "(" }{ this.state.billingPhoneNumber.slice(0,3) }{ this.state.billingPhoneNumber && ") " } 
+          { this.state.billingPhoneNumber.slice(3,6) }{ this.state.billingPhoneNumber && "-" }{ this.state.billingPhoneNumber.slice(6) }
         </div>        
       </div>
     );
