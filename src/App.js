@@ -8,12 +8,14 @@ import Button from './components/Button';
 import RadioButton from './components/RadioButton';
 import Field from './components/Field';
 import GridRow from './components/GridRow';
+import FlexRow from './components/FlexRow';
 import ErrorMessage from './components/ErrorMessage';
 import CloseIcon from './components/CloseIcon';
 import LockIcon from './components/LockIcon';
 import LocationIcon from './components/LocationIcon';
 import Modal from './components/Modal';
 import VisaLogo from './components/VisaLogo';
+import DeleteIcon from './components/DeleteIcon';
 import Coupon from './components/Coupon';
 
 //CSS
@@ -249,25 +251,61 @@ const DomainRegistrationCheckboxUI = styled.input`
 
 const ReviewSummaryProductsUI = styled.div`
   margin-bottom: 16px;
+  margin-right: ${ props => props.marginRight };
 `;
 
-const ReviewSummaryLineItemUI = styled(GridRow)`
+const ReviewSummaryCartUI = styled.div`
+  margin-right: ${ props => props.marginRight };
+`
+
+const ReviewSummaryLineItemUI = styled(FlexRow)`
   margin-bottom: 4px;
   font-weight: ${ props => props.fontWeight };
   font-size: ${ props => props.fontSize };
   color: ${ props => props.color };
   padding: ${ props => props.padding };
-  border-bottom: ${ props => props.borderWidth } solid ${ colours.gray5 }
+  border-bottom: ${ props => props.borderWidth } solid ${ colours.gray5 };
+  position: relative;
 
   :first-child {
     border-top: ${ props => props.borderWidth } solid ${ colours.gray5 }
   }
 `;
 
+const ReviewSummaryProductNameUI = styled.span`
+  padding-right: 8px;
+`
+
 const ReviewSummaryPriceUI = styled.span`
   text-align: right;
   font-size: ${ props => props.fontSize };
+  flex-basis: content;
 `;
+
+const ReviewSummaryDeleteButtonUI = styled(Button)`
+  position: absolute;
+  right: -50px;
+  top: 11px;  
+  border: 0;
+  box-shadow: none;
+  padding: 10px;
+
+  :hover {
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+
+  :hover svg rect {
+    fill: ${ colours.red50}
+  }
+
+  :active {
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+`
 
 const StrikeThrough = styled.span`
   text-decoration: line-through;
@@ -994,20 +1032,19 @@ export default class App extends React.Component {
 
     return(
       <div>
-        <ReviewSummaryProductsUI>
+        <ReviewSummaryProductsUI marginRight={ isFullView ? "50px" : "0" } >
           { Object.values( products ).map( ( key ) => (
               <ReviewSummaryLineItemUI 
-                gap="4%" columnWidths="80% 16%" 
                 key={ key.id }
                 padding={ isFullView ? "24px 0" : "0" }
                 borderWidth={ isFullView ? "1px" : "0" } >
-                  <span>
+                  <ReviewSummaryProductNameUI>
                     { key.name } { isFullView && (<SummaryQualifier>{key.qualifier} </SummaryQualifier>) }
-                  </span>
+                  </ReviewSummaryProductNameUI>
                   
                   { key.discount ? 
                     ( <ReviewSummaryPriceUI>
-                        <StrikeThrough>${ key.price }</StrikeThrough> { key.discount } 
+                        <StrikeThrough>${ key.price }</StrikeThrough>&nbsp;{ key.discount } 
                       </ReviewSummaryPriceUI>
                     ) :
                     ( 
@@ -1016,39 +1053,43 @@ export default class App extends React.Component {
                       </ReviewSummaryPriceUI> 
                     )
                   }
+
+                  { isFullView && <ReviewSummaryDeleteButtonUI label={ <DeleteIcon state="borderless" /> } /> }
               </ReviewSummaryLineItemUI>
             ) ) }
         </ReviewSummaryProductsUI>
 
-        {/*CART VIEW==============================================*/}
-        { Object.values( cart ).slice(0).reverse().map( ( key ) => (
-            <ReviewSummaryLineItemUI 
-              gap="4%" columnWidths="80% 16%" key={ key.id }
-              fontWeight={ key.isTotal ? "600" : "400"  } 
-              fontSize={ key.isTotal ? "16px" : isFullView ? "16px" : "14px" } 
-              color={ key.isTotal ? colours.black : isFullView ? colours.gray80 : colours.gray50 } 
-              borderWidth="0">
+        <ReviewSummaryCartUI marginRight={ isFullView ? "50px" : "0" } >
+          {/*CART VIEW==============================================*/}
+          { Object.values( cart ).slice(0).reverse().map( ( key ) => (
+              <ReviewSummaryLineItemUI 
+                key={ key.id }
+                fontWeight={ key.isTotal ? "600" : "400"  } 
+                fontSize={ key.isTotal ? "16px" : isFullView ? "16px" : "14px" } 
+                color={ key.isTotal ? colours.black : isFullView ? colours.gray80 : colours.gray50 } 
+                borderWidth="0">
+                  
+                  <ReviewSummaryProductNameUI>
+                      <ProductNameUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
+                        { key.name }
+                      </ProductNameUI> 
+
+                      { ( key.isTotal && ! this.state.isCouponUsed ) && 
+                        <AddCouponButtonUI 
+                          label="Add coupon" 
+                          state="text-button" 
+                          opacity={ this.state.isCouponVisible ? 0 : 1 } 
+                          cursor={ this.state.isCouponVisible ? "default" : "pointer" } 
+                          onClick={ this.showSummaryCouponField } /> }  
+                  </ReviewSummaryProductNameUI>
                 
-                <div>
-                    <ProductNameUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
-                      { key.name }
-                    </ProductNameUI> 
+                  <ReviewSummaryPriceUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
+                    ${ key.price }
+                  </ReviewSummaryPriceUI> 
 
-                    { ( key.isTotal && ! this.state.isCouponUsed ) && 
-                      <AddCouponButtonUI 
-                        label="Add coupon" 
-                        state="text-button" 
-                        opacity={ this.state.isCouponVisible ? 0 : 1 } 
-                        cursor={ this.state.isCouponVisible ? "default" : "pointer" } 
-                        onClick={ this.showSummaryCouponField } /> }  
-                </div>
-              
-                <ReviewSummaryPriceUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
-                  ${ key.price }
-                </ReviewSummaryPriceUI> 
-
-            </ReviewSummaryLineItemUI>
-          ) ) }
+              </ReviewSummaryLineItemUI>
+            ) ) }
+          </ReviewSummaryCartUI>
 
           { this.renderCouponField() }
       </div>

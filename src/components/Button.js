@@ -166,6 +166,7 @@ export default class Button extends React.Component {
 	}
 
 	render() {
+		console.log( this.props.state === "borderless" );
 		return(
 			<CalltoAction 
 			  background={ this.returnBackgroundColour( this.props.state ) }
