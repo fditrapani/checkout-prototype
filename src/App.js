@@ -1024,8 +1024,8 @@ export default class App extends React.Component {
             <ReviewSummaryLineItemUI 
               gap="4%" columnWidths="80% 16%" key={ key.id }
               fontWeight={ key.isTotal ? "600" : "400"  } 
-              fontSize={ key.isTotal ? "16px" : "14px" } 
-              color={ key.isTotal ? colours.black : colours.gray80 } 
+              fontSize={ key.isTotal ? "16px" : isFullView ? "16px" : "14px" } 
+              color={ key.isTotal ? colours.black : isFullView ? colours.gray80 : colours.gray50 } 
               borderWidth="0">
                 
                 <div>
