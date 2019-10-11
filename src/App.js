@@ -272,6 +272,10 @@ const AddCouponButtonUI = styled(Button)`
   display: inline-block;
   margin-left: 5px;
   opacity: ${ props => props.opacity };
+
+  :hover{
+    cursor: ${ props => props.cursor };  
+  }  
 `;
 
 // END CSS
@@ -324,16 +328,16 @@ export default class App extends React.Component {
         {
           name: "WordPress.com Personal Plan",
           id: "plan-product",
-          price: "$60",
+          price: 60,
           type: "plan",
           duration: {
             1: {
               label: "One year",
-              price: "$60",
+              price: 60,
             },
             2: {
               label: "Two year",
-              price: "$120",
+              price: 120,
               discount: 10
             }
           }
@@ -341,8 +345,8 @@ export default class App extends React.Component {
         {
           name: "yourdomain.tld",
           id: "domain-product",
-          price: "$17",
-          discount: "0",
+          price: 17,
+          discount: 0,
           qualifier: "Free for one year!",
           type: "domain",
         }
@@ -350,7 +354,7 @@ export default class App extends React.Component {
       cartSummary: [
         {
           name: "Total",
-          price: "$60",
+          price: 60,
           isTotal: true,
           id: "total",
         }
@@ -688,7 +692,7 @@ export default class App extends React.Component {
         return (
           <Button 
             label={ (<img src={ applePayURL } alt="Close" />) }
-            state={ "apple-" + this.state.paymentButtonStatus }
+            state={ "apple--" + this.state.paymentButtonStatus }
             width="100%"
             type="apple-pay" />
         )
@@ -696,7 +700,7 @@ export default class App extends React.Component {
         return (
           <Button 
             label={ (<img src={ paypalURL } alt="Close" />) }
-            state={ "paypal-" + this.state.paymentButtonStatus }
+            state={ "paypal--" + this.state.paymentButtonStatus }
             width="100%"
             type="paypal" />
         )
@@ -821,7 +825,7 @@ export default class App extends React.Component {
 
   returnLocationAddress = () => {
     let self = this; 
-    //alert("getting your location");
+
     navigator.geolocation.getCurrentPosition(function(position) {
       self.setState({
         showExtendedBillingFields: true,
@@ -847,6 +851,7 @@ export default class App extends React.Component {
     let billingZipError = false;
     let billingCountryError = false;
     let billingSummary = this.state.billingSummary;
+    let cartSummary = this.state.cartSummary;
 
     //NOT FILLED OUT > THROW ERROR
     if( ! this.state.billingAddress ||  ! this.state.billingName ){
@@ -903,6 +908,7 @@ export default class App extends React.Component {
           billingCountryError: billingCountryError,
           billingErrorVisibility: billingErrorVisibility,
           billingErrorMessage: billingErrorMessage,
+          cartSummary: cartSummary,
         });
 
         return;
@@ -923,6 +929,17 @@ export default class App extends React.Component {
       </div>
     );
 
+    //Update Cart
+    if( ! this.state.taxesAdded ) {
+      cartSummary.push({
+        name: "Taxes",
+        price: "5.15",
+        isTotal: false,
+        id: "taxes",
+      })
+
+      cartSummary[0].price += 5.15;
+    }
 
     //UPDATE STATE
     this.setState({
@@ -934,6 +951,7 @@ export default class App extends React.Component {
       instructionalCopy: "Review your order and pay",
       paymentButtonStatus: "primary",
       billingSummary: billingSummary,
+      taxesAdded: true,
     });
   }
 
@@ -968,12 +986,12 @@ export default class App extends React.Component {
                 
                 { key.discount ? 
                   ( <ReviewSummaryPriceUI>
-                      <StrikeThrough>{ key.price }</StrikeThrough> { key.discount } 
+                      <StrikeThrough>${ key.price }</StrikeThrough> { key.discount } 
                     </ReviewSummaryPriceUI>
                   ) :
                   ( 
                     <ReviewSummaryPriceUI>
-                      { key.price }
+                      { key.type === "coupon" && "-"}${ key.price }
                     </ReviewSummaryPriceUI> 
                   )
                 }
@@ -981,18 +999,18 @@ export default class App extends React.Component {
             ) ) }
         </ReviewSummaryProductsUI>
 
-        { Object.values( cart ).map( ( key ) => (
+        { Object.values( cart ).slice(0).reverse().map( ( key ) => (
             <ReviewSummaryLineItemUI 
               gap="4%" columnWidths="80% 16%" key={ key.id }
               fontWeight={ key.isTotal ? "600" : "400"  } 
               fontSize={ key.isTotal ? "16px" : "14px" } 
               color={ key.isTotal ? colours.black : colours.gray80 }>
                 <span>
-                  { key.name } { key.isTotal && <AddCouponButtonUI label="Add coupon" state="text-button" opacity={ this.state.isCouponVisible ? 0 : 1 } onClick={ this.showSummaryCouponField } /> }
+                  { key.name } { ( key.isTotal && ! this.state.isCouponUsed ) && <AddCouponButtonUI label="Add coupon" state="text-button" opacity={ this.state.isCouponVisible ? 0 : 1 } cursor={ this.state.isCouponVisible ? "default" : "pointer" } onClick={ this.showSummaryCouponField } /> }
                 </span>             
               
                 <ReviewSummaryPriceUI>
-                  { key.price }
+                  ${ key.price }
                 </ReviewSummaryPriceUI> 
 
             </ReviewSummaryLineItemUI>
@@ -1011,10 +1029,31 @@ export default class App extends React.Component {
 
   renderCouponField = () => {
     if( this.state.isCouponVisible ){
-      return <Coupon />
+      return <Coupon applyCoupon={ this.applyCoupon } />
     }
 
     return false;
+  }
+
+  applyCoupon = ( fieldValue ) => {
+    let productsArray = this.state.productsInCart;
+    let total = this.state.cartSummary;
+
+    productsArray.push({
+      name: "Coupon: " + fieldValue.toUpperCase(),
+      id: "coupon-product",
+      price: 20,
+      type: "coupon",
+    })
+
+    total[0].price === 65.15 ? 
+      total[0].price = (total[0].price - 20).toFixed(2) :
+      total[0].price = total[0].price -= 20;
+
+    this.setState({
+      isCouponVisible: false,
+      isCouponUsed: true,
+    })
   }
 
   initiateCloseApp = () => {

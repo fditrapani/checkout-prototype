@@ -19,28 +19,67 @@ const ApplyButtonUI = styled(Button)`
   right: 1px;
   border: 0;
   box-shadow: none;
+  color: ${ props => props.color }
 
   :hover {
     background: none;
     border: 0;
     box-shadow: none;
-    color: ${ colours.primary }
+    color: ${ props => props.hoverColor };
+    cursor: ${ props => props.cursor };
   }
 
   :active {
     background: none;
     border: 0;
     box-shadow: none;
-    color: ${ colours.highlight }
+    color: ${ props => props.color }
   }
 `
 
 export default class Coupon extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      buttonIsActive: false,
+      fieldValue: "",
+    }
+  }
+
+  clickApplyButton = () => {
+    if( this.state.buttonIsActive ) {
+      alert("Clicked");
+    }
+
+    return null;
+  }
+
+  checkFieldInput = (e) => {
+    if( e.value.length > 0 ){
+      this.setState({
+        buttonIsActive: true,
+        fieldValue: e.value,
+      });
+
+      return;
+    }
+
+    this.setState({
+      buttonIsActive: false,
+    });
+  }
+
   render() {
     return (
       <CouponUI>
-          <Field label="Add a coupon" placeholder="Enter your code" />
-          <ApplyButtonUI label="Apply" />
+          <Field label="Add a coupon" placeholder="Enter your code" onChange={ this.checkFieldInput } />
+          <ApplyButtonUI 
+            label="Apply" 
+            color={ this.state.buttonIsActive ? colours.highlight : colours.gray20 }
+            cursor={ this.state.buttonIsActive ? "pointer" : "not-allowed" }
+            hoverColor={ this.state.buttonIsActive ? colours.primary : colours.gray20 }
+            onClick={ ()=>this.props.applyCoupon( this.state.fieldValue ) } />
       </CouponUI>
     );
    }

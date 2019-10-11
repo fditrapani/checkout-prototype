@@ -24,6 +24,7 @@ const CalltoAction = styled.button`
 		box-shadow: 0 ${ props => props.borderWeight } 0 ${ props => props.rollOverBorderColour };
 		text-decoration: none;
 		color: ${ props => props.textColourHover }
+		cursor: ${ props => props.cursor }
 	}
 
 	:active {
@@ -57,13 +58,13 @@ export default class Button extends React.Component {
 				return colours.gray0;
 			case "secondary":
 				return colours.highlight;
-			case "paypal-disabled":
+			case "paypal--disabled":
 				return colours.gray0;
-			case "paypal-primary":
+			case "paypal--primary":
 				return colours.paypalGold;
-			case "apple-disabled":
+			case "apple--disabled":
 				return colours.gray0;
-			case "apple-primary":
+			case "apple--primary":
 				return colours.black;
 			default:
 				return "none"
@@ -78,13 +79,13 @@ export default class Button extends React.Component {
 				return colours.primary;
 			case "disabled":
 				return colours.gray0;			
-			case "paypal-disabled":
+			case "paypal--disabled":
 				return colours.gray0;
-			case "paypal-primary":
+			case "paypal--primary":
 				return colours.paypalGoldHover;
-			case "apple-disabled":
+			case "apple--disabled":
 				return colours.gray0;
-			case "apple-primary":
+			case "apple--primary":
 				return colours.gray80;
 			case "text-button":
 				return "none";
@@ -101,13 +102,13 @@ export default class Button extends React.Component {
 				return colours.blue80;
 			case "disabled":
 				return colours.gray20;
-			case "paypal-disabled":
+			case "paypal--disabled":
 				return colours.gray0;
-			case "paypal-primary":
+			case "paypal--primary":
 				return colours.paypalGold
-			case "apple-disabled":
+			case "apple--disabled":
 				return colours.gray0;
-			case "apple-primary":
+			case "apple--primary":
 				return colours.black;
 			default:
 				return colours.highlight;
@@ -122,13 +123,13 @@ export default class Button extends React.Component {
 				return colours.pink70;
 			case "disabled":
 				return colours.gray20;
-			case "paypal-disabled":
+			case "paypal--disabled":
 				return colours.gray0;
-			case "paypal-primary":
+			case "paypal--primary":
 				return colours.paypalGoldHover;
-			case "apple-disabled":
+			case "apple--disabled":
 				return colours.gray0;
-			case "apple-primary":
+			case "apple--primary":
 				return colours.gray80;
 			default:
 				return colours.blue80;
@@ -182,8 +183,9 @@ export default class Button extends React.Component {
 			  onClick={ this.props.onClick } 
 			  imageOpacity={ this.props.state.includes( "primary" ) ? 1 : "0.5" }
 			  imageGrayScale={ this.props.state.includes( "primary" ) ? 0 : 100 }
-			  imageWhite={ this.props.state === "apple-primary"  ? "100%" : 0 }
-			  className={ this.props.className } >
+			  imageWhite={ this.props.state === "apple--primary"  ? "100%" : 0 }
+			  className={ this.props.className } 
+			  cursor={ this.props.state.includes( "disabled" ) ? "not-allowed" : "pointer" } >
 			 	  { this.props.label }
 
 			 	  { this.props.content }
