@@ -228,7 +228,6 @@ const DomainRegistrationLabelUI = styled.label`
 const DomainRegistrationCheckboxUI = styled.input`
   margin-right: 5px;
   opacity: 0;
-
   
   :checked + label:before {
     background: ${ colours.highlight };
@@ -245,7 +244,6 @@ const DomainRegistrationCheckboxUI = styled.input`
     border-right: 2px solid ${ colours.white };
     border-bottom: 2px solid ${ colours.white };
     transform: rotate(45deg);
-
   }
 `;
 
@@ -258,10 +256,17 @@ const ReviewSummaryLineItemUI = styled(GridRow)`
   font-weight: ${ props => props.fontWeight };
   font-size: ${ props => props.fontSize };
   color: ${ props => props.color };
+  padding: ${ props => props.padding };
+  border-bottom: ${ props => props.borderWidth } solid ${ colours.gray5 }
+
+  :first-child {
+    border-top: ${ props => props.borderWidth } solid ${ colours.gray5 }
+  }
 `;
 
 const ReviewSummaryPriceUI = styled.span`
   text-align: right;
+  font-size: ${ props => props.fontSize };
 `;
 
 const StrikeThrough = styled.span`
@@ -277,6 +282,15 @@ const AddCouponButtonUI = styled(Button)`
     cursor: ${ props => props.cursor };  
   }  
 `;
+
+const ProductNameUI = styled.span`
+  font-size: ${ props => props.fontSize };
+`
+
+const SummaryQualifier = styled.span`
+  color: ${ colours.green50 };
+  font-size: 14px;
+`
 
 // END CSS
 //////////////////////////////////////
@@ -346,7 +360,7 @@ export default class App extends React.Component {
           name: "yourdomain.tld",
           id: "domain-product",
           price: 17,
-          discount: 0,
+          discount: "0",
           qualifier: "Free for one year!",
           type: "domain",
         }
@@ -973,7 +987,7 @@ export default class App extends React.Component {
     );
   }
 
-  renderReviewSummary = () => {
+  renderCart = ( isFullView ) => {
     const products = this.state.productsInCart;
     const cart = this.state.cartSummary;
 
@@ -981,35 +995,54 @@ export default class App extends React.Component {
       <div>
         <ReviewSummaryProductsUI>
           { Object.values( products ).map( ( key ) => (
-              <ReviewSummaryLineItemUI gap="4%" columnWidths="80% 16%" key={ key.id }>
-                <span>{ key.name }</span>
-                
-                { key.discount ? 
-                  ( <ReviewSummaryPriceUI>
-                      <StrikeThrough>${ key.price }</StrikeThrough> { key.discount } 
-                    </ReviewSummaryPriceUI>
-                  ) :
-                  ( 
-                    <ReviewSummaryPriceUI>
-                      { key.type === "coupon" && "-"}${ key.price }
-                    </ReviewSummaryPriceUI> 
-                  )
-                }
+              <ReviewSummaryLineItemUI 
+                gap="4%" columnWidths="80% 16%" 
+                key={ key.id }
+                padding={ isFullView ? "24px 0" : "0" }
+                borderWidth={ isFullView ? "1px" : "0" } >
+                  <span>
+                    { key.name } { isFullView && (<SummaryQualifier>{key.qualifier} </SummaryQualifier>) }
+                  </span>
+                  
+                  { key.discount ? 
+                    ( <ReviewSummaryPriceUI>
+                        <StrikeThrough>${ key.price }</StrikeThrough> { key.discount } 
+                      </ReviewSummaryPriceUI>
+                    ) :
+                    ( 
+                      <ReviewSummaryPriceUI>
+                        { key.type === "coupon" && "-"}${ key.price }
+                      </ReviewSummaryPriceUI> 
+                    )
+                  }
               </ReviewSummaryLineItemUI>
             ) ) }
         </ReviewSummaryProductsUI>
 
+        {/*CART VIEW==============================================*/}
         { Object.values( cart ).slice(0).reverse().map( ( key ) => (
             <ReviewSummaryLineItemUI 
               gap="4%" columnWidths="80% 16%" key={ key.id }
               fontWeight={ key.isTotal ? "600" : "400"  } 
               fontSize={ key.isTotal ? "16px" : "14px" } 
-              color={ key.isTotal ? colours.black : colours.gray80 }>
-                <span>
-                  { key.name } { ( key.isTotal && ! this.state.isCouponUsed ) && <AddCouponButtonUI label="Add coupon" state="text-button" opacity={ this.state.isCouponVisible ? 0 : 1 } cursor={ this.state.isCouponVisible ? "default" : "pointer" } onClick={ this.showSummaryCouponField } /> }
-                </span>             
+              color={ key.isTotal ? colours.black : colours.gray80 } 
+              borderWidth="0">
+                
+                <div>
+                    <ProductNameUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
+                      { key.name }
+                    </ProductNameUI> 
+
+                    { ( key.isTotal && ! this.state.isCouponUsed ) && 
+                      <AddCouponButtonUI 
+                        label="Add coupon" 
+                        state="text-button" 
+                        opacity={ this.state.isCouponVisible ? 0 : 1 } 
+                        cursor={ this.state.isCouponVisible ? "default" : "pointer" } 
+                        onClick={ this.showSummaryCouponField } /> }  
+                </div>
               
-                <ReviewSummaryPriceUI>
+                <ReviewSummaryPriceUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
                   ${ key.price }
                 </ReviewSummaryPriceUI> 
 
@@ -1121,8 +1154,8 @@ export default class App extends React.Component {
               title="Review your order"
               status={ this.state.reviewStatus }
               borderWidth={ 0 } 
-              content={ this.renderReview() }
-              summary={ this.renderReviewSummary() } />
+              content={ this.renderCart( true ) }
+              summary={ this.renderCart( false ) } />
 
           </LeftColumn>
           <RightColumn>
