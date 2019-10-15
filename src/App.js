@@ -249,7 +249,7 @@ const DomainRegistrationCheckboxUI = styled.input`
   }
 
   :focus + label:before {
-    box-shadow: 0 0 7px #759BEE;
+    box-shadow: 0 0 7px ${ colours.outline };
   }
 `;
 
@@ -836,7 +836,8 @@ export default class App extends React.Component {
                 error={ this.state.billingCityError }
                 errorMessage="This is a required field"
                 value={ this.state.billingCity }
-                onChange={ this.checkBillingFields } />
+                onChange={ this.checkBillingFields } 
+                tabIndex={ this.state.showExtendedBillingFields ? "" : "-1" } />
           <Field 
                 id="billingState"
                 type="Text"
@@ -844,7 +845,8 @@ export default class App extends React.Component {
                 error={ this.state.billingStateError }
                 errorMessage="This is a required field"
                 value={ this.state.billingState }
-                onChange={ this.checkBillingFields } />
+                onChange={ this.checkBillingFields } 
+                tabIndex={ this.state.showExtendedBillingFields ? "" : "-1" } />
         </FormFieldGrid>
         <FormFieldGrid gap="4%"
                 columnWidths="48% 48%">
@@ -855,7 +857,8 @@ export default class App extends React.Component {
                 error={ this.state.billingZipError }
                 errorMessage="This is a required field"
                 value={ this.state.billingZip }
-                onChange={ this.checkBillingFields } />
+                onChange={ this.checkBillingFields } 
+                tabIndex={ this.state.showExtendedBillingFields ? "" : "-1" } />
           <Field 
                 id="billingCountry"
                 type="Text"
@@ -863,7 +866,8 @@ export default class App extends React.Component {
                 error={ this.state.billingCountryError }
                 errorMessage="This is a required field"
                 value={ this.state.billingCountry }
-                onChange={ this.checkBillingFields } />
+                onChange={ this.checkBillingFields } 
+                tabIndex={ this.state.showExtendedBillingFields ? "" : "-1" } />
         </FormFieldGrid>
       </ExtendedBillingFieldsUI>
     )

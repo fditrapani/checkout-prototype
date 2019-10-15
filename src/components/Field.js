@@ -132,7 +132,8 @@ export default class Field extends React.Component {
             onChange={ this.fieldOnChange } 
             onBlur={ this.onBlurField }
             placeholder={ this.props.placeholder }
-            rightPadding={ this.returnRightPadding() } />
+            rightPadding={ this.returnRightPadding() }
+            tabIndex = {this.props.tabIndex } />
           { this.renderIcon() }
         </InputWrapper>
         { this.renderDescription() }
