@@ -14,6 +14,7 @@ const Label = styled.label`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	box-shadow: ${ props => props.outline };
 
 	:first-child {
 		margin: 0;
@@ -79,6 +80,14 @@ const LabelText = styled.span`
 `;
 
 export default class RadioButton extends React.Component {
+	constructor() {
+	  super();
+
+	  this.state = {
+	    isFocused: false,
+	  }
+	}
+
 	getBorderColour = ( checked ) => {
 		return ( checked ) ? colours.highlight : colours.gray20;
 	}
@@ -105,18 +114,36 @@ export default class RadioButton extends React.Component {
 		return null;
 	}
 
+	getOutline = () => {
+		if( this.state.isFocused ) {
+			return "0 0 7px #759BEE"
+		}
+
+		return "none"
+	}
+
+	changeFocus = ( value ) => {
+		this.setState({
+			isFocused: value,
+		});
+	}
+
 	render() {
+
 		return(
 			<Label 
 				borderColour={ this.getBorderColour( this.props.checked ) }
 				borderWidth={ this.getBorderWith( this.props.checked ) }
-				grayscale={ this.getgrayscaleValue() }>
+				grayscale={ this.getgrayscaleValue() }
+				outline={ this.getOutline() } >
 				<span>
 					<Radio 
 						type="radio" 
 						value={ this.props.value } 
 						checked={ this.props.checked } 
-						onChange={ this.props.onChange } />
+						onChange={ this.props.onChange }
+						onFocus={ () => { this.changeFocus( true ) } }
+						onBlur={ () => { this.changeFocus( false ) } } />
 					<LabelText 
 						radioBorderWidth={ this.getRadioBorderWith( this.props.checked ) }
 						borderColour={ this.getBorderColour( this.props.checked ) }	>
