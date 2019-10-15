@@ -247,6 +247,10 @@ const DomainRegistrationCheckboxUI = styled.input`
     border-bottom: 2px solid ${ colours.white };
     transform: rotate(45deg);
   }
+
+  :focus + label:before {
+    box-shadow: 0 0 7px #759BEE;
+  }
 `;
 
 const ReviewSummaryProductsUI = styled.div`
