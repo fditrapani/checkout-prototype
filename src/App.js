@@ -1099,7 +1099,7 @@ export default class App extends React.Component {
             ) ) }
           </ReviewSummaryCartUI>
 
-          { this.renderCouponField() }
+          { this.renderCouponField( isFullView ) }
       </div>
     )
   }
@@ -1110,9 +1110,9 @@ export default class App extends React.Component {
     });
   }
 
-  renderCouponField = () => {
+  renderCouponField = ( isFullView ) => {
     if( this.state.isCouponVisible ){
-      return <Coupon applyCoupon={ this.applyCoupon } />
+      return <Coupon applyCoupon={ this.applyCoupon } isFullView={ isFullView } />
     }
 
     return false;

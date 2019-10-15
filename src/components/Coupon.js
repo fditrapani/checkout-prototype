@@ -8,7 +8,7 @@ import { colours } from '../config/colours.js';
 
 const CouponUI = styled.div`
   border-top: 1px solid ${ colours.gray10 };
-  margin-top: 24px;
+  margin: 24px ${ props => props.marginRight } 0 0;
   padding-top: 24px;
   position: relative;
 `
@@ -72,7 +72,7 @@ export default class Coupon extends React.Component {
 
   render() {
     return (
-      <CouponUI>
+      <CouponUI marginRight={ this.props.isFullView ? "50px" : "0" }>
           <Field label="Add a coupon" placeholder="Enter your code" onChange={ this.checkFieldInput } />
           <ApplyButtonUI 
             label="Apply" 
