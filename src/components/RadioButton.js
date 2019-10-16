@@ -123,8 +123,6 @@ export default class RadioButton extends React.Component {
 	}
 
 	changeFocus = ( value ) => {
-		console.log( this.state.isFocused );
-
 		this.setState({
 			isFocused: value,
 		});

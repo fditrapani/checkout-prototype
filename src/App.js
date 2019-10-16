@@ -905,7 +905,7 @@ export default class App extends React.Component {
 
   clickPaymentButton = () => {
     if( this.state.paymentButtonStatus !== "disabled" ){
-      alert("Thank you! Come again");
+      alert("Thank you for your purchase!");
     }
   }
 
