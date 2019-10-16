@@ -812,6 +812,7 @@ export default class App extends React.Component {
               placeholder="1234 1234 1234 1234"
               value={ this.state.creditCardNumber }
               icon={ <LockIcon /> }
+              isIconVisible={ true }
               onChange={ this.checkForFieldErrors }
               error={ this.state.creditCardNumberError }
               errorMessage="This is a required field" />
