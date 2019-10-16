@@ -378,7 +378,7 @@ export default class App extends React.Component {
       billingPhoneNumber: "",
       billingErrorVisibility: false,
       billingErrorMessage: "",
-      showExtendedBillingFields: false,
+      showExtendedBillingFields: true,
       billingLocatorVisibility: true,
       productsInCart: [
         {
@@ -788,12 +788,13 @@ export default class App extends React.Component {
                 id="billingAddress"
                 type="Text"
                 label="Address"
-                icon={ <LocationIcon /> }
+                /*icon={ <LocationIcon /> }
                 iconAction={ this.returnLocationAddress }
                 isIconVisible={ this.state.billingLocatorVisibility }
+                placeholder="Find your address"*/
                 error={ this.state.billingAddressError }
                 errorMessage="This is a required field"
-                placeholder="Find your address"
+                placeholder=""
                 value={ this.state.billingAddress }
                 onChange={ this.checkForFieldErrors } />
 
