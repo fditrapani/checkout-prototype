@@ -490,6 +490,22 @@ export default class App extends React.Component {
       billingPhoneNumber: "",
       billingErrorVisibility: false,
       billingErrorMessage: "",
+      domainSummary: null,
+      domainBillingName: "",
+      domainBillingNameError: false,
+      domainBillingAddress: "",
+      domainBillingAddressError: false,
+      domainBillingCity: "",
+      domainBillingCityError: false,
+      domainBillingState: "",
+      domainBillingStateError: false,
+      domainBillingZip: "",
+      domainBillingZipError: false,
+      domainBillingCountry: "",
+      domainBillingCountryError: false,
+      domainBillingPhoneNumber: "",
+      domainBillingErrorVisibility: false,
+      domainBillingErrorMessage: "",
       showExtendedBillingFields: true,
       billingLocatorVisibility: true,
       productsInCart: [
@@ -1047,47 +1063,75 @@ export default class App extends React.Component {
           </DomainContactFieldsTitleUI>
 
           <FormField 
-                id="contactBillingName"
+                id="domainBillingName"
                 type="Text"
-                label="Name" 
-                tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+                label="Name"
+                error={ this.state.domainBillingNameError }
+                value={ this.state.domainBillingName }
+                errorMessage="This is a required field" 
+                tabIndex={ this.state.showDomainContactFields ? "" : "-1" }
+                onChange={ this.checkForFieldErrors } />
           <FormField 
-                id="contactBillingAddress"
+                id="domainBillingAddress"
                 type="Text"
-                label="Address" 
-                tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+                label="Address"
+                error={ this.state.domainBillingAddressError }
+                value={ this.state.domainBillingAddress }
+                errorMessage="This is a required field" 
+                tabIndex={ this.state.showDomainContactFields ? "" : "-1" }
+                onChange={ this.checkForFieldErrors } />
           <FormFieldGrid gap="4%"
                   columnWidths="48% 48%">
             <Field 
-                  id="contactBillingCity"
+                  id="domainBillingCity"
                   type="Text"
-                  label="City" 
-                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+                  label="City"
+                  error={ this.state.domainBillingCityError }
+                  value={ this.state.domainBillingCity }
+                  errorMessage="This is a required field" 
+                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" }
+                  onChange={ this.checkForFieldErrors } />
             <Field 
-                  id="contactBillingState"
+                  id="domainBillingState"
                   type="Text"
-                  label="State" 
-                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+                  label="State"
+                  error={ this.state.domainBillingStateError }
+                  value={ this.state.domainBillingState } 
+                  errorMessage="This is a required field"
+                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" }
+                  onChange={ this.checkForFieldErrors } />
           </FormFieldGrid>
           <FormFieldGrid gap="4%"
                   columnWidths="48% 48%">
             <Field 
-                  id="contactBillingZip"
+                  id="domainBillingZip"
                   type="Text"
-                  label="Zip Code" 
-                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+                  label="Zip Code"
+                  error={ this.state.domainBillingZipError }
+                  value={ this.state.domainBillingZip } 
+                  errorMessage="This is a required field"
+                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" }
+                  onChange={ this.checkForFieldErrors } />
             <Field 
-                  id="contactBillingCountry"
+                  id="domainBillingCountry"
                   type="Text"
-                  label="Country" 
-                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+                  label="Country"
+                  error={ this.state.domainBillingCountryError }
+                  value={ this.state.domainBillingCountry } 
+                  errorMessage="This is a required field"
+                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" }
+                  onChange={ this.checkForFieldErrors } />
           </FormFieldGrid>
 
           <FormField 
-                id="contactBillingPhone"
+                id="domainBillingPhoneNumber"
                 type="Text"
                 label="Phone number" 
-                tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+                tabIndex={ this.state.showDomainContactFields ? "" : "-1" }
+                value={ this.state.domainBillingPhoneNumber }
+                errorMessage="This is a required field"
+                placeholder="(555) 555-5555"
+                onChange={ this.checkForFieldErrors } />
 
         </DomainContactFieldsUI>
     }
