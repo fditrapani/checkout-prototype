@@ -439,6 +439,7 @@ export default class App extends React.Component {
     super();
 
     this.state = {
+      domain: "yourdomain.tld",
       paymentMethod: "apple-pay",
       paymentButtonStatus: "disabled",
       instructionalCopy: "Confirm your payment method to continue",
@@ -536,7 +537,7 @@ export default class App extends React.Component {
   launchRemoveDomainModal = () => {
     this.setState({ 
       modalTitle: "You are about to cancel your domain purchase",
-      modalCopy: "When you press Continue, we will remove the domain from your cart and your site will continue to use yourdomain.wordpress.com. ",
+      modalCopy: "When you press Continue, we will remove the domain from your cart and your site will now be available by visiting yourdomain.wordpress.com.",
       modalprimaryAction: this.removeDomainProduct,
       modalIsVisible: true,
     });
@@ -547,6 +548,7 @@ export default class App extends React.Component {
     productsInCart.splice(1,1);
     this.setState({
       modalIsVisible: false,
+      domain: "yourdomain.wordpress.com"
     })
   }
 
@@ -1351,7 +1353,7 @@ export default class App extends React.Component {
         <Container>
           <LeftColumn>
             <PageTitle>Complete your purchase</PageTitle>
-            <DomainUrl>yourdomain.tld</DomainUrl>
+            <DomainUrl>{ this.state.domain }</DomainUrl>
 
             <Step
               number="1"
