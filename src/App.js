@@ -434,6 +434,17 @@ const TermPriceUI = styled.span`
   color: ${ colours.gray50 }
 `
 
+const DomainContactFieldsUI = styled.div`
+  margin: 16px 0 24px;
+`
+
+const DomainContactFieldsTitleUI = styled.h2`
+  font-size: 16px;
+  margin: 0 0 8px;
+  font-weight: 600;
+  color: ${ colours.black }
+`
+
 // END CSS
 //////////////////////////////////////
 
@@ -527,6 +538,7 @@ export default class App extends React.Component {
       modalprimaryAction: this.closeApp,
       isCouponVisible: false,
       termDuration: "One year",
+      showDomainContactFields: false,
     };
   }
 
@@ -955,11 +967,13 @@ export default class App extends React.Component {
         </BillingFormFields>   
 
         <DomainRegistrationUI>
-          <DomainRegistrationCheckboxUI type="checkbox" id="domain-registration" name="domain-registration" defaultChecked={ true }/>
+          <DomainRegistrationCheckboxUI type="checkbox" id="domain-registration" name="domain-registration" defaultChecked={ true } onChange={ this.toggleDomainContactFieldsVisibility }/>
           <DomainRegistrationLabelUI htmlFor="domain-registration">
             Use your billing details for your domain registration contact information.
           </DomainRegistrationLabelUI>   
         </DomainRegistrationUI>
+
+        { this.renderDomainContactFields() }
 
         <Button 
           state={ this.state.paymentButtonStatus === "disabled" ? "primary" : "secondary" }
@@ -1018,6 +1032,68 @@ export default class App extends React.Component {
       </ExtendedBillingFieldsUI>
     )
   };
+
+  toggleDomainContactFieldsVisibility = () => {
+    this.setState({
+      showDomainContactFields: this.state.showDomainContactFields ? false : true
+    })
+  }
+
+  renderDomainContactFields = () => {
+    if ( this.state.showDomainContactFields ) {
+      return <DomainContactFieldsUI>
+          <DomainContactFieldsTitleUI>
+            Enter your domain registration contact information
+          </DomainContactFieldsTitleUI>
+
+          <FormField 
+                id="contactBillingName"
+                type="Text"
+                label="Name" 
+                tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+          <FormField 
+                id="contactBillingAddress"
+                type="Text"
+                label="Address" 
+                tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+          <FormFieldGrid gap="4%"
+                  columnWidths="48% 48%">
+            <Field 
+                  id="contactBillingCity"
+                  type="Text"
+                  label="City" 
+                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+            <Field 
+                  id="contactBillingState"
+                  type="Text"
+                  label="State" 
+                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+          </FormFieldGrid>
+          <FormFieldGrid gap="4%"
+                  columnWidths="48% 48%">
+            <Field 
+                  id="contactBillingZip"
+                  type="Text"
+                  label="Zip Code" 
+                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+            <Field 
+                  id="contactBillingCountry"
+                  type="Text"
+                  label="Country" 
+                  tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+          </FormFieldGrid>
+
+          <FormField 
+                id="contactBillingPhone"
+                type="Text"
+                label="Phone number" 
+                tabIndex={ this.state.showDomainContactFields ? "" : "-1" } />
+
+        </DomainContactFieldsUI>
+    }
+
+    return false
+  }
 
   checkBillingFields = ( e ) => {
     if( e.value.length > 0 ) {
