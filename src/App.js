@@ -261,7 +261,7 @@ const DomainRegistrationCheckboxUI = styled.input`
   }
 
   :focus + label:before {
-    outline: auto;
+    outline: blue auto 5px;
   }
 `;
 
@@ -282,6 +282,7 @@ const ReviewSummaryLineItemUI = styled(FlexRow)`
   padding: ${ props => props.padding };
   border-bottom: ${ props => props.borderWidth } solid ${ colours.gray5 };
   position: relative;
+  flex-wrap: wrap;
 
   :first-child {
     border-top: ${ props => props.borderWidth } solid ${ colours.gray5 }
@@ -326,6 +327,10 @@ const ReviewSummaryDeleteButtonUI = styled(Button)`
 const StrikeThrough = styled.span`
   text-decoration: line-through;
 `;
+
+const GreenText = styled.span`
+ color: ${ colours.green50 }
+`
 
 const AddCouponButtonUI = styled(Button)`
   display: inline-block;
@@ -431,6 +436,20 @@ const FeaturedProductListItemUI = styled.li`
 
 `
 
+const SummaryRadioButtonWrapperUi = styled.div`
+  flex-basis: 100%;
+  width: 100%;
+  margin-top: 16px;
+`
+const TermPriceLabelUI = styled.span`
+  display: inline-block;
+  width: 90px;
+`
+
+const TermPriceUI = styled.span`
+  color: ${ colours.gray50 }
+`
+
 // END CSS
 //////////////////////////////////////
 
@@ -492,9 +511,10 @@ export default class App extends React.Component {
               price: 60,
             },
             2: {
-              label: "Two year",
+              label: "Two years",
               price: 120,
-              discount: 10
+              discount: 10,
+              discountedPrice: 108,
             }
           }
         },
@@ -522,6 +542,7 @@ export default class App extends React.Component {
       modalCopy: "When you press Continue, we will take you back to your site and save your cart so you can complete your purchase later.",
       modalprimaryAction: this.closeApp,
       isCouponVisible: false,
+      termDuration: "One year",
     };
   }
 
@@ -1201,7 +1222,9 @@ export default class App extends React.Component {
                     )
                   }
 
-                  { isFullView && key.deletable && 
+                  { ( key.duration && isFullView ) && this.renderTermDurations( key.duration ) }
+
+                  { ( isFullView && key.deletable ) && 
                     <ReviewSummaryDeleteButtonUI 
                       label={ <DeleteIcon state="borderless" /> }
                       onClick={ key.deleteAction } /> 
@@ -1249,6 +1272,39 @@ export default class App extends React.Component {
     )
   }
 
+  renderTermDurations = ( durations ) => {
+    return(
+      <SummaryRadioButtonWrapperUi>
+        { Object.values( durations ).map( ( key ) => (
+          <RadioButton 
+            key={ key.label }
+            checked={ this.state.termDuration === key.label }
+            onChange={ () => { this.changeTermDuration( key.label, ( key.discountedPrice ? key.discountedPrice : key.price ) ) } }
+            label={ 
+              <FlexRow>
+                <TermPriceLabelUI>{ key.label }</TermPriceLabelUI>
+                <TermPriceUI>${ key.discountedPrice ? ( 
+                  <span>{ key.discountedPrice } <StrikeThrough>${key.price}</StrikeThrough> <GreenText>Save 10%</GreenText> </span>  
+                  ) : key.price }</TermPriceUI>
+              </FlexRow>
+            } />
+        ) ) }        
+      </SummaryRadioButtonWrapperUi>
+    );
+  }
+
+  changeTermDuration = ( label, price ) => {
+    let productsArray = this.state.productsInCart;
+    let total = this.state.cartSummary;
+
+    total[0].price = ( ( total[0].price - productsArray[0].price ) + price ).toFixed(2);
+    productsArray[0].price = price;
+
+    this.setState({
+      termDuration: label
+    });
+  }
+
   showSummaryCouponField = () => {
     this.setState({
       isCouponVisible: true
@@ -1275,9 +1331,9 @@ export default class App extends React.Component {
       deletable: false,
     })
 
-    total[0].price === 65.15 ? 
+    total[0].price % 1 != 0 ? 
       total[0].price = (total[0].price - 20).toFixed(2) :
-      total[0].price = total[0].price -= 20;
+      total[0].price = total[0].price - 20;
 
     this.setState({
       isCouponVisible: false,
@@ -1395,7 +1451,7 @@ export default class App extends React.Component {
               <FeaturedProductListUI>
                 <FeaturedProductListItemUI>Free custom domain for a year</FeaturedProductListItemUI>
                 <FeaturedProductListItemUI>Live chat and email support</FeaturedProductListItemUI>
-                <FeaturedProductListItemUI>30-day money back gaurentee</FeaturedProductListItemUI>
+                <FeaturedProductListItemUI>30-day money back guarantee</FeaturedProductListItemUI>
               </FeaturedProductListUI>
             </FeaturedProductUI>
           </RightColumn>

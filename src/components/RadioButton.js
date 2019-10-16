@@ -116,7 +116,7 @@ export default class RadioButton extends React.Component {
 
 	getOutline = () => {
 		if( this.state.isFocused ) {
-			return "auto";
+			return "blue auto 5px";
 		}
 
 		return "0"
