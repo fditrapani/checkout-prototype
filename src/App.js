@@ -483,6 +483,8 @@ export default class App extends React.Component {
           id: "plan-product",
           price: 60,
           type: "plan",
+          deleteAction: this.launchRemovePlanModal,
+          deletable: true,
           duration: {
             1: {
               label: "One year",
@@ -501,6 +503,8 @@ export default class App extends React.Component {
           price: 17,
           discount: "0",
           qualifier: "Free for one year!",
+          deleteAction: this.launchRemoveDomainModal,
+          deletable: true,
           type: "domain",
         }
       ],
@@ -518,6 +522,32 @@ export default class App extends React.Component {
       modalprimaryAction: this.closeApp,
       isCouponVisible: false,
     };
+  }
+
+  launchRemovePlanModal = () => {
+    this.setState({ 
+      modalTitle: "You are about to cancel your plan purchase",
+      modalCopy: "When you press Continue, we will remove your plan from your cart and your site will continue to run on the Free plan. Since your domain requires a plan to run, you will have no items in your cart and we also take you back to your site.",
+      modalprimaryAction: this.closeApp,
+      modalIsVisible: true,
+    });
+  }
+
+  launchRemoveDomainModal = () => {
+    this.setState({ 
+      modalTitle: "You are about to cancel your domain purchase",
+      modalCopy: "When you press Continue, we will remove the domain from your cart and your site will continue to use yourdomain.wordpress.com. ",
+      modalprimaryAction: this.removeDomainProduct,
+      modalIsVisible: true,
+    });
+  }
+
+  removeDomainProduct = () => {
+    const productsInCart = this.state.productsInCart;
+    productsInCart.splice(1,1);
+    this.setState({
+      modalIsVisible: false,
+    })
   }
 
   showSectionBasedOnUrl = () => {
@@ -1169,7 +1199,11 @@ export default class App extends React.Component {
                     )
                   }
 
-                  { isFullView && <ReviewSummaryDeleteButtonUI label={ <DeleteIcon state="borderless" /> } /> }
+                  { isFullView && key.deletable && 
+                    <ReviewSummaryDeleteButtonUI 
+                      label={ <DeleteIcon state="borderless" /> }
+                      onClick={ key.deleteAction } /> 
+                  }
               </ReviewSummaryLineItemUI>
             ) ) }
         </ReviewSummaryProductsUI>
@@ -1236,6 +1270,7 @@ export default class App extends React.Component {
       id: "coupon-product",
       price: 20,
       type: "coupon",
+      deletable: false,
     })
 
     total[0].price === 65.15 ? 
