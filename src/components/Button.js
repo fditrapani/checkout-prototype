@@ -7,7 +7,7 @@ import { colours } from '../config/colours.js';
 const CalltoAction = styled.button`
 	display: block;
 	width: ${ props => props.width };
-	font-size: 1em;
+	font-size: 16px;
 	border-radius: ${ props => props.borderRadius };
 	padding: ${ props => props.padding };
 	background: ${ props => props.background };

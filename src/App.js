@@ -317,7 +317,7 @@ const StrikeThrough = styled.span`
 
 const AddCouponButtonUI = styled(Button)`
   display: inline-block;
-  margin-left: 5px;
+  margin-left: 10px;
   opacity: ${ props => props.opacity };
 
   :hover{
@@ -332,6 +332,30 @@ const ProductNameUI = styled.span`
 const SummaryQualifier = styled.span`
   color: ${ colours.green50 };
   font-size: 14px;
+`
+
+const TermsWrapperUI = styled.div`
+  margin: 24px 50px 0 0;
+  background: ${ colours.gray0 };
+  padding: 24px;
+`
+
+const TermsParagraphUI = styled.p`
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: ${ colours.gray80 }
+
+  a {
+    color: ${ colours.gray80 }
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  a:active {
+    text-decoration: underline;
+  }
 `
 
 // END CSS
@@ -750,7 +774,8 @@ export default class App extends React.Component {
             label={ (<img src={ applePayURL } alt="Close" />) }
             state={ "apple--" + this.state.paymentButtonStatus }
             width="100%"
-            type="apple-pay" />
+            type="apple-pay"
+            onClick={ this.clickPaymentButton } />
         )
       case "paypal":
         return (
@@ -758,7 +783,8 @@ export default class App extends React.Component {
             label={ (<img src={ paypalURL } alt="Close" />) }
             state={ "paypal--" + this.state.paymentButtonStatus }
             width="100%"
-            type="paypal" />
+            type="paypal"
+            onClick={ this.clickPaymentButton } />
         )
       default:
         return (
@@ -766,8 +792,15 @@ export default class App extends React.Component {
             label="Pay $60"
             state={ this.state.paymentButtonStatus }
             width="100%"
-            type="credit-card" />
+            type="credit-card"
+            onClick={ this.clickPaymentButton } />
         )
+    }
+  }
+
+  clickPaymentButton = () => {
+    if( this.state.paymentButtonStatus != "disabled" ){
+      alert("Thank you! Come again");
     }
   }
 
@@ -1101,6 +1134,8 @@ export default class App extends React.Component {
           </ReviewSummaryCartUI>
 
           { this.renderCouponField( isFullView ) }
+
+          { this.renderTerms( isFullView ) }
       </div>
     )
   }
@@ -1138,6 +1173,34 @@ export default class App extends React.Component {
       isCouponVisible: false,
       isCouponUsed: true,
     })
+  }
+
+  renderTerms = ( isFullView ) => {
+    if ( isFullView ) {
+      return (
+        <TermsWrapperUI>
+          { this.renderPaymentButton() }
+
+          <TermsParagraphUI>
+            <strong>By checking out:</strong> you agree to our <a href="#" onClick={ this.fakeClick } >Terms of Service</a> and authorize your payment method to be charged on a recurring basis until you cancel, which you can do at any time. You understand <a href="#" onClick={ this.fakeClick } >how your subscription works</a> and <a href="#" onClick={ this.fakeClick } >how to cancel</a>.
+          </TermsParagraphUI>
+          <TermsParagraphUI>
+            You agree to the <a href="#" onClick={ this.fakeClick } >Domain Registration Agreement</a> for domainname.com.
+          </TermsParagraphUI>
+          <TermsParagraphUI>
+            You understand that <a href="#" onClick={ this.fakeClick } >domain name refunds</a> are limited to 96 hours after registration. Refunds of paid plans will deduct the standard cost of any domain name registered within a plan.
+          </TermsParagraphUI>
+        </TermsWrapperUI>
+      )
+    }
+
+    return null
+  }
+
+  fakeClick = (e) => {
+    e.preventDefault();
+
+    return null;
   }
 
   initiateCloseApp = () => {
