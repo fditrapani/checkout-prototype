@@ -109,10 +109,21 @@ const DomainUrl = styled.p`
 `
 
 const RightColumn = styled(Column)`
+  padding: 0 16px 32px 50px;
+
   @media( ${ breakpoints.tabletUp } ) {
     max-width: 354px;
+    padding: 24px;
   }
 `;
+
+const PayBoxUi = styled.div`
+  display: ${ props => props.display }
+
+  @media( ${ breakpoints.tabletUp } ) {
+    display: block;
+  }
+`
 
 const InstructionalCopy = styled.p`
   font-size: 14px;
@@ -363,20 +374,22 @@ const FeaturedProductUI = styled.div`
   position: relative;
   padding-top: 16px;
   margin-top: 16px;
+  display: none;
 
   @media( ${ breakpoints.tabletUp } ) {
     padding-top: 24px;
     margin-top: 24px;
+    display: block;
   }
 
   :before {
     display: block;
-    width: calc( 100% + 32px);
+    width: 100%;
     height: 1px;
     background: ${ colours.gray5 };
     content: '';
     position: absolute;
-    left: -16px;
+    left: 0;
     top: 0;
 
     @media( ${ breakpoints.tabletUp } ) {
@@ -1333,8 +1346,10 @@ export default class App extends React.Component {
 
           </LeftColumn>
           <RightColumn>
-            { this.renderPaymentButton() }
-            <InstructionalCopy>{ this.state.instructionalCopy }</InstructionalCopy>
+            <PayBoxUi display={ this.state.paymentButtonStatus === "primary" && this.state.reviewStatus === "content" ? "none" : "block" }>
+              { this.renderPaymentButton() }
+              <InstructionalCopy>{ this.state.instructionalCopy }</InstructionalCopy>
+            </PayBoxUi> 
 
             <FeaturedProductUI>
               <FeaturedProductTitleUI>WordPress.com Personal</FeaturedProductTitleUI>
