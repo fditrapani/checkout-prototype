@@ -12,7 +12,7 @@ import FlexRow from './components/FlexRow';
 import ErrorMessage from './components/ErrorMessage';
 import CloseIcon from './components/CloseIcon';
 import LockIcon from './components/LockIcon';
-import LocationIcon from './components/LocationIcon';
+//import LocationIcon from './components/LocationIcon';
 import Modal from './components/Modal';
 import VisaLogo from './components/VisaLogo';
 import DeleteIcon from './components/DeleteIcon';
@@ -28,6 +28,7 @@ import applePayURL from './images/apple-pay.svg';
 import paypalURL from './images/paypal.svg';
 import creditCardURL from './images/credit-cards.svg';
 import cvvURL from './images/cvv.svg';
+import completedURL from './images/completed.svg';
 
 const Header = styled.header`
   background: ${ colours.highlight };
@@ -356,6 +357,65 @@ const TermsParagraphUI = styled.p`
   a:active {
     text-decoration: underline;
   }
+`
+
+const FeaturedProductUI = styled.div`
+  position: relative;
+  padding-top: 16px;
+  margin-top: 16px;
+
+  @media( ${ breakpoints.tabletUp } ) {
+    padding-top: 24px;
+    margin-top: 24px;
+  }
+
+  :before {
+    display: block;
+    width: calc( 100% + 32px);
+    height: 1px;
+    background: ${ colours.gray5 };
+    content: '';
+    position: absolute;
+    left: -16px;
+    top: 0;
+
+    @media( ${ breakpoints.tabletUp } ) {
+      left: -24px;
+      width: calc( 100% + 48px);
+    }
+  }
+`
+
+const FeaturedProductTitleUI = styled.h2`
+  margin: 0;
+  font-weight: 400;
+  font-size: 16px;
+  color: ${ colours.black }
+`
+
+const FeaturedProductPriceUI = styled.p`
+  font-size: 14px;
+  color: ${ colours.gray50 }
+  margin: 0 0 16px;
+`
+
+const FeaturedProductListUI = styled.ul`
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+`
+
+const FeaturedProductListItemUI = styled.li`
+  font-size: 14px;
+  margin: 8px 0 0;
+  padding-left: 25px;
+  list-style: none;
+  background: url( ${ completedURL } ) 0 50% no-repeat;
+
+  :first-child {
+    margin-top: 0;
+  }
+
 `
 
 // END CSS
@@ -799,7 +859,7 @@ export default class App extends React.Component {
   }
 
   clickPaymentButton = () => {
-    if( this.state.paymentButtonStatus != "disabled" ){
+    if( this.state.paymentButtonStatus !== "disabled" ){
       alert("Thank you! Come again");
     }
   }
@@ -1182,13 +1242,13 @@ export default class App extends React.Component {
           { this.renderPaymentButton() }
 
           <TermsParagraphUI>
-            <strong>By checking out:</strong> you agree to our <a href="#" onClick={ this.fakeClick } >Terms of Service</a> and authorize your payment method to be charged on a recurring basis until you cancel, which you can do at any time. You understand <a href="#" onClick={ this.fakeClick } >how your subscription works</a> and <a href="#" onClick={ this.fakeClick } >how to cancel</a>.
+            <strong>By checking out:</strong> you agree to our <a href="https://google.com" onClick={ this.fakeClick } >Terms of Service</a> and authorize your payment method to be charged on a recurring basis until you cancel, which you can do at any time. You understand <a href="https://google.com" onClick={ this.fakeClick } >how your subscription works</a> and <a href="https://google.com" onClick={ this.fakeClick } >how to cancel</a>.
           </TermsParagraphUI>
           <TermsParagraphUI>
-            You agree to the <a href="#" onClick={ this.fakeClick } >Domain Registration Agreement</a> for domainname.com.
+            You agree to the <a href="https://google.com" onClick={ this.fakeClick } >Domain Registration Agreement</a> for domainname.com.
           </TermsParagraphUI>
           <TermsParagraphUI>
-            You understand that <a href="#" onClick={ this.fakeClick } >domain name refunds</a> are limited to 96 hours after registration. Refunds of paid plans will deduct the standard cost of any domain name registered within a plan.
+            You understand that <a href="https://google.com" onClick={ this.fakeClick } >domain name refunds</a> are limited to 96 hours after registration. Refunds of paid plans will deduct the standard cost of any domain name registered within a plan.
           </TermsParagraphUI>
         </TermsWrapperUI>
       )
@@ -1275,6 +1335,17 @@ export default class App extends React.Component {
           <RightColumn>
             { this.renderPaymentButton() }
             <InstructionalCopy>{ this.state.instructionalCopy }</InstructionalCopy>
+
+            <FeaturedProductUI>
+              <FeaturedProductTitleUI>WordPress.com Personal</FeaturedProductTitleUI>
+              <FeaturedProductPriceUI>$60 per year</FeaturedProductPriceUI>
+
+              <FeaturedProductListUI>
+                <FeaturedProductListItemUI>Free custom domain for a year</FeaturedProductListItemUI>
+                <FeaturedProductListItemUI>Live chat and email support</FeaturedProductListItemUI>
+                <FeaturedProductListItemUI>30-day money back gaurentee</FeaturedProductListItemUI>
+              </FeaturedProductListUI>
+            </FeaturedProductUI>
           </RightColumn>
         </Container>
       </div>
