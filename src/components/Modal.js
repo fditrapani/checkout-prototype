@@ -102,8 +102,8 @@ export default class Modal extends React.Component {
             <ModalTitleUI>{ this.props.title }</ModalTitleUI>
             <ModalCopyUI>{ this.props.copy }</ModalCopyUI>
             <ActionButtonsUI>
-              <Button label="Cancel" onClick={ this.closeModal } />
-              <Button label="Continue" state="primary" onClick={ this.props.primaryAction }/>
+              <Button label="Cancel" onClick={ this.closeModal } tabIndex="2" />
+              <Button label="Continue" state="primary" onClick={ this.props.primaryAction } tabIndex="3" />
             </ActionButtonsUI>
           </ModalContentUI>
       </ModalUi>

@@ -14,7 +14,7 @@ const Label = styled.label`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	box-shadow: ${ props => props.outline };
+	outline: ${ props => props.outline };
 
 	:first-child {
 		margin: 0;
@@ -116,13 +116,15 @@ export default class RadioButton extends React.Component {
 
 	getOutline = () => {
 		if( this.state.isFocused ) {
-			return "0 0 7px " + colours.outline;
+			return "auto";
 		}
 
-		return "none"
+		return "0"
 	}
 
 	changeFocus = ( value ) => {
+		console.log( this.state.isFocused );
+
 		this.setState({
 			isFocused: value,
 		});

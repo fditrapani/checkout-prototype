@@ -249,7 +249,7 @@ const DomainRegistrationCheckboxUI = styled.input`
   }
 
   :focus + label:before {
-    box-shadow: 0 0 7px ${ colours.outline };
+    outline: auto;
   }
 `;
 
@@ -1169,7 +1169,7 @@ export default class App extends React.Component {
           primaryAction={ this.state.modalprimaryAction } />
 
         <Header>
-          <TransparentButton onClick={ this.initiateCloseApp } >
+          <TransparentButton onClick={ this.initiateCloseApp } tabIndex="1 " >
             <CloseIcon />
           </TransparentButton>
           <Logo src={ logoURL } alt="WordPress.com" /> 
