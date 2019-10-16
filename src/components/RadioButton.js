@@ -12,6 +12,7 @@ const Label = styled.label`
 	box-sizing: border-box;
 	width: 100%;
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: center;
 	outline: ${ props => props.outline };
@@ -151,6 +152,8 @@ export default class RadioButton extends React.Component {
 					</LabelText>
 				</span>
 					{ this.renderSupportingImage() }
+
+					{ this.props.children }
 			</Label>
 		)
 	}

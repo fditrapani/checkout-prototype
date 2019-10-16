@@ -136,35 +136,19 @@ const RadioButtons = styled.div`
 `;
 
 const CreditCardFields = styled.div`
-  margin-top: -3px;
-  padding: 16px 14px 20px;
-  background: ${ colours.white };
   position: relative;
-  z-index: 11;
-
-  :before {
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    content: "";
-    border: 3px solid ${ colours.highlight };
-    border-top: 0;
-    border-radius: 0 0 3px 3px
-    box-sizing: border-box;
-  }
+  margin-top: 16px;
+  padding-top: 16px;
 
   :after {
     display: block;
-    width: calc( 100% - 6px );
+    width: calc( 100% + 22px );
     height: 1px;
     content:"";
     background: ${ colours.gray5 }
     position: absolute;
     top: 0;
-    left: 3px;
+    left: -11px;
     z-index: 12;
   }
 `
@@ -778,10 +762,11 @@ export default class App extends React.Component {
             value="credit-card"
             checked={ this.state.paymentMethod === "credit-card"  }
             imageURL={ creditCardURL }
-            onChange={ this.changePaymentMethod } />
-            
-          { this.renderCreditCardFields() }
+            onChange={ this.changePaymentMethod } >
 
+            { this.renderCreditCardFields() }
+          </RadioButton>
+            
           <RadioButton 
             label="Paypal" 
             value="paypal"
@@ -1332,7 +1317,7 @@ export default class App extends React.Component {
       deletable: false,
     })
 
-    total[0].price % 1 != 0 ? 
+    total[0].price % 1 !== 0 ? 
       total[0].price = (total[0].price - 20).toFixed(2) :
       total[0].price = total[0].price - 20;
 
