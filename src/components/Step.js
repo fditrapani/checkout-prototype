@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 //Compontents
 import CheckIcon from './CheckIcon.js';
@@ -79,7 +79,21 @@ const StepTitle = styled.span`
 const Content = styled.div`
   color: ${ colours.gray80 };
   padding-left: 35px;
-  display: ${ props => props.display };
+  //display: ${ props => props.display };
+  height: ${ props => props.height };
+  opacity: ${ props => props.opacity };
+  transition: height 0.4s ease, opacity 0.2s ease;
+  overflow: hidden;
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 `;
 
 const Summary = styled.div`
@@ -88,9 +102,41 @@ const Summary = styled.div`
   display: ${ props => props.display };
   line-height: 1.2em;
   font-size: 14px;
+  animation: ${ fadeIn } 0.1s 0.2s ease-out;
+  animation-fill-mode: backwards;
+`;
+
+const InnerContentWrapperUI = styled.div`
+  padding-bottom: 4px;
 `;
 
 export default class Step extends React.Component {
+  constructor( props ) {
+    super( props );
+
+    this.state = {
+      innerContentHeight: 0,
+    }
+    
+    this.innerContentWrapper = React.createRef();
+  }
+
+  componentDidMount() {
+    this.setState({
+      innerContentHeight: this.innerContentWrapper.current.clientHeight,
+    })
+  }
+
+  componentDidUpdate( prevProps, prevState ) {
+    const height = this.innerContentWrapper.current.clientHeight;
+
+    if( prevState && prevState.innerContentHeight !== height ) {
+      this.setState({
+        innerContentHeight: height,
+      })
+    }
+  }
+
   static defaultProps = {
     borderWidth: "1px",
   };
@@ -136,6 +182,12 @@ export default class Step extends React.Component {
     }
   }
 
+  returnInnerContentHeight = () => {
+    if( this.innerContentWrapper.current ) {
+      console.log( this.innerContentWrapper.current.clientHeight );
+    }
+  }
+
   renderStepNumberContent = () => {
     return ( this.props.status === "completed" ) ? <CheckIcon /> : this.props.number;
   }
@@ -158,6 +210,7 @@ export default class Step extends React.Component {
   }
 
   render() {
+
     return (
       <StepWrapper borderWidth={ this.props.borderWidth }>
         <Title>
@@ -175,8 +228,13 @@ export default class Step extends React.Component {
             { this.renderEditButton() }
         </Title>
 
-        <Content display={ ( this.props.status === "content" ) ? "block" : "none" }>
-          <div>{ this.props.content }</div>
+        <Content 
+          display={ ( this.props.status === "content" ) ? "block" : "none" }
+          height={ ( this.props.status === "content" ) ? this.state.innerContentHeight + "px" : 0 }
+          opacity={ ( this.props.status === "content" ) ? 1 : 0 } >
+            <InnerContentWrapperUI ref={ this.innerContentWrapper } >
+              { this.props.content }
+            </InnerContentWrapperUI>
         </Content>
 
         <Summary display={ (this.props.status === "summary" || this.props.status === "completed" ) ? "block" : "none" }>
