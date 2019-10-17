@@ -104,7 +104,7 @@ const Summary = styled.div`
   display: ${ props => props.display };
   line-height: 1.2em;
   font-size: 14px;
-  animation: ${ fadeIn } 0.2s ease-out;
+  animation: ${ fadeIn } 0.3s ease-out;
   animation-fill-mode: backwards;
 `;
 
