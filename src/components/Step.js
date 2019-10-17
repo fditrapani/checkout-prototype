@@ -82,17 +82,19 @@ const Content = styled.div`
   //display: ${ props => props.display };
   height: ${ props => props.height };
   opacity: ${ props => props.opacity };
-  transition: height 0.2s ease-out, opacity 0.1s ease-out;
-  overflow: hidden;
+  //transition: height 0.2s ease-out, opacity 0.1s ease-out;
+  //overflow: hidden;
 `;
 
 const fadeIn = keyframes`
   from {
     opacity: 0;
+    transform: translateY(2px);
   }
 
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 `;
 
@@ -102,7 +104,7 @@ const Summary = styled.div`
   display: ${ props => props.display };
   line-height: 1.2em;
   font-size: 14px;
-  animation: ${ fadeIn } 0.1s 0.2s ease-out;
+  animation: ${ fadeIn } 0.2s ease-out;
   animation-fill-mode: backwards;
 `;
 
