@@ -259,7 +259,6 @@ const ReviewSummaryCartUI = styled.div`
 `
 
 const ReviewSummaryLineItemUI = styled(FlexRow)`
-  margin-bottom: 4px;
   font-weight: ${ props => props.fontWeight };
   font-size: ${ props => props.fontSize };
   color: ${ props => props.color };
@@ -423,7 +422,7 @@ const FeaturedProductListItemUI = styled.li`
 const SummaryRadioButtonWrapperUi = styled.div`
   flex-basis: 100%;
   width: 100%;
-  margin-top: 16px;
+  margin: 16px 0 4px;
 `
 const TermPriceLabelUI = styled.span`
   display: inline-block;
@@ -490,7 +489,7 @@ export default class App extends React.Component {
       billingPhoneNumber: "",
       billingErrorVisibility: false,
       billingErrorMessage: "",
-      domainSummary: null,
+      domainBillingSummary: null,
       domainBillingName: "",
       domainBillingNameError: false,
       domainBillingAddress: "",
@@ -1176,38 +1175,28 @@ export default class App extends React.Component {
     let billingStateError = false;
     let billingZipError = false;
     let billingCountryError = false;
+    let domainBillingNameError = false;
+    let domainBillingAddressError = false;
+    let domainBillingCityError = false;
+    let domainBillingStateError = false;
+    let domainBillingZipError = false;
+    let domainBillingCountryError = false;
     let billingSummary = this.state.billingSummary;
+    let domainBillingSummary = this.state.domainBillingSummary;
     let cartSummary = this.state.cartSummary;
 
-    //NOT FILLED OUT > THROW ERROR
-    if( ! this.state.billingAddress ||  ! this.state.billingName ){
-      billingErrorMessage = "We need all the fields to be completed. Please fill out the highlighted fields and continue.";
-      billingErrorVisibility = true;
-      
-      if( ! this.state.billingName) {
-        billingNameError = true;
-      }
-
-      if( ! this.state.billingAddress ) {
-        billingAddressError = true;
-      }
-
-      this.setState({ 
-        billingAddressError: billingAddressError,
-        billingNameError: billingNameError,
-        billingErrorVisibility: billingErrorVisibility,
-        billingErrorMessage: billingErrorMessage,
-      });
-
-      if( ! this.state.showExtendedBillingFields ) { 
-        return;
-      }
-    }
-
     if( this.state.showExtendedBillingFields ) {
-      if ( ! this.state.billingCity ||  ! this.state.billingState ||  ! this.state.billingZip ||  ! this.state.billingCountry ) {
+      if ( ! this.state.billingAddress ||  ! this.state.billingName || ! this.state.billingCity ||  ! this.state.billingState ||  ! this.state.billingZip ||  ! this.state.billingCountry || ( ! this.state.domainBillingCountry && this.state.showDomainContactFields ) || ( ! this.state.domainBillingName && this.state.showDomainContactFields ) || ( ! this.state.domainBillingAddress && this.state.showDomainContactFields ) || ( ! this.state.domainBillingCity && this.state.showDomainContactFields ) || ( ! this.state.domainBillingState && this.state.showDomainContactFields ) || ( ! this.state.domainBillingZip && this.state.showDomainContactFields ) ) {
         billingErrorMessage = "We need all the fields to be completed. Please fill out the highlighted fields and continue.";
         billingErrorVisibility = true;
+
+        if( ! this.state.billingName ) {
+          billingNameError = true;
+        }
+
+        if( ! this.state.billingAddress ) {
+          billingAddressError = true;
+        }
         
         if( ! this.state.billingCity ) {
           billingCityError = true;
@@ -1225,6 +1214,31 @@ export default class App extends React.Component {
           billingCountryError = true;
         }
 
+        if( ! this.state.domainBillingName && this.state.showDomainContactFields ) {
+          console.log("EEEL");
+          domainBillingNameError = true;
+        }
+
+        if( ! this.state.domainBillingAddress && this.state.showDomainContactFields ) {
+          domainBillingAddressError = true;
+        }
+        
+        if( ! this.state.domainBillingCity && this.state.showDomainContactFields ) {
+          domainBillingCityError = true;
+        }
+
+        if( ! this.state.domainBillingState && this.state.showDomainContactFields ) {
+          domainBillingStateError = true;
+        }
+
+        if( ! this.state.domainBillingZip && this.state.showDomainContactFields ) {
+          domainBillingZipError = true;
+        }
+
+        if( ! this.state.domainBillingCountry && this.state.showDomainContactFields ) {
+          domainBillingCountryError = true;
+        }
+
         this.setState({ 
           billingAddressError: billingAddressError,
           billingNameError: billingNameError,
@@ -1232,6 +1246,12 @@ export default class App extends React.Component {
           billingCityError: billingCityError,
           billingZipError: billingZipError,
           billingCountryError: billingCountryError,
+          domainBillingAddressError: domainBillingAddressError,
+          domainBillingNameError: domainBillingNameError,
+          domainBillingStateError: domainBillingStateError,
+          domainBillingCityError: domainBillingCityError,
+          domainBillingZipError: domainBillingZipError,
+          domainBillingCountryError: domainBillingCountryError,
           billingErrorVisibility: billingErrorVisibility,
           billingErrorMessage: billingErrorMessage,
           cartSummary: cartSummary,
@@ -1244,17 +1264,29 @@ export default class App extends React.Component {
     //UPDATE SUMMARY
     billingSummary = (
       <div>
-        <div>          
-          { this.state.paymentMethod === "credit-card" ? "" : this.state.billingName } { this.state.paymentMethod !== "credit-card" && <br/> }
-          { this.state.billingAddress } <br/>
-          { this.state.billingCity }, { this.state.billingState } <br/>
-          { this.state.billingZip } { this.state.billingCountry } 
-          { this.state.billingPhoneNumber && <br/> } { this.state.billingPhoneNumber && <br/> }
-          { this.state.billingPhoneNumber && "(" }{ this.state.billingPhoneNumber.slice(0,3) }{ this.state.billingPhoneNumber && ") " } 
-          { this.state.billingPhoneNumber.slice(3,6) }{ this.state.billingPhoneNumber && "-" }{ this.state.billingPhoneNumber.slice(6) }
-        </div>        
+        { this.state.paymentMethod === "credit-card" ? "" : this.state.billingName } { this.state.paymentMethod !== "credit-card" && <br/> }
+        { this.state.billingAddress } <br/>
+        { this.state.billingCity }, { this.state.billingState } <br/>
+        { this.state.billingZip } { this.state.billingCountry } 
+        { this.state.billingPhoneNumber && <br/> } { this.state.billingPhoneNumber && <br/> }
+        { this.state.billingPhoneNumber && "(" }{ this.state.billingPhoneNumber.slice(0,3) }{ this.state.billingPhoneNumber && ") " } 
+        { this.state.billingPhoneNumber.slice(3,6) }{ this.state.billingPhoneNumber && "-" }{ this.state.billingPhoneNumber.slice(6) }
       </div>
     );
+
+    if( this.state.showDomainContactFields ) {
+      domainBillingSummary = (
+        <div>
+          { this.state.domainBillingName } <br/>
+          { this.state.domainBillingAddress } <br/>
+          { this.state.domainBillingCity }, { this.state.domainBillingState } <br/>
+          { this.state.domainBillingZip } { this.state.domainBillingCountry } 
+          { this.state.domainBillingPhoneNumber && <br/> } { this.state.domainBillingPhoneNumber && <br/> }
+          { this.state.domainBillingPhoneNumber && "(" }{ this.state.domainBillingPhoneNumber.slice(0,3) }{ this.state.domainBillingPhoneNumber && ") " } 
+          { this.state.domainBillingPhoneNumber.slice(3,6) }{ this.state.domainBillingPhoneNumber && "-" }{ this.state.domainBillingPhoneNumber.slice(6) }
+        </div>
+      );
+    }
 
     //Update Cart
     if( ! this.state.taxesAdded ) {
@@ -1278,6 +1310,7 @@ export default class App extends React.Component {
       instructionalCopy: "Review your order and pay",
       paymentButtonStatus: "primary",
       billingSummary: billingSummary,
+      domainBillingSummary: domainBillingSummary,
       taxesAdded: true,
     });
   }
@@ -1285,9 +1318,10 @@ export default class App extends React.Component {
   renderBillingSummary = () => {
     if( this.state.billingSummary ) {
       return(
-        <div>
-          { this.state.billingSummary }        
-        </div>
+        <GridRow columnWidths="48% 48%" gap="4%">
+          { this.state.billingSummary } 
+          { this.state.showDomainContactFields && this.state.domainBillingSummary }        
+        </GridRow>
       )
     }
 
