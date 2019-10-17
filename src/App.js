@@ -114,6 +114,8 @@ const RightColumn = styled(Column)`
   @media( ${ breakpoints.tabletUp } ) {
     max-width: 354px;
     padding: 24px;
+    position: sticky;
+    top: 24px;
   }
 `;
 
