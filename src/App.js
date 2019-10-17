@@ -439,9 +439,17 @@ const DomainContactFieldsUI = styled.div`
 
 const DomainContactFieldsTitleUI = styled.h2`
   font-size: 16px;
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   font-weight: 600;
   color: ${ colours.black }
+  padding-top: 24px;
+  border-top: 1px solid ${ colours.gray5 };
+`
+
+const DomainContactFieldsDescriptionUI = styled.p`
+  font-size: 14px;
+  color: ${ colours.gray80 };
+  margin: 0 0 16px;
 `
 
 // END CSS
@@ -1060,6 +1068,9 @@ export default class App extends React.Component {
           <DomainContactFieldsTitleUI>
             Enter your domain registration contact information
           </DomainContactFieldsTitleUI>
+          <DomainContactFieldsDescriptionUI>
+            Domain owners have to share contact information in a public database of all domains. With our Privacy Protection, we publish our own information and privately forward any communication to you. 
+          </DomainContactFieldsDescriptionUI>
 
           <FormField 
                 id="domainBillingName"
