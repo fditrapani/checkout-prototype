@@ -5,6 +5,16 @@ import Button from './Button.js';
 //CSS
 import { colours } from '../config/colours.js';
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
 const animateIn = keyframes`
   from {
     opacity: 0;
@@ -28,7 +38,7 @@ const ModalUi = styled.div`
   top: 0;
   left: 0;
   z-index: 9999;
-  animation: ${ animateIn } 0.2s ease-out;
+  animation: ${ fadeIn } 0.2s ease-out;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -40,6 +50,8 @@ const ModalContentUI = styled.div`
   width: 100%;
   max-width: 300px;
   padding: 32px;
+  animation: ${ animateIn } 0.2s 0.1s ease-out;
+  animation-fill-mode: backwards;
 `;
 
 const ModalTitleUI = styled.h2`
