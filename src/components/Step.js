@@ -82,7 +82,7 @@ const Content = styled.div`
   //display: ${ props => props.display };
   height: ${ props => props.height };
   opacity: ${ props => props.opacity };
-  transition: height 0.4s ease, opacity 0.2s ease;
+  transition: height 0.4s ease-out, opacity 0.2s ease-out;
   overflow: hidden;
 `;
 
