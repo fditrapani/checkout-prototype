@@ -104,11 +104,11 @@ const Content = styled.div`
 const fadeIn = keyframes`
   0% {
     opacity: 0;
-    transform: translateY(3px);
+    transform: translateY(4px);
   }
 
   80% {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
   }
 
   100% {
@@ -123,7 +123,7 @@ const Summary = styled.div`
   display: ${ props => props.display };
   line-height: 1.2em;
   font-size: 14px;
-  animation: ${ fadeIn } 0.3s ease-out;
+  animation: ${ fadeIn } 0.3s ease-in;
   animation-fill-mode: backwards;
 `;
 
