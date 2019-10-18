@@ -49,7 +49,7 @@ const StepNumber = styled.div`
   height: 27px;
   position: relative; 
   transform-origin: center center;
-  transition: transform 0.2s 0.1s ease-out;
+  transition: transform 0.3s 0.1s ease-out;
   transform-style: preserve-3d;
   transform: ${ props => props.transform }
 `;
