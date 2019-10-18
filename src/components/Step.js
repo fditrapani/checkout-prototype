@@ -37,38 +37,53 @@ const Title = styled.h2`
   margin: 0 0 8px;
 `;
 
-const StepNumber = styled.span`
-  background: ${ props => props.background };
-  font-weight: normal;
+const StepNumberWrapper = styled.div`
   width: 27px;
   height: 27px;
-  box-sizing: border-box;
-  padding: 0;
-  text-align: center;
-  display: block;
-  border-radius: 50%;
+  perspective: 600px;
   margin-right: 8px;
-  color: ${ props => props.colour };
-  position: relative;
-  line-height: 27px;
+`
 
-  :after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    border: 2px solid ${ props => props.borderColour };
-    content: "";
-    display: block;
-    width: 27px;
-    height: 27px;
-    border-radius: 50%;  
-    box-sizing: border-box;
-  }
+const StepNumber = styled.div`
+  width: 27px;
+  height: 27px;
+  position: relative; 
+  transform-origin: center center;
+  transition: transform 0.3s ease-out;
+  transform-style: preserve-3d;
+  transform: ${ props => props.transform }
+`;
+
+const StepNumberBase = styled.div`
+  position: absolute;
+  width: 27px;
+  height: 27px;
+  line-height: 23px;
+  backface-visibility: hidden;
+  padding: 0;
+  font-weight: normal;
+  box-sizing: border-box;
+  color: ${ props => props.colour };
+  border-radius: 50%;  
+  text-align: center;
+  top: 0;
+  left: 0;
+`
+
+const StepNumberNotCompleted = styled( StepNumberBase )`
+  background: ${ props => props.background };
+  border: 2px solid ${ props => props.borderColour };
+`
+
+const StepNumberCompleted = styled( StepNumberBase )`
+  background: ${ colours.white }
+  border: 2px solid ${ colours.green50 };
+  transform: rotateY( 180deg );
 
   svg {
-    margin-top: 4px;
+    margin-top: 2px;
   }
-`;
+`
 
 const StepTitle = styled.span`
   font-weight: ${ props => props.weight };
@@ -79,20 +94,24 @@ const StepTitle = styled.span`
 const Content = styled.div`
   color: ${ colours.gray80 };
   padding-left: 35px;
-  //display: ${ props => props.display };
+  display: ${ props => props.display };
   height: ${ props => props.height };
   opacity: ${ props => props.opacity };
-  //transition: height 0.2s ease-out, opacity 0.1s ease-out;
+  //transition: height 0.3s ease-out, opacity 0.2s ease-out, overflow 0.3s 0.1s ease;
   //overflow: hidden;
 `;
 
 const fadeIn = keyframes`
-  from {
+  0% {
     opacity: 0;
-    transform: translateY(2px);
+    transform: translateY(3px);
   }
 
-  to {
+  80% {
+    transform: translateY(-1px);
+  }
+
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
@@ -165,7 +184,7 @@ export default class Step extends React.Component {
   returnStepNumberColour = () => {
     switch( this.props.status ){
       case "completed":
-        return colours.white;
+        return colours.highlight;
       case "content":
         return colours.highlight;
       default:
@@ -176,11 +195,22 @@ export default class Step extends React.Component {
   returnStepNumberBorderColour = () => {
     switch( this.props.status ){
       case "completed":
-        return colours.green50;
+        return colours.highlight;
       case "content":
         return colours.highlight;
       default:
         return colours.gray5;
+    }
+  }
+
+  returnStepNumberTransform = () => {
+    switch( this.props.status ){
+      case "completed":
+        return "rotateY(180deg)";
+      case "content":
+        return "rotateY(0)";
+      default:
+        return "rotateY(0)";
     }
   }
 
@@ -216,12 +246,20 @@ export default class Step extends React.Component {
     return (
       <StepWrapper borderWidth={ this.props.borderWidth }>
         <Title>
-          <StepNumber 
-            colour={ this.returnStepNumberTextColour() } 
-            background={ this.returnStepNumberColour() }
-            borderColour={ this.returnStepNumberBorderColour() } >
-              { this.renderStepNumberContent() }
-          </StepNumber>
+          <StepNumberWrapper>
+            <StepNumber transform={ this.returnStepNumberTransform() }>
+                <StepNumberNotCompleted 
+                  colour={ this.returnStepNumberTextColour() }
+                  background={ this.returnStepNumberColour() }
+                  borderColour={ this.returnStepNumberBorderColour() }
+                   >
+                  {this.props.number}
+                </StepNumberNotCompleted>
+                <StepNumberCompleted>
+                  <CheckIcon />
+                </StepNumberCompleted>
+            </StepNumber>
+          </StepNumberWrapper>
 
           <StepTitle 
             weight={ this.props.status === "content" ? 600 : 400 }
@@ -231,10 +269,10 @@ export default class Step extends React.Component {
         </Title>
 
         <Content 
-          display={ ( this.props.status === "content" ) ? "block" : "none" }
           height={ ( this.props.status === "content" ) ? this.state.innerContentHeight + "px" : 0 }
-          opacity={ ( this.props.status === "content" ) ? 1 : 0 } >
-            <InnerContentWrapperUI ref={ this.innerContentWrapper } >
+          opacity={ ( this.props.status === "content" ) ? 1 : 0 }
+          display={ ( this.props.status === "content" ) ? "block" : "none" } >
+            <InnerContentWrapperUI ref={ this.innerContentWrapper }  >
               { this.props.content }
             </InnerContentWrapperUI>
         </Content>
