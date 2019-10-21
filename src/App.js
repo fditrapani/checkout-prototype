@@ -139,18 +139,22 @@ const RadioButtons = styled.div`
 
 const CreditCardFields = styled.div`
   position: relative;
-  margin-top: 16px;
-  padding-top: 16px;
+  margin-top: -8px;
+  padding: 20px;
+  border: 3px solid ${ colours.highlight };
+  border-top: 0;
+  border-radius: 3px;
+  background: ${ colours.white };
 
   :after {
     display: block;
-    width: calc( 100% + 22px );
+    width: calc( 100% );
     height: 1px;
     content:"";
     background: ${ colours.gray5 }
     position: absolute;
-    top: 0;
-    left: -11px;
+    top: 4px;
+    left: 0;
     z-index: 12;
   }
 `
@@ -473,6 +477,7 @@ export default class App extends React.Component {
       billingStatus: "none",
       reviewStatus: "summary",
       paymentSummary: "Apple Pay",
+      paymentSubmitted: false,
       creditCardNumber: "",
       expiryDate: "",
       securityCode: "",
@@ -760,6 +765,7 @@ export default class App extends React.Component {
       instructionalCopy: "Enter your billing details to continue",
       paymentSummary: paymentSummary,
       paymentButtonStatus: paymentButtonStatus,
+      paymentSubmitted: true,
     });
   }
 
@@ -782,7 +788,7 @@ export default class App extends React.Component {
   }
   
   renderPaymentMethod = () => {
-    let buttonCopy = this.state.paymentSummary ? "Update" : "Continue";
+    let buttonCopy = this.state.paymentSubmitted ? "Update" : "Continue";
 
     return(
       <div>

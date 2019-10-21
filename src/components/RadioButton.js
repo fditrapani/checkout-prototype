@@ -4,22 +4,43 @@ import styled from 'styled-components';
 //CSS
 import { colours } from '../config/colours.js';
 
-const Label = styled.label`
+const LabelWrapper = styled.div`
 	position: relative;
-	padding: 16px 14px;
 	margin-top: 8px;
 	border-radius: 3px;
 	box-sizing: border-box;
 	width: 100%;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	align-items: center;
 	outline: ${ props => props.outline };
 
 	:first-child {
 		margin: 0;
 	}
+
+	img{
+		filter: grayscale( ${ props => props.grayscale });
+	}
+
+	:hover img {
+		filter: grayscale( 0 );
+	}
+`;
+
+const Radio = styled.input`
+	margin-right: 7px;
+	position: absolute;
+	display: inline-block;
+	opacity: 0;	
+
+`
+
+const LabelText = styled.label`
+	display: inline-block;
+	position: relative;
+	font-size: 14px;
+	transform: translateY(-1px);
+	padding: 16px 14px 16px 40px;
+	box-sizing: border-box;
+	width: 100%;
 
 	:hover {
 		cursor: pointer;
@@ -41,28 +62,7 @@ const Label = styled.label`
 	:hover:before{
 		border: 3px solid ${ colours.highlight };
 	}
-
-	img{
-		filter: grayscale( ${ props => props.grayscale });
-	}
-
-	:hover img {
-		filter: grayscale( 0 );
-	}
-`;
-
-const Radio = styled.input`
-	margin-right: 7px;
-	position: relative;
-	display: inline-block;
-	opacity: 0;	
-`
-
-const LabelText = styled.span`
-	display: inline-block;
-	position: relative;
-	font-size: 14px;
-	transform: translateY(-1px);
+	
 
 	:after {
 		display: block;
@@ -71,14 +71,21 @@ const LabelText = styled.span`
 		content: "";
 		border: ${ props => props.radioBorderWidth } solid ${ props => props.borderColour };
 		border-radius: 100%;
-		top: 01px;
-		left: -23px;
+		top: 50%;
+		transform: translateY( -50% );
+		left: 16px;
 		position: absolute;
 		background: ${ colours.white };
 		box-sizing: border-box;
 		z-index: 2;
 	}	
 `;
+
+const SupportImage = styled.img`
+	position: absolute;
+	right: 16px;
+	top: 16px;
+`
 
 export default class RadioButton extends React.Component {
 	constructor() {
@@ -108,7 +115,7 @@ export default class RadioButton extends React.Component {
 	renderSupportingImage = () => {
 		if( this.props.imageURL ){
 			return (
-				<img src={ this.props.imageURL } alt=" "/>
+				<SupportImage src={ this.props.imageURL } alt=" "/>
 			)
 		}
 
@@ -132,29 +139,32 @@ export default class RadioButton extends React.Component {
 	render() {
 
 		return(
-			<Label 
-				borderColour={ this.getBorderColour( this.props.checked ) }
-				borderWidth={ this.getBorderWith( this.props.checked ) }
+			<LabelWrapper 
+				
 				grayscale={ this.getgrayscaleValue() }
 				outline={ this.getOutline() } >
-				<span>
+
 					<Radio 
 						type="radio" 
 						value={ this.props.value } 
+						id={ this.props.value } 
 						checked={ this.props.checked } 
 						onChange={ this.props.onChange }
 						onFocus={ () => { this.changeFocus( true ) } }
 						onBlur={ () => { this.changeFocus( false ) } } />
 					<LabelText 
 						radioBorderWidth={ this.getRadioBorderWith( this.props.checked ) }
-						borderColour={ this.getBorderColour( this.props.checked ) }	>
+						borderColour={ this.getBorderColour( this.props.checked ) }	
+						htmlFor={ this.props.value } 
+						borderColour={ this.getBorderColour( this.props.checked ) }
+				borderWidth={ this.getBorderWith( this.props.checked ) }>
 							{ this.props.label }
 					</LabelText>
-				</span>
+
 					{ this.renderSupportingImage() }
 
 					{ this.props.children }
-			</Label>
+			</LabelWrapper>
 		)
 	}
 }
