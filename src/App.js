@@ -1437,6 +1437,7 @@ export default class App extends React.Component {
         { Object.values( durations ).map( ( key ) => (
           <RadioButton 
             key={ key.label }
+            value={ key.label }
             checked={ this.state.termDuration === key.label }
             onChange={ () => { this.changeTermDuration( key.label, ( key.discountedPrice ? key.discountedPrice : key.price ) ) } }
             label={ 
