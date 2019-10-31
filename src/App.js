@@ -800,7 +800,7 @@ export default class App extends React.Component {
               columnWidths="48% 48%">
               <Field
                 id="expiryDate" 
-                type="Number"
+                type="Text"
                 label="Expiry Date" 
                 placeholder="MM / YY"
                 value={ this.state.expiryDate }
@@ -813,7 +813,7 @@ export default class App extends React.Component {
                 columnWidths="67% 29%">
                 <Field 
                   id="securityCode"
-                  type="Number"
+                  type="Text"
                   label="Security Code" 
                   placeholder="111"
                   value={ this.state.securityCode }
