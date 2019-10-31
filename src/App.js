@@ -12,7 +12,7 @@ import FlexRow from './components/FlexRow';
 import ErrorMessage from './components/ErrorMessage';
 import CloseIcon from './components/CloseIcon';
 import LockIcon from './components/LockIcon';
-//import LocationIcon from './components/LocationIcon';
+import LocationIcon from './components/LocationIcon';
 import Modal from './components/Modal';
 import VisaLogo from './components/VisaLogo';
 import DeleteIcon from './components/DeleteIcon';
@@ -28,7 +28,6 @@ import applePayURL from './images/apple-pay.svg';
 import paypalURL from './images/paypal.svg';
 import creditCardURL from './images/credit-cards.svg';
 import cvvURL from './images/cvv.svg';
-import completedURL from './images/completed.svg';
 
 const Header = styled.header`
   background: ${ colours.highlight };
@@ -66,16 +65,6 @@ const SecureCheckout = styled.span`
   margin-left:5px;
 `
 
-const Container = styled.div`
-  @media( ${ breakpoints.tabletUp } ) {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    max-width: 910px;
-    margin: 0 auto;
-  }
-`;
-
 const Column = styled.div`
   background: ${ colours.white };
   padding: 16px;
@@ -90,9 +79,25 @@ const Column = styled.div`
   }
 `;
 
-const LeftColumn = styled(Column)`
+const Content = styled(Column)`
   @media( ${ breakpoints.tabletUp } ) {
-    max-width: 532px;
+    max-width: 556px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+`;
+
+const PaymentArea = styled.div`
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 24px;
+
+  @media( ${ breakpoints.tabletUp } ) {
+    border: 1px solid ${ colours.gray5 };
+    border-top: 0;
+    max-width: 556px;
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 
@@ -107,31 +112,6 @@ const DomainUrl = styled.p`
   margin: 0 0 24px 0;
   color: ${ colours.gray50 };
 `
-
-const RightColumn = styled(Column)`
-  padding: 0 16px 32px 50px;
-
-  @media( ${ breakpoints.tabletUp } ) {
-    max-width: 354px;
-    padding: 24px;
-    position: sticky;
-    top: 24px;
-  }
-`;
-
-const PayBoxUi = styled.div`
-  display: ${ props => props.display }
-
-  @media( ${ breakpoints.tabletUp } ) {
-    display: block;
-  }
-`
-
-const InstructionalCopy = styled.p`
-  font-size: 14px;
-  color: ${ colours.gray80 };
-  margin: 8px 0 0;
-`;
 
 const RadioButtons = styled.div`
   margin-bottom: 16px;
@@ -272,9 +252,11 @@ const ReviewSummaryLineItemUI = styled(FlexRow)`
   border-bottom: ${ props => props.borderWidth } solid ${ colours.gray5 };
   position: relative;
   flex-wrap: wrap;
+  margin-top: ${ props => props.marginTop };
 
   :first-child {
     border-top: ${ props => props.borderWidth } solid ${ colours.gray5 }
+    margin-top: 0;
   }
 `;
 
@@ -323,8 +305,8 @@ const GreenText = styled.span`
 
 const AddCouponButtonUI = styled(Button)`
   display: inline-block;
-  margin-left: 10px;
   opacity: ${ props => props.opacity };
+  font-size: 14px;
 
   :hover{
     cursor: ${ props => props.cursor };  
@@ -340,10 +322,10 @@ const SummaryQualifier = styled.span`
   font-size: 14px;
 `
 
-const TermsWrapperUI = styled.div`
-  margin: 24px 50px 0 0;
-  background: ${ colours.gray0 };
-  padding: 24px;
+const TermsUI = styled.div`
+  padding: 24px 0 0;
+  margin-top: 16px;
+  border-top: 1px solid ${ colours.gray5 };
 `
 
 const TermsParagraphUI = styled.p`
@@ -362,67 +344,15 @@ const TermsParagraphUI = styled.p`
   a:active {
     text-decoration: underline;
   }
-`
 
-const FeaturedProductUI = styled.div`
-  position: relative;
-  padding-top: 16px;
-  margin-top: 16px;
-  display: none;
-
-  @media( ${ breakpoints.tabletUp } ) {
-    padding-top: 24px;
-    margin-top: 24px;
-    display: block;
-  }
-
-  :before {
-    display: block;
-    width: 100%;
-    height: 1px;
-    background: ${ colours.gray5 };
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-
-    @media( ${ breakpoints.tabletUp } ) {
-      left: -24px;
-      width: calc( 100% + 48px);
-    }
-  }
-`
-
-const FeaturedProductTitleUI = styled.h2`
-  margin: 0;
-  font-weight: 400;
-  font-size: 16px;
-  color: ${ colours.black }
-`
-
-const FeaturedProductPriceUI = styled.p`
-  font-size: 14px;
-  color: ${ colours.gray50 }
-  margin: 0 0 16px;
-`
-
-const FeaturedProductListUI = styled.ul`
-  font-size: 14px;
-  margin: 0;
-  padding: 0;
-`
-
-const FeaturedProductListItemUI = styled.li`
-  font-size: 14px;
-  margin: 8px 0 0;
-  padding-left: 25px;
-  list-style: none;
-  background: url( ${ completedURL } ) 0 50% no-repeat;
-
-  :first-child {
+  :first-child{
     margin-top: 0;
   }
+`
 
+const PaymentButtonWrapper = styled.div`
+  background: ${ colours.gray0 };
+  padding: 24px;
 `
 
 const SummaryRadioButtonWrapperUi = styled.div`
@@ -458,6 +388,31 @@ const DomainContactFieldsDescriptionUI = styled.p`
   margin: 0 0 16px;
 `
 
+const FeatureBenefitsUI = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+`
+
+const FeatureBenefitsLineItemUI = styled.li`
+  margin: 4px 0 0;
+  position: relative;
+  padding-left: 14px;
+  display: block;
+
+  :before{
+    display: block;
+    content: "+";
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  :first-child{
+    margin-top: 0;
+  }
+`
+
 // END CSS
 //////////////////////////////////////
 
@@ -469,7 +424,6 @@ export default class App extends React.Component {
       domain: "yourdomain.tld",
       paymentMethod: "apple-pay",
       paymentButtonStatus: "disabled",
-      instructionalCopy: "Confirm your payment method to continue",
       showCreditCardFields: false,
       previousSection: null,
       currentSection: "payment",
@@ -521,10 +475,10 @@ export default class App extends React.Component {
       domainBillingErrorVisibility: false,
       domainBillingErrorMessage: "",
       showExtendedBillingFields: true,
-      billingLocatorVisibility: true,
+      billingLocatorVisibility: false,
       productsInCart: [
         {
-          name: "WordPress.com Personal Plan",
+          name: "WordPress.com Personal",
           id: "plan-product",
           price: 60,
           type: "plan",
@@ -569,6 +523,7 @@ export default class App extends React.Component {
       isCouponVisible: false,
       termDuration: "One year",
       showDomainContactFields: false,
+      isCouponUsed: false,
     };
   }
 
@@ -646,13 +601,11 @@ export default class App extends React.Component {
   }
 
   changePaymentMethod = ( changeEvent ) => {
-    let instructionalCopy = "Continue to enter your billing information";
     let showCreditCardFields = false;
     let paymentSummary = this.state.paymentSummary;
     let paymentButtonStatus = this.state.paymentButtonStatus;
     
     if( changeEvent.target.value === "credit-card" ) {
-      instructionalCopy = "Enter your credit card details to continue";
       showCreditCardFields = true;
       paymentSummary = "Creidt Card";
 
@@ -679,7 +632,6 @@ export default class App extends React.Component {
 
     this.setState({ 
       paymentMethod: changeEvent.target.value,
-      instructionalCopy: instructionalCopy,
       showCreditCardFields: showCreditCardFields,
       paymentSummary: paymentSummary,
       paymentButtonStatus: paymentButtonStatus,
@@ -762,7 +714,6 @@ export default class App extends React.Component {
       securityCodeError: false,
       cardholderNameError: false,
       billingName: this.state.billingName ? this.state.billingName : this.state.cardholderName,
-      instructionalCopy: "Enter your billing details to continue",
       paymentSummary: paymentSummary,
       paymentButtonStatus: paymentButtonStatus,
       paymentSubmitted: true,
@@ -774,7 +725,6 @@ export default class App extends React.Component {
       paymentStatus: "content",
       billingStatus: ( this.state.billingStatus === "completed" || this.state.billingSummary ) ? "completed" : "none",
       reviewStatus: "summary",
-      instructionalCopy: "Edit your payment details",
     });
   }
 
@@ -783,7 +733,6 @@ export default class App extends React.Component {
       paymentStatus: "completed",
       reviewStatus: "summary",
       billingStatus: "content",
-      instructionalCopy: "Edit your payment details",
     });
   }
   
@@ -976,10 +925,9 @@ export default class App extends React.Component {
                 id="billingAddress"
                 type="Text"
                 label="Address"
-                /*icon={ <LocationIcon /> }
+                icon={ <LocationIcon /> }
                 iconAction={ this.returnLocationAddress }
                 isIconVisible={ this.state.billingLocatorVisibility }
-                placeholder="Find your address"*/
                 error={ this.state.billingAddressError }
                 errorMessage="This is a required field"
                 placeholder=""
@@ -1234,7 +1182,6 @@ export default class App extends React.Component {
         }
 
         if( ! this.state.domainBillingName && this.state.showDomainContactFields ) {
-          console.log("EEEL");
           domainBillingNameError = true;
         }
 
@@ -1326,7 +1273,6 @@ export default class App extends React.Component {
       reviewStatus: "content",
       billingNameError: false,
       billingAddressError: false,
-      instructionalCopy: "Review your order and pay",
       paymentButtonStatus: "primary",
       billingSummary: billingSummary,
       domainBillingSummary: domainBillingSummary,
@@ -1364,22 +1310,27 @@ export default class App extends React.Component {
               <ReviewSummaryLineItemUI 
                 key={ key.id }
                 padding={ isFullView ? "24px 0" : "0" }
-                borderWidth={ isFullView ? "1px" : "0" } >
+                borderWidth={ isFullView ? "1px" : "0" }
+                marginTop={ isFullView ? "0" : "4px" } >
                   <ReviewSummaryProductNameUI>
                     { key.name } { isFullView && (<SummaryQualifier>{key.qualifier} </SummaryQualifier>) }
                   </ReviewSummaryProductNameUI>
                   
-                  { key.discount ? 
-                    ( <ReviewSummaryPriceUI>
-                        <StrikeThrough>${ key.price }</StrikeThrough>&nbsp;{ key.discount } 
-                      </ReviewSummaryPriceUI>
-                    ) :
-                    ( 
-                      <ReviewSummaryPriceUI>
-                        { key.type === "coupon" && "-"}${ key.price }
-                      </ReviewSummaryPriceUI> 
-                    )
-                  }
+                  { isFullView && (
+                    <React.Fragment>
+                    { key.discount ? 
+                      ( <ReviewSummaryPriceUI>
+                          <StrikeThrough>${ key.price }</StrikeThrough>&nbsp;{ key.discount } 
+                        </ReviewSummaryPriceUI>
+                      ) :
+                      ( 
+                        <ReviewSummaryPriceUI>
+                          { key.type === "coupon" && "-"}${ key.price }
+                        </ReviewSummaryPriceUI> 
+                      )
+                    }
+                    </React.Fragment>
+                  ) }
 
                   { ( key.duration && isFullView ) && this.renderTermDurations( key.duration ) }
 
@@ -1390,6 +1341,23 @@ export default class App extends React.Component {
                   }
               </ReviewSummaryLineItemUI>
             ) ) }
+            { (! this.state.isCouponUsed ) && (
+              <ReviewSummaryLineItemUI
+                padding={ isFullView ? "24px 0" : "0" }
+                borderWidth={ isFullView ? "1px" : "0" }
+                marginTop={ isFullView ? "0" : "4px" } >
+                { ! this.state.isCouponVisible && ! isFullView && (
+                  <AddCouponButtonUI 
+                    label="Add coupon" 
+                    state="text-button" 
+                    opacity={ this.state.isCouponVisible ? 0 : 1 } 
+                    cursor={ this.state.isCouponVisible ? "default" : "pointer" } 
+                    onClick={ this.showSummaryCouponField } /> 
+                ) }
+
+                { this.renderCouponField( isFullView ) }
+              </ReviewSummaryLineItemUI>
+            ) }
         </ReviewSummaryProductsUI>
 
         <ReviewSummaryCartUI marginRight={ isFullView ? "50px" : "0" } >
@@ -1400,33 +1368,33 @@ export default class App extends React.Component {
                 fontWeight={ key.isTotal ? "600" : "400"  } 
                 fontSize={ key.isTotal ? "16px" : isFullView ? "16px" : "14px" } 
                 color={ key.isTotal ? colours.black : isFullView ? colours.gray80 : colours.gray50 } 
-                borderWidth="0">
+                borderWidth="0"
+                marginTop={ isFullView ? "0" : "4px" }>
                   
                   <ReviewSummaryProductNameUI>
                       <ProductNameUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
                         { key.name }
-                      </ProductNameUI> 
 
-                      { ( key.isTotal && ! this.state.isCouponUsed ) && 
-                        <AddCouponButtonUI 
-                          label="Add coupon" 
-                          state="text-button" 
-                          opacity={ this.state.isCouponVisible ? 0 : 1 } 
-                          cursor={ this.state.isCouponVisible ? "default" : "pointer" } 
-                          onClick={ this.showSummaryCouponField } /> }  
+                        { ! isFullView && (
+                          <React.Fragment>
+                            : ${ key.price }
+                          </React.Fragment> 
+                        )}
+
+                      </ProductNameUI>  
                   </ReviewSummaryProductNameUI>
-                
-                  <ReviewSummaryPriceUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
-                    ${ key.price }
-                  </ReviewSummaryPriceUI> 
+                  
+                  { isFullView && (
+                    <ReviewSummaryPriceUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
+                      ${ key.price }
+                    </ReviewSummaryPriceUI> 
+                  )}
 
               </ReviewSummaryLineItemUI>
             ) ) }
+            
+            { this.renderPaymentSection( isFullView ) }
           </ReviewSummaryCartUI>
-
-          { this.renderCouponField( isFullView ) }
-
-          { this.renderTerms( isFullView ) }
       </div>
     )
   }
@@ -1472,7 +1440,7 @@ export default class App extends React.Component {
   }
 
   renderCouponField = ( isFullView ) => {
-    if( this.state.isCouponVisible ){
+    if( this.state.isCouponVisible || isFullView ){
       return <Coupon applyCoupon={ this.applyCoupon } isFullView={ isFullView } />
     }
 
@@ -1501,12 +1469,10 @@ export default class App extends React.Component {
     })
   }
 
-  renderTerms = ( isFullView ) => {
-    if ( isFullView ) {
+  renderPaymentSection = ( isFullView ) => {
+    if ( isFullView && this.state.paymentButtonStatus !== "disabled" ) {
       return (
-        <TermsWrapperUI>
-          { this.renderPaymentButton() }
-
+        <TermsUI>
           <TermsParagraphUI>
             <strong>By checking out:</strong> you agree to our <a href="https://google.com" onClick={ this.fakeClick } >Terms of Service</a> and authorize your payment method to be charged on a recurring basis until you cancel, which you can do at any time. You understand <a href="https://google.com" onClick={ this.fakeClick } >how your subscription works</a> and <a href="https://google.com" onClick={ this.fakeClick } >how to cancel</a>.
           </TermsParagraphUI>
@@ -1516,7 +1482,7 @@ export default class App extends React.Component {
           <TermsParagraphUI>
             You understand that <a href="https://google.com" onClick={ this.fakeClick } >domain name refunds</a> are limited to 96 hours after registration. Refunds of paid plans will deduct the standard cost of any domain name registered within a plan.
           </TermsParagraphUI>
-        </TermsWrapperUI>
+        </TermsUI>
       )
     }
 
@@ -1548,6 +1514,23 @@ export default class App extends React.Component {
     });
   }
 
+  renderOrderSummary = () => {
+    return(
+      <GridRow
+          gap="4%"
+          columnWidths="48% 48%">
+        
+        { this.renderCart( false ) }
+
+        <FeatureBenefitsUI>
+          <FeatureBenefitsLineItemUI>Free custom domain for a year</FeatureBenefitsLineItemUI>
+          <FeatureBenefitsLineItemUI>Live chat and email support</FeatureBenefitsLineItemUI>
+          <FeatureBenefitsLineItemUI>30-day money back gaurentee</FeatureBenefitsLineItemUI>
+        </FeatureBenefitsUI>
+      </GridRow>
+    )
+  }
+
   render() { 
     return (
       <div>
@@ -1566,10 +1549,18 @@ export default class App extends React.Component {
           <SecureCheckout>Secure checkout</SecureCheckout>
         </Header>
 
-        <Container>
-          <LeftColumn>
-            <PageTitle>Complete your purchase</PageTitle>
+
+          <Content>
+            <PageTitle>You're all set to checkout</PageTitle>
             <DomainUrl>{ this.state.domain }</DomainUrl>
+
+            <Step
+              number="0"
+              title="Pick a payment method"
+              completedTitle="Your order"
+              status={ "completed" }
+              content={ null }
+              summary={ this.renderOrderSummary() }/>
 
             <Step
               number="1"
@@ -1595,27 +1586,13 @@ export default class App extends React.Component {
               status={ this.state.reviewStatus }
               borderWidth={ 0 } 
               content={ this.renderCart( true ) }
-              summary={ this.renderCart( false ) } />
-
-          </LeftColumn>
-          <RightColumn>
-            <PayBoxUi display={ this.state.paymentButtonStatus === "primary" && this.state.reviewStatus === "content" ? "none" : "block" }>
-              { this.renderPaymentButton() }
-              <InstructionalCopy>{ this.state.instructionalCopy }</InstructionalCopy>
-            </PayBoxUi> 
-
-            <FeaturedProductUI>
-              <FeaturedProductTitleUI>WordPress.com Personal</FeaturedProductTitleUI>
-              <FeaturedProductPriceUI>$60 per year</FeaturedProductPriceUI>
-
-              <FeaturedProductListUI>
-                <FeaturedProductListItemUI>Free custom domain for a year</FeaturedProductListItemUI>
-                <FeaturedProductListItemUI>Live chat and email support</FeaturedProductListItemUI>
-                <FeaturedProductListItemUI>30-day money back guarantee</FeaturedProductListItemUI>
-              </FeaturedProductListUI>
-            </FeaturedProductUI>
-          </RightColumn>
-        </Container>
+              summary={ null } />
+          </Content>
+          <PaymentArea>
+          <PaymentButtonWrapper>
+            { this.renderPaymentButton() }
+          </PaymentButtonWrapper>
+          </PaymentArea>
       </div>
     );
   }

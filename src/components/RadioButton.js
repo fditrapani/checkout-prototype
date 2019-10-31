@@ -156,8 +156,7 @@ export default class RadioButton extends React.Component {
 						radioBorderWidth={ this.getRadioBorderWith( this.props.checked ) }
 						borderColour={ this.getBorderColour( this.props.checked ) }	
 						htmlFor={ this.props.value } 
-						borderColour={ this.getBorderColour( this.props.checked ) }
-				borderWidth={ this.getBorderWith( this.props.checked ) }>
+						borderWidth={ this.getBorderWith( this.props.checked ) }>
 							{ this.props.label }
 					</LabelText>
 

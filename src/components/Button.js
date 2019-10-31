@@ -103,11 +103,11 @@ export default class Button extends React.Component {
 			case "disabled":
 				return colours.gray20;
 			case "paypal--disabled":
-				return colours.gray0;
+				return colours.gray10;
 			case "paypal--primary":
 				return colours.paypalGold
 			case "apple--disabled":
-				return colours.gray0;
+				return colours.gray10;
 			case "apple--primary":
 				return colours.black;
 			default:
@@ -124,11 +124,11 @@ export default class Button extends React.Component {
 			case "disabled":
 				return colours.gray20;
 			case "paypal--disabled":
-				return colours.gray0;
+				return colours.gray10;
 			case "paypal--primary":
 				return colours.paypalGoldHover;
 			case "apple--disabled":
-				return colours.gray0;
+				return colours.gray10;
 			case "apple--primary":
 				return colours.gray80;
 			default:

@@ -123,7 +123,9 @@ export default class Field extends React.Component {
   render() {
     return (
       <div className={ this.props.className }>
-        <Label htmlFor={ this.props.value } color={ this.props.error ? colours.red50 : colours.gray80 }>{ this.props.label }</Label>
+        { this.props.label && (
+            <Label htmlFor={ this.props.value } color={ this.props.error ? colours.red50 : colours.gray80 }>{ this.props.label }</Label>
+        ) }
         <InputWrapper>
           <Input
             id={ this.props.id }

@@ -24,7 +24,7 @@ const StepWrapper = styled.div`
     content: "";
   }
 
-  :nth-child(5) {
+  :nth-child(6) {
     padding-bottom: 0;
   }
 `;
@@ -229,7 +229,7 @@ export default class Step extends React.Component {
   }
 
   renderEditButton = () => {
-    if ( this.props.status === "completed" ){ 
+    if ( this.props.status === "completed" && this.props.onEditButtonPress ){ 
       return (
         <Button
           state="text-button"
