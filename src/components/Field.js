@@ -135,7 +135,8 @@ export default class Field extends React.Component {
             onBlur={ this.onBlurField }
             placeholder={ this.props.placeholder }
             rightPadding={ this.returnRightPadding() }
-            tabIndex = {this.props.tabIndex } />
+            tabIndex = {this.props.tabIndex }
+            autocomplete={ this.props.autocomplete } />
           { this.renderIcon() }
         </InputWrapper>
         { this.renderDescription() }

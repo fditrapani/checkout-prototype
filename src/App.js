@@ -792,6 +792,7 @@ export default class App extends React.Component {
               isIconVisible={ true }
               onChange={ this.checkForFieldErrors }
               error={ this.state.creditCardNumberError }
+              autocomplete="cc-number"
               errorMessage="This is a required field" />
             
             <FormFieldGrid
@@ -805,6 +806,7 @@ export default class App extends React.Component {
                 value={ this.state.expiryDate }
                 onChange={ this.checkForFieldErrors }
                 error={ this.state.expiryDateError }
+                autocomplete="cc-exp"
                 errorMessage="This is a required field" />
               <GridRow
                 gap="4%"
@@ -817,6 +819,7 @@ export default class App extends React.Component {
                   value={ this.state.securityCode }
                   onChange={ this.checkForFieldErrors }
                   error={ this.state.securityCodeError }
+                  autocomplete="cc-csc"
                   errorMessage="This is a required field" />
                 <CVVImage src={ cvvURL } alt="Back of the card where you find the Security Code" />
               </GridRow>
@@ -830,6 +833,7 @@ export default class App extends React.Component {
               onChange={ this.checkForFieldErrors }
               error={ this.state.cardholderNameError }
               value={ this.state.cardholderName }
+              autocomplete="cc-number"
               errorMessage="This is a required field" />
           </CreditCardFieldsContent>
         </CreditCardFields>
