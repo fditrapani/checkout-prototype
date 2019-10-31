@@ -136,7 +136,7 @@ export default class Field extends React.Component {
             placeholder={ this.props.placeholder }
             rightPadding={ this.returnRightPadding() }
             tabIndex = {this.props.tabIndex }
-            autocomplete={ this.props.autocomplete } />
+            autoComplete={ this.props.autocomplete } />
           { this.renderIcon() }
         </InputWrapper>
         { this.renderDescription() }
