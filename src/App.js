@@ -1585,7 +1585,8 @@ export default class App extends React.Component {
               status={ this.state.billingStatus }
               content={ this.renderBilling() }
               onEditButtonPress={ this.editBillingDetails }
-              summary={ this.renderBillingSummary() } />
+              summary={ this.renderBillingSummary() }
+              totalPrice={ false } />
 
             <Step
               number="3"
@@ -1593,7 +1594,8 @@ export default class App extends React.Component {
               status={ this.state.reviewStatus }
               borderWidth={ 0 } 
               content={ this.renderCart( true ) }
-              summary={ null } />
+              summary={ null }
+              totalPrice={ false } />
           </Content>
           <PaymentArea>
           <PaymentButtonWrapper>
