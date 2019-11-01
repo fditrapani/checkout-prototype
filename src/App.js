@@ -833,7 +833,7 @@ export default class App extends React.Component {
               onChange={ this.checkForFieldErrors }
               error={ this.state.cardholderNameError }
               value={ this.state.cardholderName }
-              autocomplete="cc-number"
+              autocomplete="cc-name"
               errorMessage="This is a required field" />
           </CreditCardFieldsContent>
         </CreditCardFields>
