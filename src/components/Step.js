@@ -7,25 +7,19 @@ import Button from './Button.js';
 
 //CSS
 import { colours } from '../config/colours.js';
+import { breakpoints } from '../config/breakpoints.js';
 
 const StepWrapper = styled.div`
-  padding-bottom: 32px;
-  margin-bottom: 8px;
+  padding: 24px 16px;
   position: relative;
+  border-top: 1px solid #ccc;
 
-  :after {
-    display: block;
-    width: ${ props => props.borderWidth };;
-    height: calc(100% - 35px);
-    position: absolute;
-    left: 13px;
-    top: 35px;
-    background: ${ colours.gray20 };
-    content: "";
+  @media( ${ breakpoints.tabletUp } ) {
+    padding: 24px;
   }
 
-  :nth-child(6) {
-    padding-bottom: 0;
+  :first-child{
+    border: 0;
   }
 `;
 
@@ -34,7 +28,7 @@ const Title = styled.h2`
   display: flex;
   width: 100%;
   align-items: center;
-  margin: 0 0 8px;
+  margin: 0 0 ${ props => props.marginBottom };
 `;
 
 const StepNumberWrapper = styled.div`
@@ -245,7 +239,7 @@ export default class Step extends React.Component {
 
     return (
       <StepWrapper borderWidth={ this.props.borderWidth }>
-        <Title>
+        <Title marginBottom={ (this.props.status === "content" || this.props.status === "completed") ? "8px" : 0 }>
           <StepNumberWrapper>
             <StepNumber transform={ this.returnStepNumberTransform() }>
                 <StepNumberNotCompleted 
@@ -266,6 +260,10 @@ export default class Step extends React.Component {
             colour={ this.props.status === "content" ? colours.black : colours.gray80 }>
             { this.renderTitle() }</StepTitle> 
             { this.renderEditButton() }
+
+            { this.props.totalPrice && (
+              <span>{ this.props.totalPrice }</span>
+            )}
         </Title>
 
         <Content 

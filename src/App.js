@@ -62,12 +62,11 @@ const Logo = styled.img`
 const SecureCheckout = styled.span`
   font-size: 1em;
   color: ${ colours.blue5 };
-  margin-left:5px;
+  margin-left: 5px;
 `
 
 const Column = styled.div`
   background: ${ colours.white };
-  padding: 16px;
   width: 100%;
   box-sizing: border-box;
 
@@ -75,7 +74,6 @@ const Column = styled.div`
     border: 1px solid ${ colours.gray5 };
     margin-top: 32px;
     box-sizing: border-box;
-    padding: 24px;
   }
 `;
 
@@ -91,9 +89,11 @@ const PaymentArea = styled.div`
   padding: 0;
   margin-top: 0;
   margin-bottom: 24px;
+  border: 1px solid ${ colours.gray5 };
+  box-sizing: border-box;
 
   @media( ${ breakpoints.tabletUp } ) {
-    border: 1px solid ${ colours.gray5 };
+    
     border-top: 0;
     max-width: 556px;
     margin-left: auto;
@@ -101,15 +101,8 @@ const PaymentArea = styled.div`
   }
 `;
 
-const PageTitle = styled.h1`
-  margin: 0;
-  font-weight: normal;
-  font-size: 24px;  
-  color: ${ colours.black };
-`;
-
 const DomainUrl = styled.p`
-  margin: 0 0 24px 0;
+  margin: -8px 0 8px 0;
   color: ${ colours.gray50 };
 `
 
@@ -236,7 +229,7 @@ const DomainRegistrationCheckboxUI = styled.input`
 `;
 
 const ReviewSummaryProductsUI = styled.div`
-  margin-bottom: 16px;
+  margin-bottom: ${ props => props.marginBottom };
   margin-right: ${ props => props.marginRight };
 `;
 
@@ -255,8 +248,12 @@ const ReviewSummaryLineItemUI = styled(FlexRow)`
   margin-top: ${ props => props.marginTop };
 
   :first-child {
-    border-top: ${ props => props.borderWidth } solid ${ colours.gray5 }
-    margin-top: 0;
+    padding-top: 0;
+    margin-top: ${ props => props.totalMarginTop };
+
+    .deleteButton {
+      top: -12px
+    }
   }
 `;
 
@@ -411,6 +408,10 @@ const FeatureBenefitsLineItemUI = styled.li`
   :first-child{
     margin-top: 0;
   }
+`
+
+const OrderSummaryProductsUi = styled.div`
+  color: ${ colours.gray80 }
 `
 
 // END CSS
@@ -1309,7 +1310,7 @@ export default class App extends React.Component {
 
     return(
       <div>
-        <ReviewSummaryProductsUI marginRight={ isFullView ? "50px" : "0" } >
+        <ReviewSummaryProductsUI marginRight={ isFullView ? "32px" : "0" }  >
           { Object.values( products ).map( ( key ) => (
               <ReviewSummaryLineItemUI 
                 key={ key.id }
@@ -1341,7 +1342,8 @@ export default class App extends React.Component {
                   { ( isFullView && key.deletable ) && 
                     <ReviewSummaryDeleteButtonUI 
                       label={ <DeleteIcon state="borderless" /> }
-                      onClick={ key.deleteAction } /> 
+                      onClick={ key.deleteAction }
+                      className="deleteButton" /> 
                   }
               </ReviewSummaryLineItemUI>
             ) ) }
@@ -1359,46 +1361,43 @@ export default class App extends React.Component {
                     onClick={ this.showSummaryCouponField } /> 
                 ) }
 
-                { this.renderCouponField( isFullView ) }
+                { isFullView && ( 
+                  <React.Fragment>
+                    { this.renderCouponField( isFullView ) }
+                  </React.Fragment>
+                 ) }
               </ReviewSummaryLineItemUI>
             ) }
         </ReviewSummaryProductsUI>
 
-        <ReviewSummaryCartUI marginRight={ isFullView ? "50px" : "0" } >
-          {/*CART VIEW==============================================*/}
-          { Object.values( cart ).slice(0).reverse().map( ( key ) => (
-              <ReviewSummaryLineItemUI 
-                key={ key.id }
-                fontWeight={ key.isTotal ? "600" : "400"  } 
-                fontSize={ key.isTotal ? "16px" : isFullView ? "16px" : "14px" } 
-                color={ key.isTotal ? colours.black : isFullView ? colours.gray80 : colours.gray50 } 
-                borderWidth="0"
-                marginTop={ isFullView ? "0" : "4px" }>
-                  
-                  <ReviewSummaryProductNameUI>
-                      <ProductNameUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
-                        { key.name }
+        { isFullView && (
+          <ReviewSummaryCartUI marginRight={ isFullView ? "32px" : "0" } >
+            {/*CART VIEW==============================================*/}
+            { Object.values( cart ).slice(0).reverse().map( ( key ) => (
+                <ReviewSummaryLineItemUI 
+                  key={ key.id }
+                  fontWeight={ key.isTotal ? "600" : "400"  } 
+                  fontSize={ key.isTotal ? "16px" : isFullView ? "16px" : "14px" } 
+                  color={ key.isTotal ? colours.black : isFullView ? colours.gray80 : colours.gray50 } 
+                  borderWidth="0"
+                  marginTop={ isFullView ? "0" : "4px" }
+                  totalMarginTop={ isFullView ? "16px" : "4px" } >
+                    
+                    <ReviewSummaryProductNameUI>
+                        <ProductNameUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
+                          { key.name }
 
-                        { ! isFullView && (
-                          <React.Fragment>
-                            : ${ key.price }
-                          </React.Fragment> 
-                        )}
-
-                      </ProductNameUI>  
-                  </ReviewSummaryProductNameUI>
-                  
-                  { isFullView && (
-                    <ReviewSummaryPriceUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
-                      ${ key.price }
-                    </ReviewSummaryPriceUI> 
-                  )}
-
-              </ReviewSummaryLineItemUI>
-            ) ) }
-            
-            { this.renderPaymentSection( isFullView ) }
-          </ReviewSummaryCartUI>
+                        </ProductNameUI>  
+                    </ReviewSummaryProductNameUI>
+                      <ReviewSummaryPriceUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
+                        ${ key.price }
+                      </ReviewSummaryPriceUI> 
+                </ReviewSummaryLineItemUI>
+              ) ) }
+              
+              { this.renderPaymentSection( isFullView ) }
+            </ReviewSummaryCartUI>
+          )}
       </div>
     )
   }
@@ -1444,11 +1443,7 @@ export default class App extends React.Component {
   }
 
   renderCouponField = ( isFullView ) => {
-    if( this.state.isCouponVisible || isFullView ){
       return <Coupon applyCoupon={ this.applyCoupon } isFullView={ isFullView } />
-    }
-
-    return false;
   }
 
   applyCoupon = ( fieldValue ) => {
@@ -1520,18 +1515,28 @@ export default class App extends React.Component {
 
   renderOrderSummary = () => {
     return(
-      <GridRow
-          gap="4%"
-          columnWidths="48% 48%">
-        
-        { this.renderCart( false ) }
+      <React.Fragment>
+        <DomainUrl>{ this.state.domain }</DomainUrl>
+        <GridRow
+            gap="4%"
+            columnWidths="48% 48%">
+            <OrderSummaryProductsUi>
+              { this.renderCart( false ) }
+            </OrderSummaryProductsUi>
 
-        <FeatureBenefitsUI>
-          <FeatureBenefitsLineItemUI>Free custom domain for a year</FeatureBenefitsLineItemUI>
-          <FeatureBenefitsLineItemUI>Live chat and email support</FeatureBenefitsLineItemUI>
-          <FeatureBenefitsLineItemUI>30-day money back gaurentee</FeatureBenefitsLineItemUI>
-        </FeatureBenefitsUI>
-      </GridRow>
+          <FeatureBenefitsUI>
+            <FeatureBenefitsLineItemUI>Free custom domain for a year</FeatureBenefitsLineItemUI>
+            <FeatureBenefitsLineItemUI>Live chat and email support</FeatureBenefitsLineItemUI>
+            <FeatureBenefitsLineItemUI>30-day money back gaurentee</FeatureBenefitsLineItemUI>
+          </FeatureBenefitsUI>
+        </GridRow>
+
+        { this.state.isCouponVisible && (
+          <React.Fragment>
+            { this.renderCouponField( false ) }
+          </React.Fragment>
+        ) }
+      </React.Fragment>
     )
   }
 
@@ -1555,13 +1560,11 @@ export default class App extends React.Component {
 
 
           <Content>
-            <PageTitle>You're all set to checkout</PageTitle>
-            <DomainUrl>{ this.state.domain }</DomainUrl>
-
             <Step
               number="0"
-              title="Pick a payment method"
-              completedTitle="Your order"
+              title="You're all set to checkout"
+              completedTitle="You're all set to checkout"
+              totalPrice={ this.state.cartSummary.price }
               status={ "completed" }
               content={ null }
               summary={ this.renderOrderSummary() }/>
