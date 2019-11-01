@@ -1564,7 +1564,7 @@ export default class App extends React.Component {
               number="0"
               title="You're all set to checkout"
               completedTitle="You're all set to checkout"
-              totalPrice={ this.state.cartSummary.price }
+              totalPrice={ "$" + this.state.cartSummary[0].price }
               status={ "completed" }
               content={ null }
               summary={ this.renderOrderSummary() }/>

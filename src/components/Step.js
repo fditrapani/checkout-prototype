@@ -125,6 +125,11 @@ const InnerContentWrapperUI = styled.div`
   padding-bottom: 4px;
 `;
 
+const TotalPriceUi = styled.span`
+  flex: 1;
+  text-align: right;
+`
+
 export default class Step extends React.Component {
   constructor( props ) {
     super( props );
@@ -262,7 +267,7 @@ export default class Step extends React.Component {
             { this.renderEditButton() }
 
             { this.props.totalPrice && (
-              <span>{ this.props.totalPrice }</span>
+              <TotalPriceUi>{ this.props.totalPrice }</TotalPriceUi>
             )}
         </Title>
 
