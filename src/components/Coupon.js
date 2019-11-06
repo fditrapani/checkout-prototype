@@ -3,9 +3,6 @@ import styled from 'styled-components';
 import Field from './Field';
 import Button from './Button';
 
-//CSS
-import { colours } from '../config/colours.js';
-
 const CouponUI = styled.div`
   margin: ${ props => props.marginTop } 0 0 0;
   padding-top: 0;
