@@ -15,7 +15,7 @@ const CouponUI = styled.div`
 
 const ApplyButtonUI = styled(Button)`
   position: absolute;
-  top: 5px;
+  bottom: 6px;
   right: 4px;
   padding: 7px;
 `
@@ -48,7 +48,7 @@ export default class Coupon extends React.Component {
   render() {
     return (
       <CouponUI marginRight={ this.props.isFullView ? "50px" : "0" } marginTop={ this.props.isFullView ? "0" : "16px" }>
-          <Field placeholder="Enter your coupon code" onChange={ this.checkFieldInput } />
+          <Field label={ this.props.label } placeholder="Enter your coupon code" onChange={ this.checkFieldInput } />
           { (this.state.buttonIsActive) && (
             <ApplyButtonUI 
               label="Apply" 

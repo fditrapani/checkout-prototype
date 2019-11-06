@@ -12,7 +12,7 @@ import { breakpoints } from '../config/breakpoints.js';
 const StepWrapper = styled.div`
   padding: 24px 16px;
   position: relative;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid ${ colours.gray10 };
 
   @media( ${ breakpoints.tabletUp } ) {
     padding: 24px;
@@ -95,30 +95,12 @@ const Content = styled.div`
   //overflow: hidden;
 `;
 
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-
-  80% {
-    transform: translateY(-2px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
 const Summary = styled.div`
   color: ${ colours.gray50 };
   padding-left: 35px;
   display: ${ props => props.display };
   line-height: 1.2em;
   font-size: 14px;
-  animation: ${ fadeIn } 0.3s ease-in;
-  animation-fill-mode: backwards;
 `;
 
 const InnerContentWrapperUI = styled.div`

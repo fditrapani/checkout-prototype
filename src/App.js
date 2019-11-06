@@ -304,6 +304,9 @@ const AddCouponButtonUI = styled(Button)`
   display: inline-block;
   opacity: ${ props => props.opacity };
   font-size: 14px;
+  text-align: right;
+  align-self: end;
+  transform: translateY(-4px);
 
   :hover{
     cursor: ${ props => props.cursor };  
@@ -383,31 +386,6 @@ const DomainContactFieldsDescriptionUI = styled.p`
   font-size: 14px;
   color: ${ colours.gray80 };
   margin: 0 0 16px;
-`
-
-const FeatureBenefitsUI = styled.ul`
-  margin: 0;
-  padding: 0;
-  list-style: none;
-`
-
-const FeatureBenefitsLineItemUI = styled.li`
-  margin: 4px 0 0;
-  position: relative;
-  padding-left: 14px;
-  display: block;
-
-  :before{
-    display: block;
-    content: "+";
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-
-  :first-child{
-    margin-top: 0;
-  }
 `
 
 const OrderSummaryProductsUi = styled.div`
@@ -1352,18 +1330,9 @@ export default class App extends React.Component {
                 padding={ isFullView ? "24px 0" : "0" }
                 borderWidth={ isFullView ? "1px" : "0" }
                 marginTop={ isFullView ? "0" : "4px" } >
-                { ! this.state.isCouponVisible && ! isFullView && (
-                  <AddCouponButtonUI 
-                    label="Add coupon" 
-                    state="text-button" 
-                    opacity={ this.state.isCouponVisible ? 0 : 1 } 
-                    cursor={ this.state.isCouponVisible ? "default" : "pointer" } 
-                    onClick={ this.showSummaryCouponField } /> 
-                ) }
-
                 { isFullView && ( 
                   <React.Fragment>
-                    { this.renderCouponField( isFullView ) }
+                    { this.renderCouponField( isFullView, null ) }
                   </React.Fragment>
                  ) }
               </ReviewSummaryLineItemUI>
@@ -1442,8 +1411,8 @@ export default class App extends React.Component {
     });
   }
 
-  renderCouponField = ( isFullView ) => {
-      return <Coupon applyCoupon={ this.applyCoupon } isFullView={ isFullView } />
+  renderCouponField = ( isFullView, label ) => {
+      return <Coupon label={ label } applyCoupon={ this.applyCoupon } isFullView={ isFullView } />
   }
 
   applyCoupon = ( fieldValue ) => {
@@ -1517,23 +1486,23 @@ export default class App extends React.Component {
     return(
       <React.Fragment>
         <DomainUrl>{ this.state.domain }</DomainUrl>
-        <GridRow
-            gap="4%"
-            columnWidths="48% 48%">
-            <OrderSummaryProductsUi>
-              { this.renderCart( false ) }
-            </OrderSummaryProductsUi>
 
-          <FeatureBenefitsUI>
-            <FeatureBenefitsLineItemUI>Free custom domain for a year</FeatureBenefitsLineItemUI>
-            <FeatureBenefitsLineItemUI>Live chat and email support</FeatureBenefitsLineItemUI>
-            <FeatureBenefitsLineItemUI>30-day money back gaurentee</FeatureBenefitsLineItemUI>
-          </FeatureBenefitsUI>
+        <GridRow columnWidths="68% 28%" gap="4%">
+          <OrderSummaryProductsUi>
+            { this.renderCart( false ) }
+          </OrderSummaryProductsUi>
+          { ! this.state.isCouponUsed && ( <AddCouponButtonUI 
+              label="Add coupon" 
+              state="text-button" 
+              opacity={ this.state.isCouponVisible ? 0 : 1 } 
+              cursor={ this.state.isCouponVisible ? "default" : "pointer" } 
+              onClick={ this.showSummaryCouponField } />  ) }
+
         </GridRow>
 
         { this.state.isCouponVisible && (
           <React.Fragment>
-            { this.renderCouponField( false ) }
+            { this.renderCouponField( false, null ) }
           </React.Fragment>
         ) }
       </React.Fragment>
@@ -1562,7 +1531,7 @@ export default class App extends React.Component {
           <Content>
             <Step
               number="0"
-              title="You're all set to checkout"
+              title="You're all set to check out"
               completedTitle="You're all set to checkout"
               totalPrice={ "$" + this.state.cartSummary[0].price }
               status={ "completed" }
