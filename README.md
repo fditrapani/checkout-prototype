@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It's a prototype for WordPress.com's new checkout and was developed with React using Styled components.
 
 ## Available Scripts
 
