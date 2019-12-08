@@ -17,6 +17,7 @@ import Modal from './components/Modal';
 import VisaLogo from './components/VisaLogo';
 import DeleteIcon from './components/DeleteIcon';
 import Coupon from './components/Coupon';
+import Notification from './components/Notification';
 
 //CSS
 import { colours } from './config/colours.js';
@@ -503,6 +504,9 @@ export default class App extends React.Component {
       termDuration: "One year",
       showDomainContactFields: false,
       isCouponUsed: false,
+      notificationRightPosition: "100%",
+      notificationCopy: "",
+      notificationVisibility: false,
     };
   }
 
@@ -529,8 +533,16 @@ export default class App extends React.Component {
     productsInCart.splice(1,1);
     this.setState({
       modalIsVisible: false,
-      domain: "yourdomain.wordpress.com"
-    })
+      domain: "yourdomain.wordpress.com",
+      notificationCopy: "Your domain has been removed from the cart.",
+      notificationVisibility: true,
+    });
+
+    setTimeout( ()=>{
+      this.setState({
+        notificationVisibility: false,
+      })
+    }, 2000);
   }
 
   showSectionBasedOnUrl = () => {
@@ -925,7 +937,7 @@ export default class App extends React.Component {
           <FormField 
                 id="billingPhoneNumber"
                 type="Number"
-                label="Phone number (Optional)"
+                label="Phone number"
                 value={ this.state.billingPhoneNumber }
                 placeholder="(555) 555-5555"
                 onChange={ this.checkForFieldErrors } />          
@@ -1362,7 +1374,6 @@ export default class App extends React.Component {
                     <ReviewSummaryProductNameUI>
                         <ProductNameUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
                           { key.name }
-
                         </ProductNameUI>  
                     </ReviewSummaryProductNameUI>
                       <ReviewSummaryPriceUI fontSize={ key.isTotal && isFullView ? "20px" : "inhert" }>
@@ -1441,7 +1452,15 @@ export default class App extends React.Component {
     this.setState({
       isCouponVisible: false,
       isCouponUsed: true,
-    })
+      notificationCopy: "Your coupon has been applied. You saved $20!",
+      notificationVisibility: true,
+    });
+
+    setTimeout( () => { 
+      this.setState({
+        notificationVisibility: false,
+      });
+    }, 2000);
   }
 
   renderPaymentSection = ( isFullView ) => {
@@ -1526,6 +1545,10 @@ export default class App extends React.Component {
           copy={ this.state.modalCopy } 
           primaryAction={ this.state.modalprimaryAction } />
 
+        <Notification 
+          notificationVisibility={ this.state.notificationVisibility }
+          notificationCopy={ this.state.notificationCopy } />
+
         <Header>
           <TransparentButton onClick={ this.initiateCloseApp } tabIndex="1 " >
             <CloseIcon />
@@ -1556,8 +1579,8 @@ export default class App extends React.Component {
 
             <Step
               number="2"
-              title="Enter your billing details"
-              completedTitle="Billing details"
+              title="Enter your contact information"
+              completedTitle="Contact information"
               status={ this.state.billingStatus }
               content={ this.renderBilling() }
               onEditButtonPress={ this.editBillingDetails }
