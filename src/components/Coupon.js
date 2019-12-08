@@ -27,6 +27,24 @@ export default class Coupon extends React.Component {
     }
   }
 
+  componentDidMount(){
+    document.addEventListener("keydown", this.returnFunction, false);
+  }
+
+  componentWillUnmount(){
+    document.removeEventListener("keydown", this.returnFunction, false);
+  }
+
+ returnFunction = (event) => {
+    if( event.keyCode === 13 && this.state.buttonIsActive) {
+      this.submitCoupon();
+    }
+  }
+
+  submitCoupon = () => {
+    this.props.applyCoupon( this.state.fieldValue );
+  }
+
   checkFieldInput = (e) => {
     if( e.value.length > 0 ){
       this.setState({
@@ -50,7 +68,7 @@ export default class Coupon extends React.Component {
             <ApplyButtonUI 
               label="Apply" 
               state={ (this.state.buttonIsActive) ? "secondary"  : "disabled" }
-              onClick={ ()=> (this.state.buttonIsActive) ? this.props.applyCoupon( this.state.fieldValue ) : null } />)}
+              onClick={ ()=> (this.state.buttonIsActive) ? this.submitCoupon() : null } />)}
       </CouponUI>
     );
    }

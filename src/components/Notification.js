@@ -24,6 +24,7 @@ const NotificationUI = styled.div`
   display: flex;
   animation: ${ animateIn } 0.2s ease-out;
   animation-fill-mode: backwards;
+  z-index: 9999;
 `;
 
 const NotificationContent = styled.div`
