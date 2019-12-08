@@ -894,6 +894,9 @@ export default class App extends React.Component {
   renderBilling = () => {
     return(
       <div>
+        <DomainContactFieldsDescriptionUI>
+          Registering a domain name requires valid contact information. Privacy Protection is included for all eligible domains to protect your personal&nbsp;information.
+        </DomainContactFieldsDescriptionUI>
         <BillingFormFields>
           { this.renderBillingErrorMessage() }
           <FormField 
@@ -928,13 +931,6 @@ export default class App extends React.Component {
                 onChange={ this.checkForFieldErrors } />          
         </BillingFormFields>   
 
-        <DomainRegistrationUI>
-          <DomainRegistrationCheckboxUI type="checkbox" id="domain-registration" name="domain-registration" defaultChecked={ true } onChange={ this.toggleDomainContactFieldsVisibility }/>
-          <DomainRegistrationLabelUI htmlFor="domain-registration">
-            Use your billing details for your domain registration contact information.
-          </DomainRegistrationLabelUI>   
-        </DomainRegistrationUI>
-
         { this.renderDomainContactFields() }
 
         <Button 
@@ -944,6 +940,17 @@ export default class App extends React.Component {
       </div>
 
     );
+  }
+
+  renderDomainCheckbox = () => {
+    return (
+      <DomainRegistrationUI>
+        <DomainRegistrationCheckboxUI type="checkbox" id="domain-registration" name="domain-registration" defaultChecked={ true } onChange={ this.toggleDomainContactFieldsVisibility }/>
+        <DomainRegistrationLabelUI htmlFor="domain-registration">
+          Use your billing details for your domain registration contact information.
+        </DomainRegistrationLabelUI>   
+      </DomainRegistrationUI>
+    )
   }
 
   renderBillingFields = () => {
@@ -1381,12 +1388,12 @@ export default class App extends React.Component {
             checked={ this.state.termDuration === key.label }
             onChange={ () => { this.changeTermDuration( key.label, ( key.discountedPrice ? key.discountedPrice : key.price ) ) } }
             label={ 
-              <FlexRow>
+              <div>
                 <TermPriceLabelUI>{ key.label }</TermPriceLabelUI>
                 <TermPriceUI>${ key.discountedPrice ? ( 
                   <span>{ key.discountedPrice } <StrikeThrough>${key.price}</StrikeThrough> <GreenText>Save 10%</GreenText> </span>  
                   ) : key.price }</TermPriceUI>
-              </FlexRow>
+              </div>
             } />
         ) ) }        
       </SummaryRadioButtonWrapperUi>
