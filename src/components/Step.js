@@ -70,7 +70,7 @@ const StepNumberNotCompleted = styled( StepNumberBase )`
 `
 
 const StepNumberCompleted = styled( StepNumberBase )`
-  background: ${ colours.white }
+  background: ${ colours.green50 }
   border: 2px solid ${ colours.green50 };
   transform: rotateY( 180deg );
 

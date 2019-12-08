@@ -8,7 +8,7 @@ export default class CheckIcon extends React.Component {
         <path d="M7.32916 13.2292L3.85416 9.75417L2.67083 10.9292L7.32916 15.5875L17.3292 5.58751L16.1542 4.41251L7.32916 13.2292Z" fill="white"/>
         </mask>
         <g mask="url(#mask1)">
-        <rect width="20" height="20" fill="#008A20"/>
+        <rect width="20" height="20" fill="#FFFFFF"/>
         </g>
       </svg>
     );
