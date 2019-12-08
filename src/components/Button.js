@@ -111,7 +111,7 @@ export default class Button extends React.Component {
 			case "apple--primary":
 				return colours.black;
 			default:
-				return colours.highlight;
+				return colours.gray20;
 		}
 	}
 
@@ -145,7 +145,7 @@ export default class Button extends React.Component {
 			case "disabled":
 				return colours.gray20;
 			default:
-				return colours.highlight;
+				return colours.gray80;
 		}
 	}
 
